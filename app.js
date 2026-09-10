@@ -5,36 +5,14 @@ if (tg) { tg.ready(); tg.expand(); }
 const mockListings = [
   {
     id: 1,
-    title: 'Квартира в Чиланзаре',
-    price: 2500000,
+    title: 'Студенты квартира сдаётся комната Сергели 3 бекат Грен Хаус новостройк',
+    price: 750 000,
     rooms: 2,
-    area: 50,
-    address: 'Чиланзар, 10 квартал',
-    description: 'Светлая квартира, есть всё для жизни',
-    telegram: '@landlord1',
+    area: 53,
+    address: 'Сергели 3 бекат возле метро новостройка Грен Хаус Студенты квартира комната',
+    description: В квартире есть: Телефон, Кабельное ТВ, Интернет, Кондиционер, Балкон, Телевизор, Кухня, Холодильник, Стиральная машина,
+    telegram: '+998992991186',
     studentFriendly: true
-  },
-  {
-    id: 2,
-    title: 'Комната для студента',
-    price: 800000,
-    rooms: 1,
-    area: 15,
-    address: 'Юнусабад, рядом с метро',
-    description: 'Уютная комната, интернет, стиральная машина',
-    telegram: '@landlord2',
-    studentFriendly: true
-  },
-  {
-    id: 3,
-    title: 'Дом в Сергели',
-    price: 4000000,
-    rooms: 4,
-    area: 120,
-    address: 'Сергели, 5 массив',
-    description: 'Большой дом с двором, подходит для семьи',
-    telegram: '@landlord3',
-    studentFriendly: false
   }
 ];
 
