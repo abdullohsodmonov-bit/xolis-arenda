@@ -1,17 +1,16 @@
 const tg = window.Telegram?.WebApp;
 if (tg) { tg.ready(); tg.expand(); }
 
-// Временные данные (потом заменим на реальные из базы)
 const mockListings = [
   {
     id: 1,
-    title: 'Студенты квартира сдаётся комната Сергели 3 бекат Грен Хаус новостройк',
-    price: 750 000,
+    title: 'Студентам сдаётся комната, Сергели, 3-й бекет, ЖК Gren House',
+    price: 750000,
     rooms: 2,
     area: 53,
-    address: 'Сергели 3 бекат возле метро новостройка Грен Хаус Студенты квартира комната',
-    description: В квартире есть: Телефон, Кабельное ТВ, Интернет, Кондиционер, Балкон, Телевизор, Кухня, Холодильник, Стиральная машина,
-    telegram: '+998992991186',
+    address: 'Сергели, 3-й бекет, рядом с метро, новостройка Gren House',
+    description: 'В квартире есть: телефон, кабельное ТВ, интернет, кондиционер, балкон, телевизор, кухня, холодильник, стиральная машина',
+    telegram: '@therealabdullokh',
     studentFriendly: true
   }
 ];
@@ -36,9 +35,7 @@ function renderListings(listings) {
 }
 
 document.getElementById('filterBtn').onclick = () => {
-  // Пока просто перерисовываем те же данные (фильтры подключим позже)
   renderListings(mockListings);
 };
 
-// Первоначальная загрузка
 renderListings(mockListings);
