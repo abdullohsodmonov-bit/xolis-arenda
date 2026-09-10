@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Xolis Arenda</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>🏠 Xolis Arenda</h1>
+    <p class="subtitle">Поиск жилья в Ташкенте</p>
+  </header>
+
+  <div class="filters">
+    <input type="number" id="minPrice" placeholder="Мин. цена">
+    <input type="number" id="maxPrice" placeholder="Макс. цена">
+    <select id="rooms">
+      <option value="">Комнаты</option>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4+</option>
+    </select>
+    <button id="filterBtn">Найти</button>
+  </div>
+
+  <div id="listings">Загрузка...</div>
+
+  <script src="app.js"></script>
+</body>
+</html>
