@@ -6,17 +6,11 @@ const SUPABASE_KEY = 'sb_publishable_22NWu4eJeZTNK2yuplrGUw_0dHozsqv';
 
 let t = {};
 let lang = 'ru';
-let translatedCards = {}; // track translated listings
+let translatedCards = {};
 
-const MINS = {
-  title: 10,
-  address: 5,
-  description: 30
-};
+const MINS = { title: 10, address: 5, description: 30 };
 
-function getUserId() {
-  return tg?.initDataUnsafe?.user?.id || null;
-}
+function getUserId() { return tg?.initDataUnsafe?.user?.id || null; }
 
 function detectLang() {
   const saved = localStorage.getItem('lang');
@@ -31,6 +25,7 @@ async function loadLang(code) {
   const res = await fetch(`./lang/${code}.json`);
   t = await res.json();
   lang = code;
+  translatedCards = {}; // ВАЖНО: сбрасываем переводы при смене языка
   localStorage.setItem('lang', code);
   applyTranslations();
 }
@@ -44,12 +39,12 @@ function applyTranslations() {
     const key = el.getAttribute('data-i18n-ph');
     if (t[key]) el.placeholder = t[key];
   });
-  document.getElementById('langSelect').value = lang;
+  const sel = document.getElementById('langSelect');
+  if (sel) sel.value = lang;
   updateAllHints();
   loadListings();
 }
 
-// --- Загрузка объявлений ---
 async function loadListings() {
   const container = document.getElementById('listings');
   container.innerHTML = `<p class="empty">${t.loading || 'Загрузка...'}</p>`;
@@ -75,13 +70,14 @@ function renderListings(listings) {
     return;
   }
   container.innerHTML = listings.map(item => {
-    const translated = translatedCards[item.id];
-    const title = translated ? translated.title : item.title;
-    const address = translated ? translated.address : item.address;
-    const description = translated ? translated.description : item.description;
+    const tr = translatedCards[item.id];
+    const title = tr ? tr.title : item.title;
+    const address = tr ? tr.address : item.address;
+    const description = tr ? tr.description : item.description;
+    const isTranslated = !!tr;
 
     return `
-    <div class="card" data-id="${item.id}">
+    <div class="card">
       <h3>${title}</h3>
       <p class="price">💰 ${Number(item.price).toLocaleString()} ${t.sum || 'сум'}</p>
       <p>🚪 ${item.rooms} ${t.rooms_short || 'комн.'} | 📐 ${item.area} м²</p>
@@ -90,27 +86,24 @@ function renderListings(listings) {
       ${item.student_friendly ? `<span class="badge">${t.students_ok || '🎓 Студентам можно'}</span>` : ''}
       ${item.telegram ? `<a class="contact-btn" href="https://t.me/${item.telegram.replace('@','')}" target="_blank">${t.write_telegram || 'Написать в Telegram'}</a>` : ''}
       <div class="report-row">
-        <button class="report-btn" onclick="toggleTranslate(${item.id})" title="${translated ? (t.show_original || 'Показать оригинал') : (t.translate || 'Перевести')}">
-          🌐 ${translated ? (t.show_original || 'Показать оригинал') : (t.translate || 'Перевести')}
+        <button class="report-btn translate-btn" onclick="toggleTranslate(${item.id})">
+          🌐 ${isTranslated ? (t.show_original || 'Оригинал') : (t.translate || 'Перевести')}
         </button>
         <button class="report-btn" onclick="reportListing(${item.id}, 'broker')">🚨 ${t.report_broker || 'Это риелтор'}</button>
         <button class="report-btn" onclick="reportListing(${item.id}, 'not_actual')">❌ ${t.report_not_actual || 'Не актуально'}</button>
       </div>
-    </div>
-  `;
+    </div>`;
   }).join('');
 }
 
-// --- Перевод объявлений ---
 async function toggleTranslate(listingId) {
-  // Если уже переведено — откатываем
   if (translatedCards[listingId]) {
     delete translatedCards[listingId];
     loadListings();
     return;
   }
 
-  // Иначе загружаем и переводим
+  // Находим данные объявления
   const res = await fetch(`${SUPABASE_URL}/rest/v1/listings?id=eq.${listingId}&select=*`, {
     headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
   });
@@ -123,6 +116,11 @@ async function toggleTranslate(listingId) {
       item.address ? translateText(item.address, lang) : Promise.resolve(''),
       item.description ? translateText(item.description, lang) : Promise.resolve('')
     ]);
+
+    if (titleTr === item.title && descTr === item.description) {
+      alert(t.translate_error || 'Не удалось перевести. Попробуйте позже.');
+      return;
+    }
 
     translatedCards[listingId] = {
       title: titleTr,
@@ -139,10 +137,11 @@ async function toggleTranslate(listingId) {
 async function translateText(text, targetLang) {
   if (!text) return '';
   try {
-    const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${targetLang}&dt=t&q=${encodeURIComponent(text)}`;
+    const url = `/api/translate?text=${encodeURIComponent(text)}&to=${targetLang}`;
     const res = await fetch(url);
+    if (!res.ok) throw new Error('API error');
     const data = await res.json();
-    return data[0].map(seg => seg[0]).join('');
+    return data.translated || text;
   } catch (err) {
     console.error('Translate error:', err);
     return text;
@@ -151,7 +150,6 @@ async function translateText(text, targetLang) {
 
 window.toggleTranslate = toggleTranslate;
 
-// --- Жалоба ---
 async function reportListing(listingId, type) {
   const userId = getUserId();
   if (!userId) { alert(t.only_telegram || 'Только через Telegram.'); return; }
@@ -176,7 +174,6 @@ async function reportListing(listingId, type) {
 }
 window.reportListing = reportListing;
 
-// --- Лимит ---
 async function checkUserLimit() {
   const userId = getUserId();
   if (!userId) { alert(t.only_telegram || 'Только через Telegram.'); return false; }
@@ -192,7 +189,6 @@ async function checkUserLimit() {
   return true;
 }
 
-// --- Проверка полей ---
 function validateForm(data) {
   const errors = [];
   if (data.title.length < MINS.title) errors.push(t.err_title_short);
@@ -205,27 +201,23 @@ function validateForm(data) {
   return errors;
 }
 
-// --- Живые подсказки под полями ---
 function updateHint(elId, hintId, value, min, max) {
   const hint = document.getElementById(hintId);
   if (!hint) return;
   if (value === '' || value === null || value === undefined) { hint.textContent = ''; hint.className = 'hint'; return; }
   const len = String(value).trim().length;
-
-  if (min !== undefined && len < min) {
-    hint.textContent = `${len} / ${min} ${t.chars_min || 'символов минимум'}`;
-    hint.className = 'hint hint-err';
-  } else if (max !== undefined && Number(value) > max) {
-    hint.textContent = `${t.max_value || 'Максимум'} ${max}`;
-    hint.className = 'hint hint-err';
+  if (min !== undefined && max === undefined) {
+    if (len < min) { hint.textContent = `${len} / ${min} ${t.chars_min || 'символов минимум'}`; hint.className = 'hint hint-err'; }
+    else { hint.textContent = `✅ ${t.ok || 'Ок'}`; hint.className = 'hint hint-ok'; }
   } else {
-    hint.textContent = `✅ ${t.ok || 'Ок'}`;
-    hint.className = 'hint hint-ok';
+    const num = Number(value);
+    if (num < min || num > max) { hint.textContent = `${t.max_value || 'От'} ${min} ${t.max_value ? '' : 'до'} ${max}`; hint.className = 'hint hint-err'; }
+    else { hint.textContent = `✅ ${t.ok || 'Ок'}`; hint.className = 'hint hint-ok'; }
   }
 }
 
 function updateAllHints() {
-  const get = id => document.getElementById(id).value;
+  const get = id => { const el = document.getElementById(id); return el ? el.value : ''; };
   updateHint('f_title', 'h_title', get('f_title'), MINS.title);
   updateHint('f_address', 'h_address', get('f_address'), MINS.address);
   updateHint('f_description', 'h_description', get('f_description'), MINS.description);
@@ -234,12 +226,13 @@ function updateAllHints() {
   updateHint('f_area', 'h_area', get('f_area'), 5, 500);
   const tgv = get('f_telegram');
   const hint = document.getElementById('h_telegram');
-  if (!tgv) { hint.textContent = ''; hint.className = 'hint'; }
-  else if (tgv.startsWith('@') || tgv.startsWith('+')) { hint.textContent = '✅'; hint.className = 'hint hint-ok'; }
-  else { hint.textContent = t.err_telegram; hint.className = 'hint hint-err'; }
+  if (hint) {
+    if (!tgv) { hint.textContent = ''; hint.className = 'hint'; }
+    else if (tgv.startsWith('@') || tgv.startsWith('+')) { hint.textContent = '✅'; hint.className = 'hint hint-ok'; }
+    else { hint.textContent = t.err_telegram || ''; hint.className = 'hint hint-err'; }
+  }
 }
 
-// --- Сохранение ---
 async function saveListing() {
   const status = document.getElementById('formStatus');
   status.textContent = t.saving || 'Сохраняем...';
@@ -296,16 +289,17 @@ async function saveListing() {
 
 function clearForm() {
   ['f_title','f_price','f_rooms','f_area','f_address','f_description','f_telegram'].forEach(id => {
-    document.getElementById(id).value = '';
+    const el = document.getElementById(id);
+    if (el) el.value = '';
   });
-  document.getElementById('f_student').checked = false;
+  const cb = document.getElementById('f_student');
+  if (cb) cb.checked = false;
   ['h_title','h_price','h_rooms','h_area','h_address','h_description','h_telegram'].forEach(id => {
     const el = document.getElementById(id);
     if (el) { el.textContent = ''; el.className = 'hint'; }
   });
 }
 
-// --- События ---
 document.getElementById('addBtn').onclick = async () => {
   const ok = await checkUserLimit();
   if (ok) document.getElementById('addModal').classList.remove('hidden');
@@ -318,9 +312,9 @@ document.getElementById('saveBtn').onclick = saveListing;
 document.getElementById('filterBtn').onclick = loadListings;
 document.getElementById('langSelect').onchange = (e) => loadLang(e.target.value);
 
-// Живые подсказки
 ['f_title','f_price','f_rooms','f_area','f_address','f_description','f_telegram'].forEach(id => {
-  document.getElementById(id).addEventListener('input', updateAllHints);
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('input', updateAllHints);
 });
 
 loadLang(detectLang());
