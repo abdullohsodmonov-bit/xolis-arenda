@@ -4,51 +4,83 @@ if (tg) { tg.ready(); tg.expand(); }
 const SUPABASE_URL = 'https://gqlxmkiqpcpwfqjbhstr.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_22NWu4eJeZTNK2yuplrGUw_0dHozsqv';
 
+let t = {};       // текущие переводы
+let lang = 'ru';  // текущий язык
+
+// Определяем язык: сначала сохранённый, потом из Telegram, потом русский
+function detectLang() {
+  const saved = localStorage.getItem('lang');
+  if (saved && ['ru','uz','en'].includes(saved)) return saved;
+  const tgLang = tg?.initDataUnsafe?.user?.language_code;
+  if (tgLang && tgLang.startsWith('uz')) return 'uz';
+  if (tgLang && tgLang.startsWith('en')) return 'en';
+  return 'ru';
+}
+
+// Загружаем файл перевода
+async function loadLang(code) {
+  const res = await fetch(`./lang/${code}.json`);
+  t = await res.json();
+  lang = code;
+  localStorage.setItem('lang', code);
+  applyTranslations();
+}
+
+// Подставляем переводы в элементы с data-i18n и data-i18n-ph
+function applyTranslations() {
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key]) el.textContent = t[key];
+  });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    const key = el.getAttribute('data-i18n-ph');
+    if (t[key]) el.placeholder = t[key];
+  });
+  document.getElementById('langSelect').value = lang;
+  loadListings();
+}
+
+// --- Загрузка объявлений ---
 async function loadListings() {
   const container = document.getElementById('listings');
-  container.innerHTML = '<p class="empty">Загрузка...</p>';
+  container.innerHTML = `<p class="empty">${t.loading || 'Загрузка...'}</p>`;
 
   try {
     const res = await fetch(`${SUPABASE_URL}/rest/v1/listings?select=*&order=created_at.desc`, {
-      headers: {
-        'apikey': SUPABASE_KEY,
-        'Authorization': `Bearer ${SUPABASE_KEY}`
-      }
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
     });
-
     if (!res.ok) throw new Error('Ошибка загрузки');
-
     const listings = await res.json();
     renderListings(listings);
   } catch (err) {
     console.error(err);
-    container.innerHTML = '<p class="empty">Ошибка загрузки. Попробуйте позже.</p>';
+    container.innerHTML = `<p class="empty">${t.error_loading || 'Ошибка загрузки'}</p>`;
   }
 }
 
 function renderListings(listings) {
   const container = document.getElementById('listings');
   if (!listings.length) {
-    container.innerHTML = '<p class="empty">Объявлений пока нет</p>';
+    container.innerHTML = `<p class="empty">${t.no_listings || 'Объявлений пока нет'}</p>`;
     return;
   }
-
   container.innerHTML = listings.map(item => `
     <div class="card">
       <h3>${item.title}</h3>
-      <p class="price">💰 ${Number(item.price).toLocaleString()} сум</p>
-      <p>🚪 ${item.rooms} комн. | 📐 ${item.area} м²</p>
+      <p class="price">💰 ${Number(item.price).toLocaleString()} ${t.sum || 'сум'}</p>
+      <p>🚪 ${item.rooms} ${t.rooms_short || 'комн.'} | 📐 ${item.area} м²</p>
       <p>📍 ${item.address || ''}</p>
       <p>${item.description || ''}</p>
-      ${item.student_friendly ? '<span class="badge">🎓 Студентам можно</span>' : ''}
-      ${item.telegram ? `<a class="contact-btn" href="https://t.me/${item.telegram.replace('@','')}" target="_blank">Написать в Telegram</a>` : ''}
+      ${item.student_friendly ? `<span class="badge">${t.students_ok || '🎓 Студентам можно'}</span>` : ''}
+      ${item.telegram ? `<a class="contact-btn" href="https://t.me/${item.telegram.replace('@','')}" target="_blank">${t.write_telegram || 'Написать в Telegram'}</a>` : ''}
     </div>
   `).join('');
 }
 
+// --- Сохранение объявления ---
 async function saveListing() {
   const status = document.getElementById('formStatus');
-  status.textContent = 'Сохраняем...';
+  status.textContent = t.saving || 'Сохраняем...';
   status.style.color = '#666';
 
   const data = {
@@ -63,7 +95,7 @@ async function saveListing() {
   };
 
   if (!data.title || !data.price) {
-    status.textContent = 'Заполните заголовок и цену';
+    status.textContent = t.fill_title_price || 'Заполните заголовок и цену';
     status.style.color = 'red';
     return;
   }
@@ -79,26 +111,18 @@ async function saveListing() {
       },
       body: JSON.stringify(data)
     });
-
-    if (!res.ok) {
-      const errText = await res.text();
-      console.error('Ошибка Supabase:', errText);
-      throw new Error('Ошибка сохранения');
-    }
-
-    status.textContent = 'Сохранено! ✅';
+    if (!res.ok) throw new Error('Ошибка сохранения');
+    status.textContent = t.saved || 'Сохранено!';
     status.style.color = 'green';
-
     setTimeout(() => {
       document.getElementById('addModal').classList.add('hidden');
       clearForm();
       status.textContent = '';
       loadListings();
     }, 800);
-
   } catch (err) {
     console.error(err);
-    status.textContent = 'Ошибка сохранения. Проверьте поля.';
+    status.textContent = t.error_saving || 'Ошибка сохранения';
     status.style.color = 'red';
   }
 }
@@ -110,19 +134,20 @@ function clearForm() {
   document.getElementById('f_student').checked = false;
 }
 
+// --- События ---
 document.getElementById('addBtn').onclick = () => {
   document.getElementById('addModal').classList.remove('hidden');
 };
-
 document.getElementById('cancelBtn').onclick = () => {
   document.getElementById('addModal').classList.add('hidden');
   clearForm();
 };
-
 document.getElementById('saveBtn').onclick = saveListing;
+document.getElementById('filterBtn').onclick = loadListings;
 
-document.getElementById('filterBtn').onclick = () => {
-  loadListings();
+document.getElementById('langSelect').onchange = (e) => {
+  loadLang(e.target.value);
 };
 
-loadListings();
+// --- Запуск ---
+loadLang(detectLang());
