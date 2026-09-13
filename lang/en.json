@@ -41,5 +41,10 @@
   "thanks_report": "Thanks! Report sent.",
   "already_reported": "You already reported.",
   "error_report": "Report sending error.",
-  "limit_reached": "You already have 2 active listings."
+  "limit_reached": "You already have 2 active listings." "chars_min": "chars minimum",
+"max_value": "Maximum",
+"ok": "Ok",
+"translate": "Translate",
+"show_original": "Original",
+"translate_error": "Translation failed. Try again later."
 }
