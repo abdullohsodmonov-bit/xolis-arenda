@@ -41,5 +41,10 @@
   "thanks_report": "Rahmat! Shikoyat yuborildi.",
   "already_reported": "Siz allaqachon shikoyat qilgansiz.",
   "error_report": "Shikoyat yuborishda xatolik.",
-  "limit_reached": "Sizda allaqachon 2 ta faol e'lon bor."
+  "limit_reached": "Sizda allaqachon 2 ta faol e'lon bor.""chars_min": "ta belgi kerak",
+"max_value": "Maksimum",
+"ok": "Ok",
+"translate": "Tarjima qilish",
+"show_original": "Asl nusxa",
+"translate_error": "Tarjima qilish imkonsiz. Keyinroq urinib ko'ring."
 }
