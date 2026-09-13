@@ -4,10 +4,13 @@ if (tg) { tg.ready(); tg.expand(); }
 const SUPABASE_URL = 'https://gqlxmkiqpcpwfqjbhstr.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_22NWu4eJeZTNK2yuplrGUw_0dHozsqv';
 
-let t = {};       // текущие переводы
-let lang = 'ru';  // текущий язык
+let t = {};
+let lang = 'ru';
 
-// Определяем язык: сначала сохранённый, потом из Telegram, потом русский
+function getUserId() {
+  return tg?.initDataUnsafe?.user?.id || null;
+}
+
 function detectLang() {
   const saved = localStorage.getItem('lang');
   if (saved && ['ru','uz','en'].includes(saved)) return saved;
@@ -17,7 +20,6 @@ function detectLang() {
   return 'ru';
 }
 
-// Загружаем файл перевода
 async function loadLang(code) {
   const res = await fetch(`./lang/${code}.json`);
   t = await res.json();
@@ -26,7 +28,6 @@ async function loadLang(code) {
   applyTranslations();
 }
 
-// Подставляем переводы в элементы с data-i18n и data-i18n-ph
 function applyTranslations() {
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
@@ -40,13 +41,14 @@ function applyTranslations() {
   loadListings();
 }
 
-// --- Загрузка объявлений ---
+// --- Загрузка объявлений (скрываем жалобные и неактуальные) ---
 async function loadListings() {
   const container = document.getElementById('listings');
   container.innerHTML = `<p class="empty">${t.loading || 'Загрузка...'}</p>`;
 
   try {
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/listings?select=*&order=created_at.desc`, {
+    const url = `${SUPABASE_URL}/rest/v1/listings?select=*&is_hidden=eq.false&not_actual_count=lt.10&order=created_at.desc`;
+    const res = await fetch(url, {
       headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
     });
     if (!res.ok) throw new Error('Ошибка загрузки');
@@ -73,8 +75,68 @@ function renderListings(listings) {
       <p>${item.description || ''}</p>
       ${item.student_friendly ? `<span class="badge">${t.students_ok || '🎓 Студентам можно'}</span>` : ''}
       ${item.telegram ? `<a class="contact-btn" href="https://t.me/${item.telegram.replace('@','')}" target="_blank">${t.write_telegram || 'Написать в Telegram'}</a>` : ''}
+      <div class="report-row">
+        <button class="report-btn" onclick="reportListing(${item.id}, 'broker')" title="${t.report_broker || 'Это риелтор'}">🚨 ${t.report_broker || 'Это риелтор'}</button>
+        <button class="report-btn" onclick="reportListing(${item.id}, 'not_actual')" title="${t.report_not_actual || 'Не актуально'}">❌ ${t.report_not_actual || 'Не актуально'}</button>
+      </div>
     </div>
   `).join('');
+}
+
+// --- Жалоба на объявление ---
+async function reportListing(listingId, type) {
+  const userId = getUserId();
+  if (!userId) {
+    alert(t.only_telegram || 'Жаловаться можно только через Telegram.');
+    return;
+  }
+
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/reports`, {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({ listing_id: listingId, user_id: userId, type })
+    });
+
+    if (res.ok) {
+      alert(t.thanks_report || 'Спасибо! Жалоба отправлена.');
+    } else if (res.status === 409) {
+      alert(t.already_reported || 'Вы уже жаловались на это объявление.');
+    } else {
+      throw new Error('Ошибка');
+    }
+  } catch (err) {
+    console.error(err);
+    alert(t.error_report || 'Ошибка отправки жалобы.');
+  }
+}
+
+window.reportListing = reportListing;
+
+// --- Проверка лимита объявлений (макс 2) ---
+async function checkUserLimit() {
+  const userId = getUserId();
+  if (!userId) {
+    alert(t.only_telegram || 'Добавлять объявления можно только через Telegram.');
+    return false;
+  }
+
+  const url = `${SUPABASE_URL}/rest/v1/listings?user_id=eq.${userId}&is_hidden=eq.false&select=id`;
+  const res = await fetch(url, {
+    headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+  });
+  const userListings = await res.json();
+
+  if (userListings.length >= 2) {
+    alert(t.limit_reached || 'У вас уже 2 активных объявления. Удалите одно, чтобы добавить новое.');
+    return false;
+  }
+  return true;
 }
 
 // --- Сохранение объявления ---
@@ -83,7 +145,15 @@ async function saveListing() {
   status.textContent = t.saving || 'Сохраняем...';
   status.style.color = '#666';
 
+  const userId = getUserId();
+  if (!userId) {
+    status.textContent = t.only_telegram || 'Только через Telegram.';
+    status.style.color = 'red';
+    return;
+  }
+
   const data = {
+    user_id: userId,
     title: document.getElementById('f_title').value.trim(),
     price: parseInt(document.getElementById('f_price').value) || 0,
     rooms: parseInt(document.getElementById('f_rooms').value) || 1,
@@ -135,8 +205,9 @@ function clearForm() {
 }
 
 // --- События ---
-document.getElementById('addBtn').onclick = () => {
-  document.getElementById('addModal').classList.remove('hidden');
+document.getElementById('addBtn').onclick = async () => {
+  const ok = await checkUserLimit();
+  if (ok) document.getElementById('addModal').classList.remove('hidden');
 };
 document.getElementById('cancelBtn').onclick = () => {
   document.getElementById('addModal').classList.add('hidden');
@@ -145,9 +216,6 @@ document.getElementById('cancelBtn').onclick = () => {
 document.getElementById('saveBtn').onclick = saveListing;
 document.getElementById('filterBtn').onclick = loadListings;
 
-document.getElementById('langSelect').onchange = (e) => {
-  loadLang(e.target.value);
-};
+document.getElementById('langSelect').onchange = (e) => loadLang(e.target.value);
 
-// --- Запуск ---
 loadLang(detectLang());
