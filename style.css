@@ -1,23 +1,21 @@
 /* ============================================ */
-/*  ДИЗАЙН-СИСТЕМА В СТИЛЕ AIRBNB              */
+/*  ДИЗАЙН-СИСТЕМА + HERO-БЛОК                 */
 /* ============================================ */
 
 :root {
-  /* --- Цвета Airbnb --- */
-  --brand-red: #ff385c;           /* Фирменный красный, кнопки действий */
-  --brand-red-dark: #e00b41;      /* Красный при нажатии */
-  --surface-base: #ffffff;        /* Основной белый фон */
-  --surface-raised: #f7f7f7;      /* Фон для карточек, блоков */
-  --text-primary: #222222;        /* Основной почти чёрный текст */
-  --text-secondary: #717171;      /* Серый текст для описаний */
-  --border-color: #dddddd;        /* Тонкие границы и разделители */
-  --shadow-card: 0px 6px 16px rgba(0, 0, 0, 0.12); /* Мягкая тень для карточек */
-  --radius-sm: 8px;               /* Маленькое скругление */
-  --radius-md: 12px;              /* Среднее скругление */
-  --radius-lg: 16px;              /* Большое скругление для карточек */
+  --brand-red: #ff385c;
+  --brand-red-dark: #e00b41;
+  --surface-base: #ffffff;
+  --surface-raised: #f7f7f7;
+  --text-primary: #222222;
+  --text-secondary: #717171;
+  --border-color: #dddddd;
+  --shadow-card: 0px 6px 16px rgba(0, 0, 0, 0.12);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
 }
 
-/* Сброс и базовые стили */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
@@ -25,23 +23,28 @@ body {
   background: var(--surface-base);
   color: var(--text-primary);
   padding: 16px;
+  padding-top: 0;
   padding-bottom: 40px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
 
-/* Заголовки и текст */
 h1, h2, h3 { font-weight: 600; color: var(--text-primary); }
 h1 { font-size: 22px; letter-spacing: -0.4px; }
 h3 { font-size: 16px; letter-spacing: -0.2px; }
 p { font-size: 14px; color: var(--text-secondary); }
-.subtitle { font-size: 14px; color: var(--text-secondary); margin-top: 4px; }
 
 /* Шапка */
-header { text-align: center; margin-bottom: 20px; }
-.header-row { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 4px; }
-
-/* Выбор языка */
+header {
+  text-align: center;
+  padding: 16px 0;
+}
+.header-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
 .lang-select {
   padding: 6px 8px;
   border-radius: var(--radius-sm);
@@ -53,7 +56,85 @@ header { text-align: center; margin-bottom: 20px; }
   outline: none;
 }
 
-/* Вкладки "Все" / "Мои" */
+/* HERO — большая фотография сверху */
+.hero {
+  position: relative;
+  margin: 0 -16px 20px -16px;
+  padding: 40px 16px 28px 16px;
+  background-image:
+    linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.55) 100%),
+    url('https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1600&q=80');
+  background-size: cover;
+  background-position: center;
+  border-radius: 0 0 24px 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+}
+
+.hero-subtitle {
+  color: #ffffff;
+  font-size: 22px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 20px;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+  letter-spacing: -0.4px;
+}
+
+/* Фильтры (внутри hero) */
+.filters {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: #ffffff;
+  padding: 14px;
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+.filters input, .filters select {
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-size: 15px;
+  font-family: inherit;
+  background: #ffffff;
+  color: var(--text-primary);
+  outline: none;
+}
+.filters input:focus, .filters select:focus { border-color: var(--text-primary); }
+
+/* Кнопки */
+button {
+  padding: 14px 20px;
+  background: var(--brand-red);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: inherit;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+button:hover { background: var(--brand-red-dark); }
+button:active { transform: scale(0.98); }
+
+.add-btn {
+  width: 100%;
+  margin-bottom: 20px;
+  background: var(--brand-red);
+  font-weight: 700;
+}
+
+.reset-btn {
+  background: #ffffff;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  font-size: 14px;
+  padding: 10px 16px;
+}
+.reset-btn:hover { background: var(--surface-raised); }
+
+/* Вкладки */
 .tabs { display: flex; gap: 8px; margin-bottom: 16px; }
 .tab-btn {
   flex: 1;
@@ -73,65 +154,7 @@ header { text-align: center; margin-bottom: 20px; }
   border-color: var(--text-primary);
 }
 
-/* Блок фильтров */
-.filters {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-bottom: 16px;
-  background: var(--surface-raised);
-  padding: 16px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-color);
-}
-.filters input, .filters select {
-  padding: 12px;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-sm);
-  font-size: 15px;
-  font-family: inherit;
-  background: var(--surface-base);
-  color: var(--text-primary);
-  outline: none;
-}
-.filters input:focus, .filters select:focus {
-  border-color: var(--text-primary);
-}
-
-/* Основные кнопки */
-button {
-  padding: 14px 20px;
-  background: var(--brand-red);
-  color: #ffffff;
-  border: none;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  font-size: 15px;
-  font-weight: 600;
-  font-family: inherit;
-  transition: background 0.2s ease;
-}
-button:hover { background: var(--brand-red-dark); }
-button:active { transform: scale(0.98); }
-
-/* Кнопка "Добавить объявление" */
-.add-btn {
-  width: 100%;
-  margin-bottom: 20px;
-  background: var(--brand-red);
-  font-weight: 700;
-}
-
-/* Кнопка "Сбросить" */
-.reset-btn {
-  background: var(--surface-base);
-  color: var(--text-secondary);
-  border: 1px solid var(--border-color);
-  font-size: 14px;
-}
-.reset-btn:hover { background: var(--surface-raised); }
-
-/* Карточка объявления */
+/* Карточка */
 .card {
   background: var(--surface-base);
   border-radius: var(--radius-lg);
@@ -157,7 +180,6 @@ button:active { transform: scale(0.98); }
 .card .price { font-weight: 700; color: var(--text-primary); font-size: 16px; margin-bottom: 4px; }
 .card p { margin-bottom: 4px; font-size: 14px; }
 
-/* Бейдж "Студентам можно" */
 .badge {
   display: inline-block;
   background: #e8f5e9;
@@ -169,7 +191,6 @@ button:active { transform: scale(0.98); }
   margin-top: 8px;
 }
 
-/* Кнопка "Написать в Telegram" */
 .contact-btn {
   display: inline-block;
   margin-top: 12px;
@@ -180,11 +201,10 @@ button:active { transform: scale(0.98); }
   border-radius: var(--radius-sm);
   font-size: 14px;
   font-weight: 600;
-  transition: background 0.2s ease;
 }
 .contact-btn:hover { background: var(--brand-red-dark); }
 
-/* Нижний ряд с действиями (жалобы, перевод) */
+/* Ряды с действиями */
 .report-row, .owner-row {
   display: flex;
   gap: 6px;
@@ -202,25 +222,17 @@ button:active { transform: scale(0.98); }
   border-radius: var(--radius-sm);
   cursor: pointer;
   font-weight: 500;
-  transition: all 0.2s ease;
 }
 .report-btn:hover, .owner-btn:hover { background: var(--surface-raised); color: var(--text-primary); }
 
-/* Кнопки редактирования/удаления */
 .edit-btn { background: #1976d2; color: #ffffff; border-color: #1976d2; }
 .edit-btn:hover { background: #1565c0; }
 .delete-btn { background: #d32f2f; color: #ffffff; border-color: #d32f2f; }
 .delete-btn:hover { background: #b71c1c; }
-
-/* Кнопка "Перевести" */
-.translate-btn {
-  background: #e3f2fd;
-  color: #1565c0;
-  border-color: #90caf9;
-}
+.translate-btn { background: #e3f2fd; color: #1565c0; border-color: #90caf9; }
 .translate-btn:hover { background: #bbdefb; }
 
-/* Модальное окно (форма) */
+/* Модальное окно */
 .modal {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -271,12 +283,12 @@ button:active { transform: scale(0.98); }
 .cancel { background: var(--surface-base); color: var(--text-secondary); border: 1px solid var(--border-color); }
 .cancel:hover { background: var(--surface-raised); }
 
-/* Подсказки под полями */
+/* Подсказки */
 .hint { display: block; font-size: 12px; margin-top: 4px; min-height: 16px; }
 .hint-ok { color: #2e7d32; }
 .hint-err { color: #d32f2f; }
 
-/* Загрузка фото */
+/* Фото */
 .photos-upload { margin-bottom: 12px; }
 .photo-add-btn {
   width: 100%;
@@ -313,11 +325,6 @@ button:active { transform: scale(0.98); }
   padding: 0;
 }
 
-/* Чекбокс */
 .checkbox-label { display: flex; align-items: center; gap: 8px; margin-top: 16px; font-size: 14px; }
-
-/* Пустое состояние */
 .empty { text-align: center; color: var(--text-secondary); padding: 40px 20px; font-size: 14px; }
-
-/* Статус формы */
 #formStatus { margin-top: 12px; font-size: 14px; text-align: center; }
