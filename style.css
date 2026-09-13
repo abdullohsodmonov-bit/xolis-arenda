@@ -166,4 +166,14 @@ button {
   margin-top: 12px;
   font-size: 13px;
   text-align: center;
+} #formStatus {
+  margin-top: 12px;
+  font-size: 13px;
+  text-align: center;
+}
+
+.report-row {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
 }
