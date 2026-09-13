@@ -26,7 +26,47 @@
     <button id="filterBtn">Найти</button>
   </div>
 
+  <button id="addBtn" class="add-btn">➕ Добавить объявление</button>
+
   <div id="listings">Загрузка...</div>
+
+  <div id="addModal" class="modal hidden">
+    <div class="modal-content">
+      <h2>Новое объявление</h2>
+
+      <label>Заголовок</label>
+      <input type="text" id="f_title" placeholder="Например: Квартира в Юнусабаде">
+
+      <label>Цена (сум)</label>
+      <input type="number" id="f_price" placeholder="3000000">
+
+      <label>Комнат</label>
+      <input type="number" id="f_rooms" placeholder="2">
+
+      <label>Площадь (м²)</label>
+      <input type="number" id="f_area" placeholder="55">
+
+      <label>Адрес</label>
+      <input type="text" id="f_address" placeholder="Юнусабад, 4 квартал">
+
+      <label>Описание</label>
+      <textarea id="f_description" placeholder="Светлая квартира, есть всё для жизни"></textarea>
+
+      <label>Telegram арендодателя</label>
+      <input type="text" id="f_telegram" placeholder="@username">
+
+      <label class="checkbox-label">
+        <input type="checkbox" id="f_student"> Можно студентам
+      </label>
+
+      <div class="modal-buttons">
+        <button id="saveBtn">Сохранить</button>
+        <button id="cancelBtn" class="cancel">Отмена</button>
+      </div>
+
+      <p id="formStatus"></p>
+    </div>
+  </div>
 
   <script src="app.js"></script>
 </body>
