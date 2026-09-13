@@ -17,26 +17,28 @@
         <option value="en">EN</option>
       </select>
     </div>
-    <p class="subtitle" data-i18n="subtitle">Поиск жилья в Ташкенте</p>
   </header>
+
+  <div class="hero">
+    <p class="hero-subtitle" data-i18n="subtitle">Поиск жилья в Ташкенте</p>
+    <div class="filters" id="filtersBlock">
+      <input type="text" inputmode="numeric" id="minPrice" data-i18n-ph="min_price" placeholder="Мин. цена">
+      <input type="text" inputmode="numeric" id="maxPrice" data-i18n-ph="max_price" placeholder="Макс. цена">
+      <select id="rooms">
+        <option value="" data-i18n="rooms">Комнаты</option>
+        <option value="1" data-i18n="room_1">1 комната</option>
+        <option value="2" data-i18n="room_2">2 комнаты</option>
+        <option value="3" data-i18n="room_3">3 комнаты</option>
+        <option value="4" data-i18n="room_4">4+ комнат</option>
+      </select>
+      <button id="filterBtn" data-i18n="find">Найти</button>
+      <button id="resetBtn" class="reset-btn" data-i18n="reset">Сбросить</button>
+    </div>
+  </div>
 
   <div class="tabs">
     <button class="tab-btn active" id="tabAll" data-i18n="tab_all">🏠 Все объявления</button>
     <button class="tab-btn" id="tabMine" data-i18n="tab_mine">👤 Мои</button>
-  </div>
-
-  <div class="filters" id="filtersBlock">
-    <input type="text" inputmode="numeric" id="minPrice" data-i18n-ph="min_price" placeholder="Мин. цена">
-    <input type="text" inputmode="numeric" id="maxPrice" data-i18n-ph="max_price" placeholder="Макс. цена">
-    <select id="rooms">
-      <option value="" data-i18n="rooms">Комнаты</option>
-      <option value="1" data-i18n="room_1">1 комната</option>
-      <option value="2" data-i18n="room_2">2 комнаты</option>
-      <option value="3" data-i18n="room_3">3 комнаты</option>
-      <option value="4" data-i18n="room_4">4+ комнат</option>
-    </select>
-    <button id="filterBtn" data-i18n="find">Найти</button>
-    <button id="resetBtn" class="reset-btn" data-i18n="reset">Сбросить</button>
   </div>
 
   <button id="addBtn" class="add-btn" data-i18n="add_listing">➕ Добавить объявление</button>
