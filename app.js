@@ -59,7 +59,7 @@ const TRANSLATIONS = {
     error_report: "Ошибка отправки жалобы.",
     limit_reached: "У вас уже 2 активных объявления.",
     err_title_short: "Заголовок минимум 10 символов.",
-    err_price_small: "Цена минимум 100 000 сум.",
+    err_price_small: "Цена минимум 30 000 сум.",
     err_rooms: "Комнат от 1 до 10.",
     err_area: "Площадь от 5 до 500 м².",
     err_address: "Адрес минимум 5 символов.",
@@ -105,7 +105,7 @@ const TRANSLATIONS = {
     error_report: "Shikoyat yuborishda xatolik.",
     limit_reached: "Sizda allaqachon 2 ta faol e'lon bor.",
     err_title_short: "Sarlavha kamida 10 ta belgi.",
-    err_price_small: "Narx kamida 100 000 so'm.",
+    err_price_small: "Narx kamida 30 000 so'm.",
     err_rooms: "Xonalar 1 dan 10 gacha.",
     err_area: "Maydon 5 dan 500 m² gacha.",
     err_address: "Manzil kamida 5 ta belgi.",
@@ -151,7 +151,7 @@ const TRANSLATIONS = {
     error_report: "Report sending error.",
     limit_reached: "You already have 2 active listings.",
     err_title_short: "Title minimum 10 characters.",
-    err_price_small: "Price minimum 100,000 sum.",
+    err_price_small: "Price minimum 30,000 sum.",
     err_rooms: "Rooms between 1 and 10.",
     err_area: "Area between 5 and 500 m².",
     err_address: "Address minimum 5 characters.",
@@ -380,7 +380,7 @@ async function checkUserLimit() {
 function validateForm(data) {
   const e = [];
   if (data.title.length < MINS.title) e.push(t.err_title_short);
-  if (data.price < 100000) e.push(t.err_price_small);
+  if (data.price < 30000) e.push(t.err_price_small);
   if (data.rooms < 1 || data.rooms > 10) e.push(t.err_rooms);
   if (data.area < 5 || data.area > 500) e.push(t.err_area);
   if (data.address.length < MINS.address) e.push(t.err_address);
@@ -406,12 +406,38 @@ function updateHint(elId, hintId, value, min, max) {
 
 function updateAllHints() {
   const get = id => { const el = document.getElementById(id); return el ? el.value : ''; };
+
   updateHint('f_title', 'h_title', get('f_title'), MINS.title);
   updateHint('f_address', 'h_address', get('f_address'), MINS.address);
   updateHint('f_description', 'h_description', get('f_description'), MINS.description);
-  updateHint('f_price', 'h_price', get('f_price'), 100000);
-  updateHint('f_rooms', 'h_rooms', get('f_rooms'), 1, 10);
-  updateHint('f_area', 'h_area', get('f_area'), 5, 500);
+
+  const priceVal = get('f_price');
+  const priceHint = document.getElementById('h_price');
+  if (!priceVal) { priceHint.textContent = ''; priceHint.className = 'hint'; }
+  else {
+    const p = parseNumber(priceVal);
+    if (p < 30000) { priceHint.textContent = t.err_price_small; priceHint.className = 'hint hint-err'; }
+    else { priceHint.textContent = `✅ ${t.ok}`; priceHint.className = 'hint hint-ok'; }
+  }
+
+  const roomsVal = get('f_rooms');
+  const roomsHint = document.getElementById('h_rooms');
+  if (!roomsVal) { roomsHint.textContent = ''; roomsHint.className = 'hint'; }
+  else {
+    const n = parseInt(roomsVal);
+    if (n < 1 || n > 10) { roomsHint.textContent = t.err_rooms; roomsHint.className = 'hint hint-err'; }
+    else { roomsHint.textContent = `✅ ${t.ok}`; roomsHint.className = 'hint hint-ok'; }
+  }
+
+  const areaVal = get('f_area');
+  const areaHint = document.getElementById('h_area');
+  if (!areaVal) { areaHint.textContent = ''; areaHint.className = 'hint'; }
+  else {
+    const n = parseInt(areaVal);
+    if (n < 5 || n > 500) { areaHint.textContent = t.err_area; areaHint.className = 'hint hint-err'; }
+    else { areaHint.textContent = `✅ ${t.ok}`; areaHint.className = 'hint hint-ok'; }
+  }
+
   const tgv = get('f_telegram');
   const hint = document.getElementById('h_telegram');
   if (hint) {
