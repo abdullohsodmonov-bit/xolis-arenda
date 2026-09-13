@@ -30,6 +30,9 @@ function attachNumberFormatting(id) {
 const TRANSLATIONS = {
   ru: {
     subtitle: "Поиск жилья в Ташкенте",
+    hero_title: "Жильё в Ташкенте",
+    hero_subtitle: "Аренда квартир, комнат и койко-мест",
+    search_ph: "Район, адрес или ключевое слово",
     tab_all: "🏠 Все объявления", tab_mine: "👤 Мои",
     detail_title: "Объявление",
     min_price: "Мин. цена", max_price: "Макс. цена",
@@ -77,6 +80,9 @@ const TRANSLATIONS = {
   },
   uz: {
     subtitle: "Toshkentda uy qidirish",
+    hero_title: "Toshkentda uy",
+    hero_subtitle: "Kvartira, xona va joylarni ijaraga olish",
+    search_ph: "Tuman, manzil yoki kalit so'z",
     tab_all: "🏠 Barcha e'lonlar", tab_mine: "👤 Mening",
     detail_title: "E'lon",
     min_price: "Min. narx", max_price: "Maks. narx",
@@ -124,6 +130,9 @@ const TRANSLATIONS = {
   },
   en: {
     subtitle: "Apartment search in Tashkent",
+    hero_title: "Housing in Tashkent",
+    hero_subtitle: "Apartments, rooms and beds for rent",
+    search_ph: "District, address or keyword",
     tab_all: "🏠 All listings", tab_mine: "👤 Mine",
     detail_title: "Listing",
     min_price: "Min. price", max_price: "Max. price",
@@ -174,7 +183,7 @@ const TRANSLATIONS = {
 let t = TRANSLATIONS.ru;
 let lang = 'ru';
 let translatedCards = {};
-let currentFilters = { min: 0, max: 0, rooms: '' };
+let currentFilters = { min: 0, max: 0, rooms: '', text: '' };
 let currentView = 'all';
 let editingId = null;
 let formPhotos = [];
@@ -230,10 +239,14 @@ async function loadListings(filters) {
     if (currentFilters.min > 0) url += `&price=gte.${currentFilters.min}`;
     if (currentFilters.max > 0) url += `&price=lte.${currentFilters.max}`;
     if (currentFilters.rooms) url += `&rooms=eq.${currentFilters.rooms}`;
+    if (currentFilters.text) {
+      const q = encodeURIComponent(`*${currentFilters.text}*`);
+      url += `&or=(title.ilike.${q},address.ilike.${q},description.ilike.${q})`;
+    }
     const res = await fetch(url, { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } });
     if (!res.ok) throw new Error();
     const listings = await res.json();
-    if (listings.length === 0 && (currentFilters.min || currentFilters.max || currentFilters.rooms)) {
+    if (listings.length === 0 && (currentFilters.min || currentFilters.max || currentFilters.rooms || currentFilters.text)) {
       container.innerHTML = `<p class="empty">${t.not_found}</p>`;
       return;
     }
@@ -742,7 +755,8 @@ function applyFilters() {
   currentFilters = {
     min: parseNumber(document.getElementById('minPrice').value),
     max: parseNumber(document.getElementById('maxPrice').value),
-    rooms: document.getElementById('rooms').value
+    rooms: document.getElementById('rooms').value,
+    text: document.getElementById('searchText').value.trim()
   };
   loadListings(currentFilters);
 }
@@ -750,7 +764,8 @@ function resetFilters() {
   document.getElementById('minPrice').value = '';
   document.getElementById('maxPrice').value = '';
   document.getElementById('rooms').value = '';
-  currentFilters = { min: 0, max: 0, rooms: '' };
+  document.getElementById('searchText').value = '';
+  currentFilters = { min: 0, max: 0, rooms: '', text: '' };
   loadListings(currentFilters);
 }
 
@@ -774,7 +789,7 @@ document.getElementById('tabAll').onclick = () => {
   currentView = 'all';
   document.getElementById('tabAll').classList.add('active');
   document.getElementById('tabMine').classList.remove('active');
-  document.getElementById('filtersBlock').style.display = 'flex';
+  document.getElementById('filtersBlock').style.display = 'grid';
   loadListings();
 };
 document.getElementById('tabMine').onclick = () => {
@@ -784,6 +799,11 @@ document.getElementById('tabMine').onclick = () => {
   document.getElementById('filtersBlock').style.display = 'none';
   loadMyListings();
 };
+
+// Ввод текста в поиске — Enter запускает поиск
+document.getElementById('searchText').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') { e.preventDefault(); applyFilters(); }
+});
 
 attachNumberFormatting('minPrice');
 attachNumberFormatting('maxPrice');
