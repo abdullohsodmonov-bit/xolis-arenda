@@ -34,5 +34,12 @@
   "write_telegram": "Message on Telegram",
   "students_ok": "🎓 Students allowed",
   "sum": "sum",
-  "rooms_short": "rooms"
+  "rooms_short": "rooms",
+  "report_broker": "This is a broker",
+  "report_not_actual": "Not actual",
+  "only_telegram": "Telegram only.",
+  "thanks_report": "Thanks! Report sent.",
+  "already_reported": "You already reported.",
+  "error_report": "Report sending error.",
+  "limit_reached": "You already have 2 active listings."
 }
