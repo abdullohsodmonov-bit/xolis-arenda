@@ -12,6 +12,24 @@ header { text-align: center; margin-bottom: 20px; }
 header h1 { font-size: 22px; margin-bottom: 4px; }
 .subtitle { font-size: 14px; color: #888; }
 
+.header-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.lang-select {
+  padding: 4px 6px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background: var(--tg-theme-bg-color, #fff);
+  color: var(--tg-theme-text-color, #000);
+  font-size: 12px;
+  cursor: pointer;
+}
+
 .filters {
   display: flex;
   flex-direction: column;
