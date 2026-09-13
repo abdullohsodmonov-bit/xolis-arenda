@@ -34,5 +34,12 @@
   "write_telegram": "Telegramga yozish",
   "students_ok": "🎓 Talabalarga mumkin",
   "sum": "so'm",
-  "rooms_short": "xona"
+  "rooms_short": "xona",
+  "report_broker": "Bu makler",
+  "report_not_actual": "Aktual emas",
+  "only_telegram": "Faqat Telegram orqali.",
+  "thanks_report": "Rahmat! Shikoyat yuborildi.",
+  "already_reported": "Siz allaqachon shikoyat qilgansiz.",
+  "error_report": "Shikoyat yuborishda xatolik.",
+  "limit_reached": "Sizda allaqachon 2 ta faol e'lon bor."
 }
