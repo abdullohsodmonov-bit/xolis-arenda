@@ -9,59 +9,67 @@
 </head>
 <body>
   <header>
-    <h1>🏠 Xolis Arenda</h1>
-    <p class="subtitle">Поиск жилья в Ташкенте</p>
+    <div class="header-row">
+      <h1>🏠 Xolis Arenda</h1>
+      <select id="langSelect" class="lang-select">
+        <option value="ru">RU</option>
+        <option value="uz">UZ</option>
+        <option value="en">EN</option>
+      </select>
+    </div>
+    <p class="subtitle" data-i18n="subtitle">Поиск жилья в Ташкенте</p>
   </header>
 
   <div class="filters">
-    <input type="number" id="minPrice" placeholder="Мин. цена">
-    <input type="number" id="maxPrice" placeholder="Макс. цена">
+    <input type="number" id="minPrice" data-i18n-ph="min_price" placeholder="Мин. цена">
+    <input type="number" id="maxPrice" data-i18n-ph="max_price" placeholder="Макс. цена">
     <select id="rooms">
-      <option value="">Комнаты</option>
-      <option value="1">1</option>
-      <option value="2">2</option>
-      <option value="3">3</option>
-      <option value="4">4+</option>
+      <option value="" data-i18n="rooms">Комнаты</option>
+      <option value="1" data-i18n="room_1">1 комната</option>
+      <option value="2" data-i18n="room_2">2 комнаты</option>
+      <option value="3" data-i18n="room_3">3 комнаты</option>
+      <option value="4" data-i18n="room_4">4+ комнат</option>
     </select>
-    <button id="filterBtn">Найти</button>
+    <button id="filterBtn" data-i18n="find">Найти</button>
   </div>
 
-  <button id="addBtn" class="add-btn">➕ Добавить объявление</button>
+  <button id="addBtn" class="add-btn" data-i18n="add_listing">➕ Добавить объявление</button>
 
   <div id="listings">Загрузка...</div>
 
   <div id="addModal" class="modal hidden">
     <div class="modal-content">
-      <h2>Новое объявление</h2>
+      <h2 data-i18n="new_listing">Новое объявление</h2>
 
-      <label>Заголовок</label>
-      <input type="text" id="f_title" placeholder="Например: Квартира в Юнусабаде">
+      <label data-i18n="f_title">Заголовок</label>
+      <input type="text" id="f_title" data-i18n-ph="f_title_ph" placeholder="Например: Квартира в Юнусабаде">
 
-      <label>Цена (сум)</label>
+      <label data-i18n="f_price">Цена (сум)</label>
       <input type="number" id="f_price" placeholder="3000000">
 
-      <label>Комнат</label>
+      <label data-i18n="f_rooms">Комнат</label>
       <input type="number" id="f_rooms" placeholder="2">
 
-      <label>Площадь (м²)</label>
+      <label data-i18n="f_area">Площадь (м²)</label>
       <input type="number" id="f_area" placeholder="55">
 
-      <label>Адрес</label>
-      <input type="text" id="f_address" placeholder="Юнусабад, 4 квартал">
+      <label data-i18n="f_address">Адрес</label>
+      <input type="text" id="f_address" data-i18n-ph="f_address_ph" placeholder="Юнусабад, 4 квартал">
 
-      <label>Описание</label>
-      <textarea id="f_description" placeholder="Светлая квартира, есть всё для жизни"></textarea>
+      <label data-i18n="f_description">Описание</label>
+      <textarea id="f_description" data-i18n-ph="f_description_ph" placeholder="Светлая квартира, есть всё для жизни"></textarea>
 
-      <label>Telegram арендодателя</label>
-      <input type="text" id="f_telegram" placeholder="@username">
+      <label data-i18n="f_telegram">Telegram арендодателя</label>
+      <input type="text" id="f_telegram" data-i18n-ph="f_telegram_ph" placeholder="@username">
 
       <label class="checkbox-label">
-        <input type="checkbox" id="f_student"> Можно студентам
+        <input type="checkbox" id="f_student">
+        <span data-i18n="f_student">Можно студентам</span>
       </label>
 
       <div class="modal-buttons">
-        <button id="saveBtn">Сохранить</button>
-        <button id="cancelBtn" class="cancel">Отмена</button>
+        <button id="saveBtn" data-i18n="save">Сохранить</button>
+        <button id="cancelBtn" class="cancel" data-i18n="cancel">Отмена</button>
       </div>
 
       <p id="formStatus"></p>
