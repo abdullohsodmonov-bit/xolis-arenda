@@ -20,7 +20,12 @@
     <p class="subtitle" data-i18n="subtitle">Поиск жилья в Ташкенте</p>
   </header>
 
-  <div class="filters">
+  <div class="tabs">
+    <button class="tab-btn active" id="tabAll" data-i18n="tab_all">🏠 Все объявления</button>
+    <button class="tab-btn" id="tabMine" data-i18n="tab_mine">👤 Мои</button>
+  </div>
+
+  <div class="filters" id="filtersBlock">
     <input type="text" inputmode="numeric" id="minPrice" data-i18n-ph="min_price" placeholder="Мин. цена">
     <input type="text" inputmode="numeric" id="maxPrice" data-i18n-ph="max_price" placeholder="Макс. цена">
     <select id="rooms">
@@ -40,7 +45,14 @@
 
   <div id="addModal" class="modal hidden">
     <div class="modal-content">
-      <h2 data-i18n="new_listing">Новое объявление</h2>
+      <h2 id="formTitle" data-i18n="new_listing">Новое объявление</h2>
+
+      <label data-i18n="f_photos">Фотографии</label>
+      <div class="photos-upload">
+        <input type="file" id="f_photos" accept="image/*" multiple style="display:none">
+        <button type="button" class="photo-add-btn" id="photoAddBtn" data-i18n="add_photo">📷 Добавить фото</button>
+        <div id="photosPreview" class="photos-preview"></div>
+      </div>
 
       <label data-i18n="f_title">Заголовок</label>
       <input type="text" id="f_title" data-i18n-ph="f_title_ph" placeholder="Например: Квартира в Юнусабаде">
