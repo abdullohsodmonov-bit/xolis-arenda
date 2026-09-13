@@ -402,3 +402,89 @@ button:active { transform: scale(0.98); }
   padding: 16px !important;
   font-size: 16px !important;
 }
+/* ============================================ */
+/*  АДАПТИВ ДЛЯ ДЕСКТОПА                       */
+/* ============================================ */
+
+/* Ограничиваем ширину всего приложения и центрируем */
+@media (min-width: 768px) {
+  body {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px 60px 24px;
+  }
+
+  /* Шапка */
+  .top-bar {
+    padding: 24px 0 20px 0;
+  }
+  .brand-icon { width: 34px; height: 34px; }
+  .brand-name { font-size: 26px; }
+
+  /* HERO — уменьшаем высоту, скругляем углы */
+  .hero {
+    margin: 0 0 32px 0;
+    padding: 60px 40px 40px 40px;
+    border-radius: 24px;
+  }
+  .hero-subtitle {
+    font-size: 32px;
+    margin-bottom: 28px;
+  }
+
+  /* Фильтры — в одну строку горизонтально */
+  .filters {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr auto auto;
+    gap: 10px;
+    padding: 16px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .filters button { padding: 12px 24px; white-space: nowrap; }
+
+  /* Табы — ограничиваем ширину */
+  .tabs {
+    max-width: 500px;
+    margin: 0 auto 20px auto;
+  }
+
+  /* Кнопка «Добавить» — ограничиваем ширину */
+  .add-btn {
+    max-width: 400px;
+    margin: 0 auto 32px auto;
+    display: block;
+  }
+
+  /* Карточки — СЕТКА из 2-3 колонок */
+  #listings {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 24px;
+    margin-top: 8px;
+  }
+
+  /* Свежая карточка без отступа снизу (в grid используется gap) */
+  .card { margin-bottom: 0; }
+
+  /* Галерея выше для красоты */
+  .gallery-scroll img { height: 240px; }
+
+  /* Полный просмотр — центрируем контент */
+  .detail-body {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 32px 24px 60px 24px;
+  }
+  .detail-gallery .gallery-scroll img { height: 480px; }
+
+  /* Форма — чуть шире */
+  .modal-content { max-width: 500px; }
+}
+
+/* Большие экраны — 3 колонки */
+@media (min-width: 1100px) {
+  #listings {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
