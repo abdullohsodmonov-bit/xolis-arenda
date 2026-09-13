@@ -31,6 +31,7 @@ const TRANSLATIONS = {
   ru: {
     subtitle: "Поиск жилья в Ташкенте",
     tab_all: "🏠 Все объявления", tab_mine: "👤 Мои",
+    detail_title: "Объявление",
     min_price: "Мин. цена", max_price: "Макс. цена",
     rooms: "Комнаты", room_1: "1 комната", room_2: "2 комнаты", room_3: "3 комнаты", room_4: "4+ комнат",
     find: "Найти", reset: "Сбросить", add_listing: "➕ Добавить объявление",
@@ -77,6 +78,7 @@ const TRANSLATIONS = {
   uz: {
     subtitle: "Toshkentda uy qidirish",
     tab_all: "🏠 Barcha e'lonlar", tab_mine: "👤 Mening",
+    detail_title: "E'lon",
     min_price: "Min. narx", max_price: "Maks. narx",
     rooms: "Xonalar", room_1: "1 xona", room_2: "2 xona", room_3: "3 xona", room_4: "4+ xona",
     find: "Qidirish", reset: "Tozalash", add_listing: "➕ E'lon qo'shish",
@@ -123,6 +125,7 @@ const TRANSLATIONS = {
   en: {
     subtitle: "Apartment search in Tashkent",
     tab_all: "🏠 All listings", tab_mine: "👤 Mine",
+    detail_title: "Listing",
     min_price: "Min. price", max_price: "Max. price",
     rooms: "Rooms", room_1: "1 room", room_2: "2 rooms", room_3: "3 rooms", room_4: "4+ rooms",
     find: "Search", reset: "Reset", add_listing: "➕ Add listing",
@@ -172,9 +175,9 @@ let t = TRANSLATIONS.ru;
 let lang = 'ru';
 let translatedCards = {};
 let currentFilters = { min: 0, max: 0, rooms: '' };
-let currentView = 'all'; // 'all' | 'mine'
-let editingId = null;     // null | id
-let formPhotos = [];      // фотографии в текущей форме
+let currentView = 'all';
+let editingId = null;
+let formPhotos = [];
 
 // ============ БАЗА ============
 function getUserId() { return tg?.initDataUnsafe?.user?.id || null; }
@@ -279,26 +282,34 @@ function renderListings(listings, isMine) {
     const description = tr ? tr.description : item.description;
     const isTranslated = !!tr;
     const photos = Array.isArray(item.photos) ? item.photos : [];
-    const cover = photos[0];
+
+    const galleryHtml = photos.length ? `
+      <div class="card-gallery">
+        <div class="gallery-scroll">
+          ${photos.map(u => `<img src="${u}" loading="lazy" alt="">`).join('')}
+        </div>
+        ${photos.length > 1 ? `<div class="gallery-dots">${photos.map((_, i) => `<span class="dot${i===0?' active':''}"></span>`).join('')}</div>` : ''}
+      </div>
+    ` : '';
 
     return `
     <div class="card">
-      ${cover ? `<div class="card-photo" style="background-image:url('${cover}')"></div>` : ''}
-      <div class="card-body">
+      ${galleryHtml}
+      <div class="card-body" onclick="openDetail(${item.id})">
         <h3>${title}</h3>
         <p class="price">💰 ${Number(item.price).toLocaleString('ru-RU').replace(/,/g, ' ')} ${t.sum}</p>
         <p>🚪 ${item.rooms} ${t.rooms_short} | 📐 ${item.area} м²</p>
         <p>📍 ${address || ''}</p>
-        <p>${description || ''}</p>
+        <p class="desc-short">${description || ''}</p>
         ${item.student_friendly ? `<span class="badge">${t.students_ok}</span>` : ''}
-        ${item.telegram ? `<a class="contact-btn" href="https://t.me/${item.telegram.replace('@','')}" target="_blank">${t.write_telegram}</a>` : ''}
+        ${item.telegram ? `<a class="contact-btn" href="https://t.me/${item.telegram.replace('@','')}" target="_blank" onclick="event.stopPropagation()">${t.write_telegram}</a>` : ''}
         ${isMine ? `
-          <div class="owner-row">
+          <div class="owner-row" onclick="event.stopPropagation()">
             <button class="owner-btn edit-btn" onclick="openEditForm(${item.id})">${t.edit}</button>
             <button class="owner-btn delete-btn" onclick="deleteListing(${item.id})">${t.delete}</button>
           </div>
         ` : `
-          <div class="report-row">
+          <div class="report-row" onclick="event.stopPropagation()">
             <button class="report-btn translate-btn" onclick="toggleTranslate(${item.id})">
               🌐 ${isTranslated ? t.show_original : t.translate}
             </button>
@@ -309,7 +320,99 @@ function renderListings(listings, isMine) {
       </div>
     </div>`;
   }).join('');
+
+  attachGalleryListeners();
 }
+
+function attachGalleryListeners() {
+  document.querySelectorAll('.gallery-scroll').forEach(scroll => {
+    if (scroll.dataset.listener) return;
+    scroll.dataset.listener = '1';
+    scroll.addEventListener('scroll', () => {
+      const gallery = scroll.closest('.card-gallery, .detail-gallery');
+      if (!gallery) return;
+      const idx = Math.round(scroll.scrollLeft / scroll.clientWidth);
+      gallery.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+    });
+  });
+}
+
+// ============ ПОЛНЫЙ ПРОСМОТР ============
+async function openDetail(id) {
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/listings?id=eq.${id}&select=*`, {
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+    });
+    const [item] = await res.json();
+    if (!item) return;
+
+    const photos = Array.isArray(item.photos) ? item.photos : [];
+    const isMine = item.user_id === getUserId();
+    const tr = translatedCards[item.id];
+    const title = tr ? tr.title : item.title;
+    const address = tr ? tr.address : item.address;
+    const description = tr ? tr.description : item.description;
+    const isTranslated = !!tr;
+
+    const galleryHtml = photos.length ? `
+      <div class="detail-gallery">
+        <div class="gallery-scroll">
+          ${photos.map(u => `<img src="${u}" alt="">`).join('')}
+        </div>
+        ${photos.length > 1 ? `<div class="gallery-dots">${photos.map((_, i) => `<span class="dot${i===0?' active':''}"></span>`).join('')}</div>` : ''}
+      </div>
+    ` : '';
+
+    document.getElementById('detailContent').innerHTML = `
+      ${galleryHtml}
+      <div class="detail-body">
+        <h1>${title}</h1>
+        <p class="detail-price">💰 ${Number(item.price).toLocaleString('ru-RU').replace(/,/g, ' ')} ${t.sum}</p>
+        <p>🚪 ${item.rooms} ${t.rooms_short} | 📐 ${item.area} м²</p>
+        <p>📍 ${address || ''}</p>
+        <p class="detail-desc">${description || ''}</p>
+        ${item.student_friendly ? `<span class="badge">${t.students_ok}</span>` : ''}
+
+        ${item.telegram ? `<a class="contact-btn detail-contact" href="https://t.me/${item.telegram.replace('@','')}" target="_blank">${t.write_telegram}</a>` : ''}
+
+        ${isMine ? `
+          <div class="owner-row">
+            <button class="owner-btn edit-btn" onclick="closeDetail(); openEditForm(${item.id})">${t.edit}</button>
+            <button class="owner-btn delete-btn" onclick="closeDetail(); deleteListing(${item.id})">${t.delete}</button>
+          </div>
+        ` : `
+          <div class="report-row">
+            <button class="report-btn translate-btn" onclick="translateDetail(${item.id})">
+              🌐 ${isTranslated ? t.show_original : t.translate}
+            </button>
+            <button class="report-btn" onclick="reportListing(${item.id}, 'broker')">🚨 ${t.report_broker}</button>
+            <button class="report-btn" onclick="reportListing(${item.id}, 'not_actual')">❌ ${t.report_not_actual}</button>
+          </div>
+        `}
+      </div>
+    `;
+
+    document.getElementById('detailModal').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+    document.getElementById('detailModal').scrollTop = 0;
+    attachGalleryListeners();
+  } catch (err) {
+    console.error(err);
+  }
+}
+window.openDetail = openDetail;
+
+function closeDetail() {
+  document.getElementById('detailModal').classList.add('hidden');
+  document.body.style.overflow = '';
+}
+window.closeDetail = closeDetail;
+
+async function translateDetail(id) {
+  await toggleTranslate(id);
+  openDetail(id);
+}
+window.translateDetail = translateDetail;
 
 // ============ ПЕРЕВОД ============
 async function toggleTranslate(listingId) {
@@ -332,6 +435,7 @@ async function toggleTranslate(listingId) {
     refreshView();
   } catch (err) { console.error(err); alert(t.translate_error); }
 }
+window.toggleTranslate = toggleTranslate;
 
 async function translateText(text, target) {
   if (!text) return '';
@@ -346,7 +450,6 @@ async function translateText(text, target) {
   } catch {}
   return text;
 }
-window.toggleTranslate = toggleTranslate;
 
 // ============ ЖАЛОБЫ ============
 async function reportListing(listingId, type) {
@@ -509,7 +612,7 @@ async function handlePhotoUpload(e) {
   status.textContent = t.uploading;
   status.style.color = '#666';
   for (const f of files) {
-    if (f.size > 10 * 1024 * 1024) continue; // пропустить >10 MB
+    if (f.size > 10 * 1024 * 1024) continue;
     try {
       const url = await uploadPhoto(f);
       formPhotos.push(url);
@@ -691,5 +794,4 @@ attachNumberFormatting('f_price');
   if (el) el.addEventListener('input', updateAllHints);
 });
 
-loadLang(detectLang());
 loadLang(detectLang());
