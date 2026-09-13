@@ -34,5 +34,12 @@
   "write_telegram": "Написать в Telegram",
   "students_ok": "🎓 Студентам можно",
   "sum": "сум",
-  "rooms_short": "комн."
+  "rooms_short": "комн.",
+  "report_broker": "Это риелтор",
+  "report_not_actual": "Не актуально",
+  "only_telegram": "Только через Telegram.",
+  "thanks_report": "Спасибо! Жалоба отправлена.",
+  "already_reported": "Вы уже жаловались.",
+  "error_report": "Ошибка отправки жалобы.",
+  "limit_reached": "У вас уже 2 активных объявления."
 }
