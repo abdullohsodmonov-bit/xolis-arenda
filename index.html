@@ -45,6 +45,16 @@
 
   <div id="listings">Загрузка...</div>
 
+  <!-- Полный просмотр объявления -->
+  <div id="detailModal" class="detail-modal hidden">
+    <div class="detail-header">
+      <button class="detail-back" onclick="closeDetail()">←</button>
+      <span class="detail-header-title" data-i18n="detail_title">Объявление</span>
+    </div>
+    <div id="detailContent"></div>
+  </div>
+
+  <!-- Форма -->
   <div id="addModal" class="modal hidden">
     <div class="modal-content">
       <h2 id="formTitle" data-i18n="new_listing">Новое объявление</h2>
