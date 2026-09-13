@@ -6,13 +6,37 @@ const SUPABASE_KEY = 'sb_publishable_22NWu4eJeZTNK2yuplrGUw_0dHozsqv';
 
 const MINS = { title: 10, address: 5, description: 30 };
 
-// ================== ПЕРЕВОДЫ ==================
+// ============ ЧИСЛА С ПРОБЕЛАМИ ============
+function formatNumber(value) {
+  const digits = String(value).replace(/\D/g, '');
+  if (!digits) return '';
+  return digits.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+}
+
+function parseNumber(value) {
+  return parseInt(String(value).replace(/\D/g, '')) || 0;
+}
+
+function attachNumberFormatting(inputId) {
+  const el = document.getElementById(inputId);
+  if (!el) return;
+  el.addEventListener('input', (e) => {
+    const cursorPos = e.target.selectionStart;
+    const oldLen = e.target.value.length;
+    e.target.value = formatNumber(e.target.value);
+    const newLen = e.target.value.length;
+    const newPos = Math.max(0, cursorPos + (newLen - oldLen));
+    e.target.setSelectionRange(newPos, newPos);
+  });
+}
+
+// ============ ПЕРЕВОДЫ ============
 const TRANSLATIONS = {
   ru: {
     subtitle: "Поиск жилья в Ташкенте",
     min_price: "Мин. цена", max_price: "Макс. цена",
     rooms: "Комнаты", room_1: "1 комната", room_2: "2 комнаты", room_3: "3 комнаты", room_4: "4+ комнат",
-    find: "Найти", add_listing: "➕ Добавить объявление",
+    find: "Найти", reset: "Сбросить", add_listing: "➕ Добавить объявление",
     loading: "Загрузка...", no_listings: "Объявлений пока нет",
     error_loading: "Ошибка загрузки. Попробуйте позже.",
     new_listing: "Новое объявление",
@@ -42,17 +66,16 @@ const TRANSLATIONS = {
     err_description: "Описание минимум 30 символов.",
     err_telegram: "Telegram должен начинаться с @ или +.",
     chars_min: "символов минимум",
-    max_value: "Максимум",
-    ok: "Ок",
-    translate: "Перевести",
-    show_original: "Оригинал",
-    translate_error: "Не удалось перевести. Попробуйте позже."
+    max_value: "Максимум", ok: "Ок",
+    translate: "Перевести", show_original: "Оригинал",
+    translate_error: "Не удалось перевести. Попробуйте позже.",
+    not_found: "Ничего не найдено"
   },
   uz: {
     subtitle: "Toshkentda uy qidirish",
     min_price: "Min. narx", max_price: "Maks. narx",
     rooms: "Xonalar", room_1: "1 xona", room_2: "2 xona", room_3: "3 xona", room_4: "4+ xona",
-    find: "Qidirish", add_listing: "➕ E'lon qo'shish",
+    find: "Qidirish", reset: "Tozalash", add_listing: "➕ E'lon qo'shish",
     loading: "Yuklanmoqda...", no_listings: "Hozircha e'lonlar yo'q",
     error_loading: "Yuklashda xatolik.",
     new_listing: "Yangi e'lon",
@@ -82,17 +105,16 @@ const TRANSLATIONS = {
     err_description: "Tavsif kamida 30 ta belgi.",
     err_telegram: "Telegram @ yoki + bilan boshlanishi kerak.",
     chars_min: "ta belgi kerak",
-    max_value: "Maksimum",
-    ok: "Ok",
-    translate: "Tarjima qilish",
-    show_original: "Asl nusxa",
-    translate_error: "Tarjima qilish imkonsiz."
+    max_value: "Maksimum", ok: "Ok",
+    translate: "Tarjima qilish", show_original: "Asl nusxa",
+    translate_error: "Tarjima qilish imkonsiz.",
+    not_found: "Hech narsa topilmadi"
   },
   en: {
     subtitle: "Apartment search in Tashkent",
     min_price: "Min. price", max_price: "Max. price",
     rooms: "Rooms", room_1: "1 room", room_2: "2 rooms", room_3: "3 rooms", room_4: "4+ rooms",
-    find: "Search", add_listing: "➕ Add listing",
+    find: "Search", reset: "Reset", add_listing: "➕ Add listing",
     loading: "Loading...", no_listings: "No listings yet",
     error_loading: "Loading error.",
     new_listing: "New listing",
@@ -122,19 +144,19 @@ const TRANSLATIONS = {
     err_description: "Description minimum 30 characters.",
     err_telegram: "Telegram must start with @ or +.",
     chars_min: "chars minimum",
-    max_value: "Maximum",
-    ok: "Ok",
-    translate: "Translate",
-    show_original: "Original",
-    translate_error: "Translation failed."
+    max_value: "Maximum", ok: "Ok",
+    translate: "Translate", show_original: "Original",
+    translate_error: "Translation failed.",
+    not_found: "Nothing found"
   }
 };
 
 let t = TRANSLATIONS.ru;
 let lang = 'ru';
 let translatedCards = {};
+let currentFilters = { min: 0, max: 0, rooms: '' };
 
-// ================== БАЗОВОЕ ==================
+// ============ БАЗОВОЕ ============
 function getUserId() { return tg?.initDataUnsafe?.user?.id || null; }
 
 function detectLang() {
@@ -170,17 +192,27 @@ function applyTranslations() {
   loadListings();
 }
 
-// ================== ЗАГРУЗКА ==================
-async function loadListings() {
+// ============ ЗАГРУЗКА ============
+async function loadListings(filters) {
+  if (filters !== undefined) currentFilters = filters;
   const container = document.getElementById('listings');
   container.innerHTML = `<p class="empty">${t.loading}</p>`;
+
   try {
-    const url = `${SUPABASE_URL}/rest/v1/listings?select=*&is_hidden=eq.false&not_actual_count=lt.10&order=created_at.desc`;
+    let url = `${SUPABASE_URL}/rest/v1/listings?select=*&is_hidden=eq.false&not_actual_count=lt.10&order=created_at.desc`;
+    if (currentFilters.min > 0) url += `&price=gte.${currentFilters.min}`;
+    if (currentFilters.max > 0) url += `&price=lte.${currentFilters.max}`;
+    if (currentFilters.rooms) url += `&rooms=eq.${currentFilters.rooms}`;
+
     const res = await fetch(url, {
       headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
     });
     if (!res.ok) throw new Error();
     const listings = await res.json();
+    if (listings.length === 0 && (currentFilters.min || currentFilters.max || currentFilters.rooms)) {
+      container.innerHTML = `<p class="empty">${t.not_found}</p>`;
+      return;
+    }
     renderListings(listings);
   } catch (err) {
     console.error(err);
@@ -204,7 +236,7 @@ function renderListings(listings) {
     return `
     <div class="card">
       <h3>${title}</h3>
-      <p class="price">💰 ${Number(item.price).toLocaleString()} ${t.sum}</p>
+      <p class="price">💰 ${Number(item.price).toLocaleString('ru-RU').replace(/,/g, ' ')} ${t.sum}</p>
       <p>🚪 ${item.rooms} ${t.rooms_short} | 📐 ${item.area} м²</p>
       <p>📍 ${address || ''}</p>
       <p>${description || ''}</p>
@@ -221,7 +253,7 @@ function renderListings(listings) {
   }).join('');
 }
 
-// ================== ПЕРЕВОД ОБЪЯВЛЕНИЙ ==================
+// ============ ПЕРЕВОД ОБЪЯВЛЕНИЙ ============
 async function toggleTranslate(listingId) {
   if (translatedCards[listingId]) {
     delete translatedCards[listingId];
@@ -253,7 +285,6 @@ async function toggleTranslate(listingId) {
 
 async function translateText(text, target) {
   if (!text) return '';
-  // Попытка 1: наш API на Vercel
   try {
     const r = await fetch(`/api/translate?text=${encodeURIComponent(text)}&to=${target}`);
     if (r.ok) {
@@ -261,20 +292,16 @@ async function translateText(text, target) {
       if (d.translated && d.translated !== text) return d.translated;
     }
   } catch {}
-
-  // Попытка 2: MyMemory (бесплатный, работает из браузера)
   try {
     const r = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=Autodetect|${target}`);
     const d = await r.json();
     return d.responseData?.translatedText || text;
   } catch {}
-
   return text;
 }
-
 window.toggleTranslate = toggleTranslate;
 
-// ================== ЖАЛОБЫ ==================
+// ============ ЖАЛОБЫ ============
 async function reportListing(listingId, type) {
   const userId = getUserId();
   if (!userId) { alert(t.only_telegram); return; }
@@ -299,7 +326,7 @@ async function reportListing(listingId, type) {
 }
 window.reportListing = reportListing;
 
-// ================== ЛИМИТ ==================
+// ============ ЛИМИТ ============
 async function checkUserLimit() {
   const userId = getUserId();
   if (!userId) { alert(t.only_telegram); return false; }
@@ -312,7 +339,7 @@ async function checkUserLimit() {
   return true;
 }
 
-// ================== ВАЛИДАЦИЯ ==================
+// ============ ВАЛИДАЦИЯ ============
 function validateForm(data) {
   const errors = [];
   if (data.title.length < MINS.title) errors.push(t.err_title_short);
@@ -334,7 +361,7 @@ function updateHint(elId, hintId, value, min, max) {
     if (len < min) { hint.textContent = `${len} / ${min} ${t.chars_min}`; hint.className = 'hint hint-err'; }
     else { hint.textContent = `✅ ${t.ok}`; hint.className = 'hint hint-ok'; }
   } else {
-    const num = Number(value);
+    const num = parseNumber(value) || Number(value);
     if (num < min || num > max) { hint.textContent = `${min} – ${max}`; hint.className = 'hint hint-err'; }
     else { hint.textContent = `✅ ${t.ok}`; hint.className = 'hint hint-ok'; }
   }
@@ -357,7 +384,7 @@ function updateAllHints() {
   }
 }
 
-// ================== СОХРАНЕНИЕ ==================
+// ============ СОХРАНЕНИЕ ============
 async function saveListing() {
   const status = document.getElementById('formStatus');
   status.textContent = t.saving;
@@ -369,7 +396,7 @@ async function saveListing() {
   const data = {
     user_id: userId,
     title: document.getElementById('f_title').value.trim(),
-    price: parseInt(document.getElementById('f_price').value) || 0,
+    price: parseNumber(document.getElementById('f_price').value),
     rooms: parseInt(document.getElementById('f_rooms').value) || 0,
     area: parseInt(document.getElementById('f_area').value) || 0,
     address: document.getElementById('f_address').value.trim(),
@@ -425,7 +452,25 @@ function clearForm() {
   });
 }
 
-// ================== СОБЫТИЯ ==================
+// ============ ФИЛЬТРЫ ============
+function applyFilters() {
+  currentFilters = {
+    min: parseNumber(document.getElementById('minPrice').value),
+    max: parseNumber(document.getElementById('maxPrice').value),
+    rooms: document.getElementById('rooms').value
+  };
+  loadListings(currentFilters);
+}
+
+function resetFilters() {
+  document.getElementById('minPrice').value = '';
+  document.getElementById('maxPrice').value = '';
+  document.getElementById('rooms').value = '';
+  currentFilters = { min: 0, max: 0, rooms: '' };
+  loadListings(currentFilters);
+}
+
+// ============ СОБЫТИЯ ============
 document.getElementById('addBtn').onclick = async () => {
   const ok = await checkUserLimit();
   if (ok) document.getElementById('addModal').classList.remove('hidden');
@@ -435,9 +480,16 @@ document.getElementById('cancelBtn').onclick = () => {
   clearForm();
 };
 document.getElementById('saveBtn').onclick = saveListing;
-document.getElementById('filterBtn').onclick = loadListings;
+document.getElementById('filterBtn').onclick = applyFilters;
+document.getElementById('resetBtn').onclick = resetFilters;
 document.getElementById('langSelect').onchange = (e) => loadLang(e.target.value);
 
+// Форматирование чисел в полях цены
+attachNumberFormatting('minPrice');
+attachNumberFormatting('maxPrice');
+attachNumberFormatting('f_price');
+
+// Живые подсказки
 ['f_title','f_price','f_rooms','f_area','f_address','f_description','f_telegram'].forEach(id => {
   const el = document.getElementById(id);
   if (el) el.addEventListener('input', updateAllHints);
