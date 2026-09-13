@@ -211,3 +211,8 @@ button {
 .translate-btn:hover {
   background: #bbdefb;
 }
+.reset-btn {
+  background: #666;
+  font-size: 13px;
+  padding: 8px 16px;
+}
