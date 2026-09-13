@@ -21,8 +21,8 @@
   </header>
 
   <div class="filters">
-    <input type="number" id="minPrice" data-i18n-ph="min_price" placeholder="Мин. цена">
-    <input type="number" id="maxPrice" data-i18n-ph="max_price" placeholder="Макс. цена">
+    <input type="text" inputmode="numeric" id="minPrice" data-i18n-ph="min_price" placeholder="Мин. цена">
+    <input type="text" inputmode="numeric" id="maxPrice" data-i18n-ph="max_price" placeholder="Макс. цена">
     <select id="rooms">
       <option value="" data-i18n="rooms">Комнаты</option>
       <option value="1" data-i18n="room_1">1 комната</option>
@@ -31,6 +31,7 @@
       <option value="4" data-i18n="room_4">4+ комнат</option>
     </select>
     <button id="filterBtn" data-i18n="find">Найти</button>
+    <button id="resetBtn" class="reset-btn" data-i18n="reset">Сбросить</button>
   </div>
 
   <button id="addBtn" class="add-btn" data-i18n="add_listing">➕ Добавить объявление</button>
@@ -46,7 +47,7 @@
       <small class="hint" id="h_title"></small>
 
       <label data-i18n="f_price">Цена (сум)</label>
-      <input type="number" id="f_price" placeholder="3000000">
+      <input type="text" inputmode="numeric" id="f_price" placeholder="3 000 000">
       <small class="hint" id="h_price"></small>
 
       <label data-i18n="f_rooms">Комнат</label>
