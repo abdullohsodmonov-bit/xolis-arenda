@@ -31,7 +31,7 @@ const TRANSLATIONS = {
   ru: {
     hero_title: "Жильё в Ташкенте",
     hero_subtitle: "Аренда квартир, комнат и койко-мест",
-    search_ph: "Район, адрес или ключевое слово",
+    search_ph: "Что вы ищете? Просто напишите...",
     tab_all: "🏠 Все объявления", tab_mine: "👤 Мои",
     view_list: "📋 Список", view_map: "🗺️ Карта",
     detail_title: "Объявление",
@@ -41,6 +41,9 @@ const TRANSLATIONS = {
     loading: "Загрузка...", no_listings: "Объявлений пока нет",
     no_my_listings: "У вас пока нет объявлений",
     error_loading: "Ошибка загрузки.", not_found: "Ничего не найдено",
+    ai_thinking: "🤖 AI думает...",
+    ai_found: "✨ AI нашёл по вашему запросу:",
+    ai_error: "AI не смог понять запрос. Попробуйте иначе.",
     new_listing: "Новое объявление", edit_listing: "Редактировать объявление",
     f_photos: "Фотографии", add_photo: "📷 Добавить фото",
     uploading: "Загрузка фото...", geocoding: "Определяем координаты...",
@@ -91,11 +94,18 @@ const TRANSLATIONS = {
     footer_about: "О проекте", footer_rules: "Правила публикации", footer_privacy: "Конфиденциальность",
     footer_help_title: "Помощь", footer_faq: "FAQ", footer_safety: "Безопасность", footer_report: "Пожаловаться",
     footer_contacts_title: "Связь", footer_telegram: "Telegram", footer_instagram: "Instagram", footer_email: "Email",
-    footer_bottom: "© 2026 XolisArenda · Сделано в Узбекистане"
+    footer_bottom: "© 2026 XolisArenda · Сделано в Узбекистане",
+    details_btn: "Подробнее →",
+    typewriter: [
+      "Что вы ищете? Просто напишите...",
+      "2-комнатная в Юнусабаде до 3 млн",
+      "Комната для студента в Чиланзаре",
+      "Жильё рядом с метро"
+    ]
   },
   uz: {
     hero_title: "Toshkentda uy", hero_subtitle: "Kvartira, xona va joylarni ijaraga olish",
-    search_ph: "Tuman, manzil yoki kalit so'z",
+    search_ph: "Nima qidirmoqdasiz? Yozing...",
     tab_all: "🏠 Barcha e'lonlar", tab_mine: "👤 Mening",
     view_list: "📋 Ro'yxat", view_map: "🗺️ Xarita",
     detail_title: "E'lon",
@@ -105,6 +115,9 @@ const TRANSLATIONS = {
     loading: "Yuklanmoqda...", no_listings: "Hozircha e'lonlar yo'q",
     no_my_listings: "Sizda hali e'lonlar yo'q",
     error_loading: "Yuklashda xatolik.", not_found: "Hech narsa topilmadi",
+    ai_thinking: "🤖 AI o'ylayapti...",
+    ai_found: "✨ AI sizning so'rovingiz bo'yicha topdi:",
+    ai_error: "AI so'rovni tushunmadi. Boshqacha yozing.",
     new_listing: "Yangi e'lon", edit_listing: "E'lonni tahrirlash",
     f_photos: "Rasmlar", add_photo: "📷 Rasm qo'shish",
     uploading: "Rasm yuklanmoqda...", geocoding: "Koordinatalar aniqlanmoqda...",
@@ -151,11 +164,18 @@ const TRANSLATIONS = {
     footer_about: "Loyiha haqida", footer_rules: "E'lon qoidalari", footer_privacy: "Maxfiylik",
     footer_help_title: "Yordam", footer_faq: "FAQ", footer_safety: "Xavfsizlik", footer_report: "Shikoyat qilish",
     footer_contacts_title: "Aloqa", footer_telegram: "Telegram", footer_instagram: "Instagram", footer_email: "Email",
-    footer_bottom: "© 2026 XolisArenda · O'zbekistonda yaratilgan"
+    footer_bottom: "© 2026 XolisArenda · O'zbekistonda yaratilgan",
+    details_btn: "Batafsil →",
+    typewriter: [
+      "Nima qidirmoqdasiz? Yozing...",
+      "Yunusobodda 2 xonali 3 mln gacha",
+      "Chilonzorda talabaga xona",
+      "Metro yonida uy"
+    ]
   },
   en: {
     hero_title: "Housing in Tashkent", hero_subtitle: "Apartments, rooms and beds for rent",
-    search_ph: "District, address or keyword",
+    search_ph: "What are you looking for? Just type...",
     tab_all: "🏠 All listings", tab_mine: "👤 Mine",
     view_list: "📋 List", view_map: "🗺️ Map",
     detail_title: "Listing",
@@ -165,6 +185,9 @@ const TRANSLATIONS = {
     loading: "Loading...", no_listings: "No listings yet",
     no_my_listings: "You have no listings yet",
     error_loading: "Loading error.", not_found: "Nothing found",
+    ai_thinking: "🤖 AI is thinking...",
+    ai_found: "✨ AI found by your query:",
+    ai_error: "AI couldn't understand. Try differently.",
     new_listing: "New listing", edit_listing: "Edit listing",
     f_photos: "Photos", add_photo: "📷 Add photo",
     uploading: "Uploading photo...", geocoding: "Getting coordinates...",
@@ -210,7 +233,14 @@ const TRANSLATIONS = {
     footer_about: "About", footer_rules: "Posting rules", footer_privacy: "Privacy",
     footer_help_title: "Help", footer_faq: "FAQ", footer_safety: "Safety", footer_report: "Report a problem",
     footer_contacts_title: "Contacts", footer_telegram: "Telegram", footer_instagram: "Instagram", footer_email: "Email",
-    footer_bottom: "© 2026 XolisArenda · Made in Uzbekistan"
+    footer_bottom: "© 2026 XolisArenda · Made in Uzbekistan",
+    details_btn: "Details →",
+    typewriter: [
+      "What are you looking for? Just type...",
+      "2-room in Yunusabad under 3M",
+      "Room for student in Chilanzar",
+      "Housing near metro"
+    ]
   }
 };
 
@@ -219,11 +249,14 @@ let lang = 'ru';
 let translatedCards = {};
 let currentFilters = { min: 0, max: 0, rooms: '', text: '', maxBudget: 0 };
 let currentView = 'all';
-let currentDisplay = 'list'; // 'list' | 'map'
+let currentDisplay = 'list';
 let editingId = null;
 let formPhotos = [];
 let leafletMap = null;
 let mapMarkers = [];
+let allListingsCache = [];
+let typewriterTimer = null;
+let typewriterRunning = false;
 
 // ============ БАЗА ============
 function getUserId() { return tg?.initDataUnsafe?.user?.id || null; }
@@ -258,7 +291,60 @@ function applyTranslations() {
   const sel = document.getElementById('langSelect');
   if (sel) sel.value = lang;
   updateAllHints();
+  startTypewriter();
   refreshView();
+}
+
+// ============ АНИМАЦИЯ ПЕЧАТИ ============
+function startTypewriter() {
+  const input = document.getElementById('searchText');
+  if (!input) return;
+  if (typewriterRunning) return;
+  typewriterRunning = true;
+
+  const phrases = t.typewriter || TRANSLATIONS.ru.typewriter;
+  let phraseIdx = 0;
+  let charIdx = 0;
+  let deleting = false;
+
+  function tick() {
+    // Если пользователь сам начал печатать — останавливаемся
+    if (input.dataset.userTyped === '1') {
+      typewriterRunning = false;
+      return;
+    }
+
+    const current = phrases[phraseIdx];
+    if (!deleting) {
+      charIdx++;
+      input.placeholder = current.slice(0, charIdx);
+      if (charIdx >= current.length) {
+        deleting = true;
+        typewriterTimer = setTimeout(tick, 2200);
+        return;
+      }
+      typewriterTimer = setTimeout(tick, 55);
+    } else {
+      charIdx--;
+      input.placeholder = current.slice(0, charIdx);
+      if (charIdx <= 0) {
+        deleting = false;
+        phraseIdx = (phraseIdx + 1) % phrases.length;
+        typewriterTimer = setTimeout(tick, 400);
+        return;
+      }
+      typewriterTimer = setTimeout(tick, 25);
+    }
+  }
+
+  // Стартовая пауза
+  typewriterTimer = setTimeout(tick, 800);
+}
+
+function stopTypewriter() {
+  if (typewriterTimer) clearTimeout(typewriterTimer);
+  typewriterTimer = null;
+  typewriterRunning = false;
 }
 
 // ============ ГЕОКОДИНГ ============
@@ -267,16 +353,11 @@ async function geocodeAddress(address) {
   try {
     const q = encodeURIComponent(address + ', Узбекистан');
     const url = `https://nominatim.openstreetmap.org/search?q=${q}&format=json&limit=1&accept-language=ru`;
-    const res = await fetch(url, {
-      headers: { 'User-Agent': 'XolisArenda/1.0' }
-    });
+    const res = await fetch(url, { headers: { 'User-Agent': 'XolisArenda/1.0' } });
     if (!res.ok) return null;
     const data = await res.json();
     if (!data || !data.length) return null;
-    return {
-      lat: parseFloat(data[0].lat),
-      lng: parseFloat(data[0].lon)
-    };
+    return { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) };
   } catch (err) {
     console.error('Geocode error:', err);
     return null;
@@ -393,12 +474,35 @@ async function loadListings(filters) {
     }
     const res = await fetch(url, { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } });
     if (!res.ok) throw new Error();
-    const listings = await res.json();
-    if (listings.length === 0 && (currentFilters.min || currentFilters.max || currentFilters.rooms || currentFilters.text || currentFilters.maxBudget)) {
+    let listings = await res.json();
+
+    // Дополнительные фильтры от AI
+    if (currentFilters.district) {
+      const d = currentFilters.district.toLowerCase();
+      listings = listings.filter(l =>
+        (l.address && l.address.toLowerCase().includes(d)) ||
+        (l.title && l.title.toLowerCase().includes(d)) ||
+        (l.description && l.description.toLowerCase().includes(d))
+      );
+    }
+    if (currentFilters.keywords) {
+      const k = currentFilters.keywords.toLowerCase();
+      listings = listings.filter(l =>
+        (l.title && l.title.toLowerCase().includes(k)) ||
+        (l.description && l.description.toLowerCase().includes(k))
+      );
+    }
+    if (currentFilters.studentFriendly === true) {
+      listings = listings.filter(l => l.student_friendly === true);
+    }
+
+    if (listings.length === 0 && (currentFilters.min || currentFilters.max || currentFilters.rooms || currentFilters.text || currentFilters.maxBudget || currentFilters.district || currentFilters.keywords || currentFilters.studentFriendly)) {
       container.innerHTML = `<p class="empty">${t.not_found}</p>`;
+      allListingsCache = [];
       if (currentDisplay === 'map') renderMap([]);
       return;
     }
+    allListingsCache = listings;
     renderListings(listings, false);
     if (currentDisplay === 'map') renderMap(listings);
   } catch (err) {
@@ -418,6 +522,7 @@ async function loadMyListings() {
     if (!res.ok) throw new Error();
     const listings = await res.json();
     if (!listings.length) { container.innerHTML = `<p class="empty">${t.no_my_listings}</p>`; return; }
+    allListingsCache = listings;
     renderListings(listings, true);
   } catch (err) {
     console.error(err);
@@ -425,7 +530,7 @@ async function loadMyListings() {
   }
 }
 
-// ============ ОТРИСОВКА СПИСКА ============
+// ============ ОТРИСОВКА ============
 function renderListings(listings, isMine) {
   const container = document.getElementById('listings');
   if (!listings.length) {
@@ -499,7 +604,6 @@ function renderMap(listings) {
   const mapEl = document.getElementById('map');
   if (!mapEl) return;
 
-  // Если карта ещё не создана — создаём
   if (!leafletMap) {
     leafletMap = L.map('map', { zoomControl: true }).setView([41.311, 69.279], 12);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -508,39 +612,66 @@ function renderMap(listings) {
     }).addTo(leafletMap);
   }
 
-  // Удаляем старые маркеры
   mapMarkers.forEach(m => leafletMap.removeLayer(m));
   mapMarkers = [];
 
-  // Создаём новые
   const validPoints = [];
   listings.forEach(item => {
     if (!item.lat || !item.lng) return;
     validPoints.push([item.lat, item.lng]);
 
-    const priceLabel = `${Number(item.price).toLocaleString('ru-RU').replace(/,/g, ' ')} ${t.sum}`;
+    const priceLabel = `${Number(item.price).toLocaleString('ru-RU').replace(/,/g, ' ')}`;
     const icon = L.divIcon({
       className: '',
       html: `<div class="price-marker">${priceLabel}</div>`,
-      iconSize: [100, 30],
-      iconAnchor: [50, 15]
+      iconSize: [90, 30],
+      iconAnchor: [45, 15]
     });
 
     const marker = L.marker([item.lat, item.lng], { icon })
       .addTo(leafletMap)
-      .on('click', () => openDetail(item.id));
+      .on('click', () => showMapCard(item));
 
     mapMarkers.push(marker);
   });
 
-  // Центрируем по маркерам
   if (validPoints.length > 0) {
     leafletMap.fitBounds(validPoints, { padding: [40, 40], maxZoom: 15 });
   }
 
-  // Пересчёт размеров после показа
   setTimeout(() => leafletMap.invalidateSize(), 200);
 }
+
+function showMapCard(item) {
+  const card = document.getElementById('mapCard');
+  const photo = document.getElementById('mapCardPhoto');
+  const title = document.getElementById('mapCardTitle');
+  const price = document.getElementById('mapCardPrice');
+  const details = document.getElementById('mapCardDetails');
+  const openBtn = document.getElementById('mapCardOpen');
+
+  const photos = Array.isArray(item.photos) ? item.photos : [];
+  if (photos.length) {
+    photo.style.backgroundImage = `url('${photos[0]}')`;
+    photo.style.display = 'block';
+  } else {
+    photo.style.backgroundImage = '';
+    photo.style.display = 'none';
+  }
+
+  title.textContent = item.title;
+  price.textContent = `${Number(item.price).toLocaleString('ru-RU').replace(/,/g, ' ')} ${t.sum}`;
+  details.textContent = `${item.rooms} ${t.rooms_short} · ${item.area} м² · ${item.address || ''}`;
+  openBtn.textContent = t.details_btn;
+  openBtn.onclick = () => { closeMapCard(); openDetail(item.id); };
+
+  card.classList.remove('hidden');
+}
+
+function closeMapCard() {
+  document.getElementById('mapCard').classList.add('hidden');
+}
+window.closeMapCard = closeMapCard;
 
 // ============ ПЕРЕКЛЮЧАТЕЛЬ ВИДА ============
 document.getElementById('viewList').onclick = () => {
@@ -549,6 +680,7 @@ document.getElementById('viewList').onclick = () => {
   document.getElementById('viewMap').classList.remove('active');
   document.getElementById('listings').classList.remove('hidden');
   document.getElementById('mapContainer').classList.add('hidden');
+  closeMapCard();
 };
 document.getElementById('viewMap').onclick = () => {
   currentDisplay = 'map';
@@ -558,6 +690,44 @@ document.getElementById('viewMap').onclick = () => {
   document.getElementById('mapContainer').classList.remove('hidden');
   refreshView();
 };
+
+// ============ AI-ПОИСК ============
+async function aiSearch(query) {
+  const container = document.getElementById('listings');
+  container.innerHTML = `<p class="empty">${t.ai_thinking}</p>`;
+
+  try {
+    const res = await fetch('/api/ai', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query })
+    });
+    if (!res.ok) throw new Error('AI error');
+    const data = await res.json();
+    const f = data.filters || {};
+
+    currentFilters = {
+      min: f.minPrice || 0,
+      max: f.maxPrice || 0,
+      rooms: f.rooms ? String(f.rooms) : '',
+      text: f.keywords || '',
+      maxBudget: 0,
+      district: f.district || '',
+      studentFriendly: f.studentFriendly === true
+    };
+
+    document.getElementById('minPrice').value = f.minPrice ? formatNumber(f.minPrice) : '';
+    document.getElementById('maxPrice').value = f.maxPrice ? formatNumber(f.maxPrice) : '';
+    document.getElementById('rooms').value = f.rooms ? String(f.rooms) : '';
+
+    container.innerHTML = `<p class="empty">${t.ai_found} <b>«${query}»</b></p>`;
+    setTimeout(() => loadListings(currentFilters), 400);
+  } catch (err) {
+    console.error(err);
+    container.innerHTML = `<p class="empty">${t.ai_error}</p>`;
+    setTimeout(() => loadListings(), 800);
+  }
+}
 
 // ============ ПОЛНЫЙ ПРОСМОТР ============
 async function openDetail(id) {
@@ -903,7 +1073,6 @@ async function saveListing() {
   const errors = validateForm(data);
   if (errors.length > 0) { status.innerHTML = errors.join('<br>'); status.style.color = 'red'; return; }
 
-  // Геокодинг адреса (если ещё нет координат)
   if (!editingId) {
     status.textContent = t.geocoding;
     const coords = await geocodeAddress(address);
@@ -966,15 +1135,24 @@ function clearForm() {
 
 // ============ ФИЛЬТРЫ ============
 function applyFilters() {
+  const userText = document.getElementById('searchText').value.trim();
+
+  // Если есть текст — используем AI
+  if (userText.length > 3) {
+    aiSearch(userText);
+    return;
+  }
+
   currentFilters = {
     min: parseNumber(document.getElementById('minPrice').value),
     max: parseNumber(document.getElementById('maxPrice').value),
     rooms: document.getElementById('rooms').value,
-    text: document.getElementById('searchText').value.trim(),
+    text: '',
     maxBudget: 0
   };
   loadListings(currentFilters);
 }
+
 function resetFilters() {
   document.getElementById('minPrice').value = '';
   document.getElementById('maxPrice').value = '';
@@ -996,7 +1174,10 @@ document.getElementById('cancelBtn').onclick = () => {
 document.getElementById('saveBtn').onclick = saveListing;
 document.getElementById('filterBtn').onclick = applyFilters;
 document.getElementById('resetBtn').onclick = resetFilters;
-document.getElementById('langSelect').onchange = (e) => loadLang(e.target.value);
+document.getElementById('langSelect').onchange = (e) => {
+  stopTypewriter();
+  loadLang(e.target.value);
+};
 document.getElementById('photoAddBtn').onclick = () => document.getElementById('f_photos').click();
 document.getElementById('f_photos').addEventListener('change', handlePhotoUpload);
 
@@ -1017,9 +1198,17 @@ document.getElementById('tabMine').onclick = () => {
   document.getElementById('mapContainer').classList.add('hidden');
   document.getElementById('listings').classList.remove('hidden');
   currentDisplay = 'list';
+  closeMapCard();
   loadMyListings();
 };
 
+// Поле поиска: пользователь начал печатать — останавливаем анимацию
+document.getElementById('searchText').addEventListener('input', (e) => {
+  if (e.target.value.length > 0) {
+    e.target.dataset.userTyped = '1';
+    stopTypewriter();
+  }
+});
 document.getElementById('searchText').addEventListener('keydown', (e) => {
   if (e.key === 'Enter') { e.preventDefault(); applyFilters(); }
 });
