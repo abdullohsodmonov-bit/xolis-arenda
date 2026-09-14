@@ -77,13 +77,11 @@ const TRANSLATIONS = {
     confirm_delete: "Удалить объявление?",
     deleted: "Удалено", error_delete: "Ошибка удаления",
     error_upload: "Ошибка загрузки фото",
-    // Меню
     menu_budget: "Калькулятор бюджета",
     menu_about: "О проекте",
     menu_rules: "Правила публикации",
     menu_faq: "FAQ",
     menu_contacts: "Контакты",
-    // Бюджет
     budget_title: "Калькулятор бюджета",
     budget_desc: "Введите ваш месячный доход — мы покажем жильё, которое вам по карману.",
     budget_income: "Ваш доход в месяц (сум)",
@@ -92,7 +90,6 @@ const TRANSLATIONS = {
     budget_empty: "Введите доход",
     budget_found: "Найдено объявлений: ",
     budget_none: "По вашему бюджету пока ничего нет",
-    // Подвал
     footer_about: "О проекте",
     footer_rules: "Правила публикации",
     footer_privacy: "Конфиденциальность",
@@ -325,8 +322,8 @@ const INFO_CONTENT = {
     faq: `<h3>Часто задаваемые вопросы</h3><p><b>Сколько стоит публикация?</b><br>Сейчас — бесплатно.</p><p><b>Кто проверяет объявления?</b><br>Пользователи могут нажать «Это риелтор» или «Не актуально». После 10 жалоб объявление скрывается автоматически.</p><p><b>Как связаться с арендодателем?</b><br>Нажмите «Написать в Telegram» в карточке объявления.</p>`,
     privacy: `<h3>Конфиденциальность</h3><p>Мы не собираем личные данные. Используем только ваш Telegram ID для привязки объявлений. Никакие данные не передаются третьим лицам.</p>`,
     safety: `<h3>Безопасность</h3><ul><li>Никогда не отправляйте предоплату до просмотра квартиры.</li><li>Встречайтесь с арендодателем лично.</li><li>Подписывайте договор аренды в письменной форме.</li><li>При подозрении на мошенничество — нажмите «Это риелтор».</li></ul>`,
-    report: `<h3>Пожаловаться на проблему</h3><p>Если вы столкнулись с мошенничеством или нашли фейковое объявление:</p><ul><li>Нажмите «Это риелтор» или «Не актуально» в карточке.</li><li>Напишите нам в Telegram: <b>@ваш_username</b>.</li></ul>`,
-    contacts: `<h3>Контакты</h3><p><b>Telegram:</b> @ваш_username</p><p><b>Email:</b> info@xolisarenda.uz</p><p><b>Instagram:</b> @xolisarenda</p>`
+    report: `<h3>Пожаловаться на проблему</h3><p>Если вы столкнулись с мошенничеством или нашли фейковое объявление:</p><ul><li>Нажмите «Это риелтор» или «Не актуально» в карточке.</li><li>Напишите нам в Telegram: <b>@xolisarenda_support</b>.</li></ul>`,
+    contacts: `<h3>Контакты</h3><p><b>Telegram:</b> @xolisarenda_support</p><p><b>Email:</b> info@xolisarenda.uz</p><p><b>Instagram:</b> @xolisarenda</p>`
   },
   uz: {
     about: `<h3>XolisArenda loyihasi haqida</h3><p>XolisArenda — O'zbekistonda ijara uylarni topish uchun bepul platforma. Talabalar va mehmonlarga maklersiz uy topishga yordam beradi.</p>`,
@@ -334,8 +331,8 @@ const INFO_CONTENT = {
     faq: `<h3>Ko'p beriladigan savollar</h3><p><b>Joylashtirish qancha turadi?</b><br>Hozircha bepul.</p><p><b>E'lonlarni kim tekshiradi?</b><br>Foydalanuvchilar shikoyat qilishi mumkin. 10 shikoyatdan keyin e'lon avtomatik yashiriladi.</p>`,
     privacy: `<h3>Maxfiylik</h3><p>Shaxsiy ma'lumotlarni yig'maymiz. Faqat Telegram ID ishlatiladi.</p>`,
     safety: `<h3>Xavfsizlik</h3><ul><li>Ko'rishdan oldin oldindan to'lov qilmang.</li><li>Uy egasi bilan shaxsan uchrashing.</li><li>Ijara shartnomasini yozma ravishda imzolang.</li></ul>`,
-    report: `<h3>Shikoyat qilish</h3><p>Muammoga duch kelsangiz — Telegram orqali yozing: <b>@ваш_username</b>.</p>`,
-    contacts: `<h3>Aloqa</h3><p><b>Telegram:</b> @ваш_username</p><p><b>Email:</b> info@xolisarenda.uz</p>`
+    report: `<h3>Shikoyat qilish</h3><p>Muammoga duch kelsangiz — Telegram orqali yozing: <b>@xolisarenda_support</b>.</p>`,
+    contacts: `<h3>Aloqa</h3><p><b>Telegram:</b> @xolisarenda_support</p><p><b>Email:</b> info@xolisarenda.uz</p>`
   },
   en: {
     about: `<h3>About XolisArenda</h3><p>XolisArenda is a free platform for finding rental housing in Uzbekistan. We help students and visitors find housing without brokers.</p>`,
@@ -343,8 +340,8 @@ const INFO_CONTENT = {
     faq: `<h3>FAQ</h3><p><b>How much does posting cost?</b><br>Free for now.</p><p><b>Who checks listings?</b><br>Users can report. After 10 reports, listing is auto-hidden.</p>`,
     privacy: `<h3>Privacy</h3><p>We don't collect personal data. Only Telegram ID is used.</p>`,
     safety: `<h3>Safety</h3><ul><li>Never pay in advance.</li><li>Meet the landlord in person.</li><li>Sign a written lease.</li></ul>`,
-    report: `<h3>Report a problem</h3><p>Contact us on Telegram: <b>@ваш_username</b>.</p>`,
-    contacts: `<h3>Contacts</h3><p><b>Telegram:</b> @ваш_username</p><p><b>Email:</b> info@xolisarenda.uz</p>`
+    report: `<h3>Report a problem</h3><p>Contact us on Telegram: <b>@xolisarenda_support</b>.</p>`,
+    contacts: `<h3>Contacts</h3><p><b>Telegram:</b> @xolisarenda_support</p><p><b>Email:</b> info@xolisarenda.uz</p>`
   }
 };
 
