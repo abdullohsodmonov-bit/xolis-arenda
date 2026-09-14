@@ -85,6 +85,8 @@ const TRANSLATIONS = {
     menu_rules: "Правила публикации",
     menu_faq: "FAQ",
     menu_contacts: "Контакты",
+    menu_theme_dark: "Тёмная тема",
+    menu_theme_light: "Светлая тема",
     budget_title: "Калькулятор бюджета",
     budget_desc: "Введите ваш месячный доход — мы покажем жильё, которое вам по карману.",
     budget_income: "Ваш доход в месяц (сум)",
@@ -156,6 +158,8 @@ const TRANSLATIONS = {
     error_upload: "Rasm yuklashda xatolik",
     menu_budget: "Budjet kalkulyatori", menu_about: "Loyiha haqida",
     menu_rules: "E'lon qoidalari", menu_faq: "FAQ", menu_contacts: "Aloqa",
+    menu_theme_dark: "Tungi rejim",
+    menu_theme_light: "Kunduzgi rejim",
     budget_title: "Budjet kalkulyatori",
     budget_desc: "Oylik daromadingizni kiriting — biz sizga mos uylarni ko'rsatamiz.",
     budget_income: "Oylik daromad (so'm)",
@@ -225,6 +229,8 @@ const TRANSLATIONS = {
     error_upload: "Photo upload error",
     menu_budget: "Budget calculator", menu_about: "About",
     menu_rules: "Posting rules", menu_faq: "FAQ", menu_contacts: "Contacts",
+    menu_theme_dark: "Dark theme",
+    menu_theme_light: "Light theme",
     budget_title: "Budget calculator",
     budget_desc: "Enter your monthly income — we'll show what you can afford.",
     budget_income: "Monthly income (sum)",
@@ -258,6 +264,45 @@ let allListingsCache = [];
 let typewriterTimer = null;
 let typewriterRunning = false;
 
+// ============ ТЕМА ============
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem('theme', theme);
+
+  const icon = document.getElementById('themeIcon');
+  const label = document.getElementById('themeLabel');
+  if (icon && label) {
+    if (theme === 'dark') {
+      icon.textContent = '☀️';
+      label.textContent = t.menu_theme_light || 'Светлая тема';
+    } else {
+      icon.textContent = '🌙';
+      label.textContent = t.menu_theme_dark || 'Тёмная тема';
+    }
+  }
+}
+
+function toggleTheme() {
+  const current = document.documentElement.getAttribute('data-theme') || 'light';
+  const next = current === 'dark' ? 'light' : 'dark';
+  applyTheme(next);
+  const menu = document.getElementById('menuDropdown');
+  if (menu) menu.classList.add('hidden');
+}
+window.toggleTheme = toggleTheme;
+
+function detectTheme() {
+  const saved = localStorage.getItem('theme');
+  if (saved === 'light' || saved === 'dark') return saved;
+  const tgTheme = tg?.colorScheme;
+  if (tgTheme === 'dark') return 'dark';
+  if (tgTheme === 'light') return 'light';
+  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    return 'dark';
+  }
+  return 'light';
+}
+
 // ============ БАЗА ============
 function getUserId() { return tg?.initDataUnsafe?.user?.id || null; }
 
@@ -277,6 +322,19 @@ function loadLang(code) {
   translatedCards = {};
   localStorage.setItem('lang', code);
   applyTranslations();
+  // Обновить текст кнопки темы
+  const current = document.documentElement.getAttribute('data-theme') || 'light';
+  const icon = document.getElementById('themeIcon');
+  const label = document.getElementById('themeLabel');
+  if (icon && label) {
+    if (current === 'dark') {
+      icon.textContent = '☀️';
+      label.textContent = t.menu_theme_light;
+    } else {
+      icon.textContent = '🌙';
+      label.textContent = t.menu_theme_dark;
+    }
+  }
 }
 
 function applyTranslations() {
@@ -301,6 +359,7 @@ function startTypewriter() {
   if (!input) return;
   if (typewriterRunning) return;
   typewriterRunning = true;
+  input.dataset.userTyped = '0';
 
   const phrases = t.typewriter || TRANSLATIONS.ru.typewriter;
   let phraseIdx = 0;
@@ -308,12 +367,10 @@ function startTypewriter() {
   let deleting = false;
 
   function tick() {
-    // Если пользователь сам начал печатать — останавливаемся
     if (input.dataset.userTyped === '1') {
       typewriterRunning = false;
       return;
     }
-
     const current = phrases[phraseIdx];
     if (!deleting) {
       charIdx++;
@@ -336,8 +393,6 @@ function startTypewriter() {
       typewriterTimer = setTimeout(tick, 25);
     }
   }
-
-  // Стартовая пауза
   typewriterTimer = setTimeout(tick, 800);
 }
 
@@ -358,10 +413,7 @@ async function geocodeAddress(address) {
     const data = await res.json();
     if (!data || !data.length) return null;
     return { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) };
-  } catch (err) {
-    console.error('Geocode error:', err);
-    return null;
-  }
+  } catch (err) { console.error('Geocode error:', err); return null; }
 }
 
 // ============ МЕНЮ ============
@@ -476,7 +528,6 @@ async function loadListings(filters) {
     if (!res.ok) throw new Error();
     let listings = await res.json();
 
-    // Дополнительные фильтры от AI
     if (currentFilters.district) {
       const d = currentFilters.district.toLowerCase();
       listings = listings.filter(l =>
@@ -1136,12 +1187,7 @@ function clearForm() {
 // ============ ФИЛЬТРЫ ============
 function applyFilters() {
   const userText = document.getElementById('searchText').value.trim();
-
-  // Если есть текст — используем AI
-  if (userText.length > 3) {
-    aiSearch(userText);
-    return;
-  }
+  if (userText.length > 3) { aiSearch(userText); return; }
 
   currentFilters = {
     min: parseNumber(document.getElementById('minPrice').value),
@@ -1202,7 +1248,6 @@ document.getElementById('tabMine').onclick = () => {
   loadMyListings();
 };
 
-// Поле поиска: пользователь начал печатать — останавливаем анимацию
 document.getElementById('searchText').addEventListener('input', (e) => {
   if (e.target.value.length > 0) {
     e.target.dataset.userTyped = '1';
@@ -1221,5 +1266,17 @@ attachNumberFormatting('f_price');
   const el = document.getElementById(id);
   if (el) el.addEventListener('input', updateAllHints);
 });
+
+// Применяем тему сразу (до первого рендера)
+applyTheme(detectTheme());
+
+// Слушаем смену темы в Telegram
+if (tg && tg.onEvent) {
+  tg.onEvent('themeChanged', () => {
+    if (!localStorage.getItem('theme')) {
+      applyTheme(tg.colorScheme || 'light');
+    }
+  });
+}
 
 loadLang(detectLang());
