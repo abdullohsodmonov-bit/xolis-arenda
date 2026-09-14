@@ -29,11 +29,11 @@ function attachNumberFormatting(id) {
 // ============ ПЕРЕВОДЫ ============
 const TRANSLATIONS = {
   ru: {
-    subtitle: "Поиск жилья в Ташкенте",
     hero_title: "Жильё в Ташкенте",
     hero_subtitle: "Аренда квартир, комнат и койко-мест",
     search_ph: "Район, адрес или ключевое слово",
     tab_all: "🏠 Все объявления", tab_mine: "👤 Мои",
+    view_list: "📋 Список", view_map: "🗺️ Карта",
     detail_title: "Объявление",
     min_price: "Мин. цена", max_price: "Макс. цена",
     rooms: "Комнаты", room_1: "1 комната", room_2: "2 комнаты", room_3: "3 комнаты", room_4: "4+ комнат",
@@ -43,7 +43,7 @@ const TRANSLATIONS = {
     error_loading: "Ошибка загрузки.", not_found: "Ничего не найдено",
     new_listing: "Новое объявление", edit_listing: "Редактировать объявление",
     f_photos: "Фотографии", add_photo: "📷 Добавить фото",
-    uploading: "Загрузка фото...",
+    uploading: "Загрузка фото...", geocoding: "Определяем координаты...",
     f_title: "Заголовок", f_title_ph: "Например: Квартира в Юнусабаде",
     f_price: "Цена (сум)", f_rooms: "Комнат", f_area: "Площадь (м²)",
     f_address: "Адрес", f_address_ph: "Юнусабад, 4 квартал",
@@ -88,27 +88,16 @@ const TRANSLATIONS = {
     budget_strict: "Не больше 30% от дохода (рекомендуется)",
     budget_apply: "Показать",
     budget_empty: "Введите доход",
-    budget_found: "Найдено объявлений: ",
-    budget_none: "По вашему бюджету пока ничего нет",
-    footer_about: "О проекте",
-    footer_rules: "Правила публикации",
-    footer_privacy: "Конфиденциальность",
-    footer_help_title: "Помощь",
-    footer_faq: "FAQ",
-    footer_safety: "Безопасность",
-    footer_report: "Пожаловаться",
-    footer_contacts_title: "Связь",
-    footer_telegram: "Telegram",
-    footer_instagram: "Instagram",
-    footer_email: "Email",
+    footer_about: "О проекте", footer_rules: "Правила публикации", footer_privacy: "Конфиденциальность",
+    footer_help_title: "Помощь", footer_faq: "FAQ", footer_safety: "Безопасность", footer_report: "Пожаловаться",
+    footer_contacts_title: "Связь", footer_telegram: "Telegram", footer_instagram: "Instagram", footer_email: "Email",
     footer_bottom: "© 2026 XolisArenda · Сделано в Узбекистане"
   },
   uz: {
-    subtitle: "Toshkentda uy qidirish",
-    hero_title: "Toshkentda uy",
-    hero_subtitle: "Kvartira, xona va joylarni ijaraga olish",
+    hero_title: "Toshkentda uy", hero_subtitle: "Kvartira, xona va joylarni ijaraga olish",
     search_ph: "Tuman, manzil yoki kalit so'z",
     tab_all: "🏠 Barcha e'lonlar", tab_mine: "👤 Mening",
+    view_list: "📋 Ro'yxat", view_map: "🗺️ Xarita",
     detail_title: "E'lon",
     min_price: "Min. narx", max_price: "Maks. narx",
     rooms: "Xonalar", room_1: "1 xona", room_2: "2 xona", room_3: "3 xona", room_4: "4+ xona",
@@ -118,7 +107,7 @@ const TRANSLATIONS = {
     error_loading: "Yuklashda xatolik.", not_found: "Hech narsa topilmadi",
     new_listing: "Yangi e'lon", edit_listing: "E'lonni tahrirlash",
     f_photos: "Rasmlar", add_photo: "📷 Rasm qo'shish",
-    uploading: "Rasm yuklanmoqda...",
+    uploading: "Rasm yuklanmoqda...", geocoding: "Koordinatalar aniqlanmoqda...",
     f_title: "Sarlavha", f_title_ph: "Masalan: Yunusobodda kvartira",
     f_price: "Narx (so'm)", f_rooms: "Xonalar soni", f_area: "Maydon (m²)",
     f_address: "Manzil", f_address_ph: "Yunusobod, 4-mavze",
@@ -152,38 +141,23 @@ const TRANSLATIONS = {
     confirm_delete: "E'lonni o'chirishni xohlaysizmi?",
     deleted: "O'chirildi", error_delete: "O'chirishda xatolik",
     error_upload: "Rasm yuklashda xatolik",
-    menu_budget: "Budjet kalkulyatori",
-    menu_about: "Loyiha haqida",
-    menu_rules: "E'lon qoidalari",
-    menu_faq: "FAQ",
-    menu_contacts: "Aloqa",
+    menu_budget: "Budjet kalkulyatori", menu_about: "Loyiha haqida",
+    menu_rules: "E'lon qoidalari", menu_faq: "FAQ", menu_contacts: "Aloqa",
     budget_title: "Budjet kalkulyatori",
     budget_desc: "Oylik daromadingizni kiriting — biz sizga mos uylarni ko'rsatamiz.",
     budget_income: "Oylik daromad (so'm)",
     budget_strict: "Daromadning 30% dan ko'p emas",
-    budget_apply: "Ko'rsatish",
-    budget_empty: "Daromadni kiriting",
-    budget_found: "Topilgan e'lonlar: ",
-    budget_none: "Budjetingizga mos hech narsa topilmadi",
-    footer_about: "Loyiha haqida",
-    footer_rules: "E'lon qoidalari",
-    footer_privacy: "Maxfiylik",
-    footer_help_title: "Yordam",
-    footer_faq: "FAQ",
-    footer_safety: "Xavfsizlik",
-    footer_report: "Shikoyat qilish",
-    footer_contacts_title: "Aloqa",
-    footer_telegram: "Telegram",
-    footer_instagram: "Instagram",
-    footer_email: "Email",
+    budget_apply: "Ko'rsatish", budget_empty: "Daromadni kiriting",
+    footer_about: "Loyiha haqida", footer_rules: "E'lon qoidalari", footer_privacy: "Maxfiylik",
+    footer_help_title: "Yordam", footer_faq: "FAQ", footer_safety: "Xavfsizlik", footer_report: "Shikoyat qilish",
+    footer_contacts_title: "Aloqa", footer_telegram: "Telegram", footer_instagram: "Instagram", footer_email: "Email",
     footer_bottom: "© 2026 XolisArenda · O'zbekistonda yaratilgan"
   },
   en: {
-    subtitle: "Apartment search in Tashkent",
-    hero_title: "Housing in Tashkent",
-    hero_subtitle: "Apartments, rooms and beds for rent",
+    hero_title: "Housing in Tashkent", hero_subtitle: "Apartments, rooms and beds for rent",
     search_ph: "District, address or keyword",
     tab_all: "🏠 All listings", tab_mine: "👤 Mine",
+    view_list: "📋 List", view_map: "🗺️ Map",
     detail_title: "Listing",
     min_price: "Min. price", max_price: "Max. price",
     rooms: "Rooms", room_1: "1 room", room_2: "2 rooms", room_3: "3 rooms", room_4: "4+ rooms",
@@ -193,7 +167,7 @@ const TRANSLATIONS = {
     error_loading: "Loading error.", not_found: "Nothing found",
     new_listing: "New listing", edit_listing: "Edit listing",
     f_photos: "Photos", add_photo: "📷 Add photo",
-    uploading: "Uploading photo...",
+    uploading: "Uploading photo...", geocoding: "Getting coordinates...",
     f_title: "Title", f_title_ph: "Example: Apartment in Yunusabad",
     f_price: "Price (sum)", f_rooms: "Rooms", f_area: "Area (m²)",
     f_address: "Address", f_address_ph: "Yunusabad, 4th block",
@@ -219,38 +193,23 @@ const TRANSLATIONS = {
     err_address: "Address minimum 5 characters.",
     err_description: "Description minimum 30 characters.",
     err_telegram: "Telegram must start with @ or +.",
-    chars_min: "chars minimum",
-    max_value: "Maximum", ok: "Ok",
+    chars_min: "chars minimum", max_value: "Maximum", ok: "Ok",
     translate: "Translate", show_original: "Original",
     translate_error: "Translation failed.",
     edit: "✏️ Edit", delete: "🗑️ Delete",
     confirm_delete: "Delete listing?",
     deleted: "Deleted", error_delete: "Delete error",
     error_upload: "Photo upload error",
-    menu_budget: "Budget calculator",
-    menu_about: "About",
-    menu_rules: "Posting rules",
-    menu_faq: "FAQ",
-    menu_contacts: "Contacts",
+    menu_budget: "Budget calculator", menu_about: "About",
+    menu_rules: "Posting rules", menu_faq: "FAQ", menu_contacts: "Contacts",
     budget_title: "Budget calculator",
     budget_desc: "Enter your monthly income — we'll show what you can afford.",
     budget_income: "Monthly income (sum)",
     budget_strict: "Not more than 30% of income",
-    budget_apply: "Show",
-    budget_empty: "Enter income",
-    budget_found: "Listings found: ",
-    budget_none: "Nothing found for your budget",
-    footer_about: "About",
-    footer_rules: "Posting rules",
-    footer_privacy: "Privacy",
-    footer_help_title: "Help",
-    footer_faq: "FAQ",
-    footer_safety: "Safety",
-    footer_report: "Report a problem",
-    footer_contacts_title: "Contacts",
-    footer_telegram: "Telegram",
-    footer_instagram: "Instagram",
-    footer_email: "Email",
+    budget_apply: "Show", budget_empty: "Enter income",
+    footer_about: "About", footer_rules: "Posting rules", footer_privacy: "Privacy",
+    footer_help_title: "Help", footer_faq: "FAQ", footer_safety: "Safety", footer_report: "Report a problem",
+    footer_contacts_title: "Contacts", footer_telegram: "Telegram", footer_instagram: "Instagram", footer_email: "Email",
     footer_bottom: "© 2026 XolisArenda · Made in Uzbekistan"
   }
 };
@@ -260,8 +219,11 @@ let lang = 'ru';
 let translatedCards = {};
 let currentFilters = { min: 0, max: 0, rooms: '', text: '', maxBudget: 0 };
 let currentView = 'all';
+let currentDisplay = 'list'; // 'list' | 'map'
 let editingId = null;
 let formPhotos = [];
+let leafletMap = null;
+let mapMarkers = [];
 
 // ============ БАЗА ============
 function getUserId() { return tg?.initDataUnsafe?.user?.id || null; }
@@ -299,13 +261,32 @@ function applyTranslations() {
   refreshView();
 }
 
-// ============ МЕНЮ ============
-function toggleMenu() {
-  document.getElementById('menuDropdown').classList.toggle('hidden');
+// ============ ГЕОКОДИНГ ============
+async function geocodeAddress(address) {
+  if (!address) return null;
+  try {
+    const q = encodeURIComponent(address + ', Узбекистан');
+    const url = `https://nominatim.openstreetmap.org/search?q=${q}&format=json&limit=1&accept-language=ru`;
+    const res = await fetch(url, {
+      headers: { 'User-Agent': 'XolisArenda/1.0' }
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    if (!data || !data.length) return null;
+    return {
+      lat: parseFloat(data[0].lat),
+      lng: parseFloat(data[0].lon)
+    };
+  } catch (err) {
+    console.error('Geocode error:', err);
+    return null;
+  }
 }
+
+// ============ МЕНЮ ============
 document.getElementById('menuBtn').addEventListener('click', (e) => {
   e.stopPropagation();
-  toggleMenu();
+  document.getElementById('menuDropdown').classList.toggle('hidden');
 });
 document.addEventListener('click', (e) => {
   const menu = document.getElementById('menuDropdown');
@@ -314,33 +295,33 @@ document.addEventListener('click', (e) => {
   }
 });
 
-// ============ ИНФО-МОДАЛКА ============
+// ============ ИНФО ============
 const INFO_CONTENT = {
   ru: {
     about: `<h3>О проекте XolisArenda</h3><p>XolisArenda — это бесплатная платформа для поиска аренды жилья в Узбекистане. Мы помогаем студентам и приезжим найти жильё без маклеров и лишних комиссий.</p><p>Наша цель — сделать рынок аренды прозрачнее, безопаснее и удобнее для всех.</p>`,
-    rules: `<h3>Правила публикации</h3><ul><li>Публиковать можно только реальные объявления о сдаче жилья.</li><li>Заголовок должен быть не короче 10 символов.</li><li>Описание — минимум 30 символов, без спама.</li><li>Цена — не ниже 30 000 сум.</li><li>Один пользователь может иметь не более 2 активных объявлений.</li><li>Фейковые и мошеннические объявления удаляются без предупреждения.</li></ul>`,
-    faq: `<h3>Часто задаваемые вопросы</h3><p><b>Сколько стоит публикация?</b><br>Сейчас — бесплатно.</p><p><b>Кто проверяет объявления?</b><br>Пользователи могут нажать «Это риелтор» или «Не актуально». После 10 жалоб объявление скрывается автоматически.</p><p><b>Как связаться с арендодателем?</b><br>Нажмите «Написать в Telegram» в карточке объявления.</p>`,
-    privacy: `<h3>Конфиденциальность</h3><p>Мы не собираем личные данные. Используем только ваш Telegram ID для привязки объявлений. Никакие данные не передаются третьим лицам.</p>`,
-    safety: `<h3>Безопасность</h3><ul><li>Никогда не отправляйте предоплату до просмотра квартиры.</li><li>Встречайтесь с арендодателем лично.</li><li>Подписывайте договор аренды в письменной форме.</li><li>При подозрении на мошенничество — нажмите «Это риелтор».</li></ul>`,
-    report: `<h3>Пожаловаться на проблему</h3><p>Если вы столкнулись с мошенничеством или нашли фейковое объявление:</p><ul><li>Нажмите «Это риелтор» или «Не актуально» в карточке.</li><li>Напишите нам в Telegram: <b>@xolisarenda_support</b>.</li></ul>`,
+    rules: `<h3>Правила публикации</h3><ul><li>Публиковать можно только реальные объявления о сдаче жилья.</li><li>Заголовок — минимум 10 символов.</li><li>Описание — минимум 30 символов.</li><li>Цена — не ниже 30 000 сум.</li><li>Максимум 2 активных объявления.</li><li>Фейковые объявления удаляются.</li></ul>`,
+    faq: `<h3>FAQ</h3><p><b>Сколько стоит публикация?</b><br>Сейчас — бесплатно.</p><p><b>Кто проверяет объявления?</b><br>Пользователи могут жаловаться. После 10 жалоб — автоскрытие.</p>`,
+    privacy: `<h3>Конфиденциальность</h3><p>Мы используем только ваш Telegram ID. Никакие данные не передаются третьим лицам.</p>`,
+    safety: `<h3>Безопасность</h3><ul><li>Никогда не отправляйте предоплату до просмотра.</li><li>Встречайтесь лично.</li><li>Подписывайте договор аренды.</li></ul>`,
+    report: `<h3>Пожаловаться</h3><p>Нажмите «Это риелтор» в карточке или напишите: <b>@xolisarenda_support</b>.</p>`,
     contacts: `<h3>Контакты</h3><p><b>Telegram:</b> @xolisarenda_support</p><p><b>Email:</b> info@xolisarenda.uz</p><p><b>Instagram:</b> @xolisarenda</p>`
   },
   uz: {
-    about: `<h3>XolisArenda loyihasi haqida</h3><p>XolisArenda — O'zbekistonda ijara uylarni topish uchun bepul platforma. Talabalar va mehmonlarga maklersiz uy topishga yordam beradi.</p>`,
-    rules: `<h3>E'lon qoidalari</h3><ul><li>Faqat real e'lonlar joylashtiriladi.</li><li>Sarlavha kamida 10 belgi.</li><li>Tavsif kamida 30 belgi.</li><li>Narx kamida 30 000 so'm.</li><li>Bir foydalanuvchi 2 tadan ko'p e'lon qo'sha olmaydi.</li></ul>`,
-    faq: `<h3>Ko'p beriladigan savollar</h3><p><b>Joylashtirish qancha turadi?</b><br>Hozircha bepul.</p><p><b>E'lonlarni kim tekshiradi?</b><br>Foydalanuvchilar shikoyat qilishi mumkin. 10 shikoyatdan keyin e'lon avtomatik yashiriladi.</p>`,
-    privacy: `<h3>Maxfiylik</h3><p>Shaxsiy ma'lumotlarni yig'maymiz. Faqat Telegram ID ishlatiladi.</p>`,
-    safety: `<h3>Xavfsizlik</h3><ul><li>Ko'rishdan oldin oldindan to'lov qilmang.</li><li>Uy egasi bilan shaxsan uchrashing.</li><li>Ijara shartnomasini yozma ravishda imzolang.</li></ul>`,
-    report: `<h3>Shikoyat qilish</h3><p>Muammoga duch kelsangiz — Telegram orqali yozing: <b>@xolisarenda_support</b>.</p>`,
+    about: `<h3>XolisArenda loyihasi haqida</h3><p>XolisArenda — O'zbekistonda ijara uylarni topish uchun bepul platforma.</p>`,
+    rules: `<h3>E'lon qoidalari</h3><ul><li>Faqat real e'lonlar.</li><li>Sarlavha kamida 10 belgi.</li><li>Tavsif kamida 30 belgi.</li><li>Narx kamida 30 000 so'm.</li><li>Maksimum 2 e'lon.</li></ul>`,
+    faq: `<h3>FAQ</h3><p><b>Qancha turadi?</b><br>Hozircha bepul.</p>`,
+    privacy: `<h3>Maxfiylik</h3><p>Faqat Telegram ID ishlatiladi.</p>`,
+    safety: `<h3>Xavfsizlik</h3><ul><li>Oldindan to'lov qilmang.</li><li>Shaxsan uchrashing.</li><li>Shartnoma imzolang.</li></ul>`,
+    report: `<h3>Shikoyat</h3><p>Yozing: <b>@xolisarenda_support</b>.</p>`,
     contacts: `<h3>Aloqa</h3><p><b>Telegram:</b> @xolisarenda_support</p><p><b>Email:</b> info@xolisarenda.uz</p>`
   },
   en: {
-    about: `<h3>About XolisArenda</h3><p>XolisArenda is a free platform for finding rental housing in Uzbekistan. We help students and visitors find housing without brokers.</p>`,
-    rules: `<h3>Posting rules</h3><ul><li>Only real rental listings.</li><li>Title minimum 10 characters.</li><li>Description minimum 30 characters.</li><li>Price minimum 30,000 sum.</li><li>Maximum 2 active listings per user.</li></ul>`,
-    faq: `<h3>FAQ</h3><p><b>How much does posting cost?</b><br>Free for now.</p><p><b>Who checks listings?</b><br>Users can report. After 10 reports, listing is auto-hidden.</p>`,
-    privacy: `<h3>Privacy</h3><p>We don't collect personal data. Only Telegram ID is used.</p>`,
-    safety: `<h3>Safety</h3><ul><li>Never pay in advance.</li><li>Meet the landlord in person.</li><li>Sign a written lease.</li></ul>`,
-    report: `<h3>Report a problem</h3><p>Contact us on Telegram: <b>@xolisarenda_support</b>.</p>`,
+    about: `<h3>About XolisArenda</h3><p>XolisArenda is a free platform for finding rental housing in Uzbekistan.</p>`,
+    rules: `<h3>Posting rules</h3><ul><li>Only real listings.</li><li>Title min 10 chars.</li><li>Description min 30 chars.</li><li>Price min 30,000 sum.</li><li>Max 2 listings.</li></ul>`,
+    faq: `<h3>FAQ</h3><p><b>Cost?</b><br>Free for now.</p>`,
+    privacy: `<h3>Privacy</h3><p>Only Telegram ID is used.</p>`,
+    safety: `<h3>Safety</h3><ul><li>Never pay in advance.</li><li>Meet in person.</li><li>Sign a lease.</li></ul>`,
+    report: `<h3>Report</h3><p>Contact: <b>@xolisarenda_support</b>.</p>`,
     contacts: `<h3>Contacts</h3><p><b>Telegram:</b> @xolisarenda_support</p><p><b>Email:</b> info@xolisarenda.uz</p>`
   }
 };
@@ -362,7 +343,7 @@ document.getElementById('infoClose').onclick = () => {
   document.getElementById('infoModal').classList.add('hidden');
 };
 
-// ============ КАЛЬКУЛЯТОР БЮДЖЕТА ============
+// ============ БЮДЖЕТ ============
 function openBudgetCalc() {
   document.getElementById('menuDropdown').classList.add('hidden');
   document.getElementById('budgetModal').classList.remove('hidden');
@@ -377,16 +358,9 @@ document.getElementById('budgetCancel').onclick = () => {
 document.getElementById('budgetApply').onclick = () => {
   const income = parseNumber(document.getElementById('budgetIncome').value);
   const status = document.getElementById('budgetStatus');
-
-  if (income < 30000) {
-    status.textContent = t.budget_empty;
-    status.style.color = '#d32f2f';
-    return;
-  }
-
+  if (income < 30000) { status.textContent = t.budget_empty; status.style.color = '#d32f2f'; return; }
   const strict = document.getElementById('budgetStrict').checked;
   const maxBudget = strict ? Math.round(income * 0.3) : income;
-
   document.getElementById('budgetModal').classList.add('hidden');
   currentFilters = { min: 0, max: 0, rooms: '', text: '', maxBudget };
   document.getElementById('minPrice').value = '';
@@ -422,9 +396,11 @@ async function loadListings(filters) {
     const listings = await res.json();
     if (listings.length === 0 && (currentFilters.min || currentFilters.max || currentFilters.rooms || currentFilters.text || currentFilters.maxBudget)) {
       container.innerHTML = `<p class="empty">${t.not_found}</p>`;
+      if (currentDisplay === 'map') renderMap([]);
       return;
     }
     renderListings(listings, false);
+    if (currentDisplay === 'map') renderMap(listings);
   } catch (err) {
     console.error(err);
     container.innerHTML = `<p class="empty">${t.error_loading}</p>`;
@@ -434,20 +410,14 @@ async function loadListings(filters) {
 async function loadMyListings() {
   const container = document.getElementById('listings');
   const userId = getUserId();
-  if (!userId) {
-    container.innerHTML = `<p class="empty">${t.only_telegram}</p>`;
-    return;
-  }
+  if (!userId) { container.innerHTML = `<p class="empty">${t.only_telegram}</p>`; return; }
   container.innerHTML = `<p class="empty">${t.loading}</p>`;
   try {
     const url = `${SUPABASE_URL}/rest/v1/listings?user_id=eq.${userId}&order=created_at.desc`;
     const res = await fetch(url, { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } });
     if (!res.ok) throw new Error();
     const listings = await res.json();
-    if (!listings.length) {
-      container.innerHTML = `<p class="empty">${t.no_my_listings}</p>`;
-      return;
-    }
+    if (!listings.length) { container.innerHTML = `<p class="empty">${t.no_my_listings}</p>`; return; }
     renderListings(listings, true);
   } catch (err) {
     console.error(err);
@@ -455,7 +425,7 @@ async function loadMyListings() {
   }
 }
 
-// ============ ОТРИСОВКА ============
+// ============ ОТРИСОВКА СПИСКА ============
 function renderListings(listings, isMine) {
   const container = document.getElementById('listings');
   if (!listings.length) {
@@ -524,6 +494,71 @@ function attachGalleryListeners() {
   });
 }
 
+// ============ КАРТА ============
+function renderMap(listings) {
+  const mapEl = document.getElementById('map');
+  if (!mapEl) return;
+
+  // Если карта ещё не создана — создаём
+  if (!leafletMap) {
+    leafletMap = L.map('map', { zoomControl: true }).setView([41.311, 69.279], 12);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '© OpenStreetMap'
+    }).addTo(leafletMap);
+  }
+
+  // Удаляем старые маркеры
+  mapMarkers.forEach(m => leafletMap.removeLayer(m));
+  mapMarkers = [];
+
+  // Создаём новые
+  const validPoints = [];
+  listings.forEach(item => {
+    if (!item.lat || !item.lng) return;
+    validPoints.push([item.lat, item.lng]);
+
+    const priceLabel = `${Number(item.price).toLocaleString('ru-RU').replace(/,/g, ' ')} ${t.sum}`;
+    const icon = L.divIcon({
+      className: '',
+      html: `<div class="price-marker">${priceLabel}</div>`,
+      iconSize: [100, 30],
+      iconAnchor: [50, 15]
+    });
+
+    const marker = L.marker([item.lat, item.lng], { icon })
+      .addTo(leafletMap)
+      .on('click', () => openDetail(item.id));
+
+    mapMarkers.push(marker);
+  });
+
+  // Центрируем по маркерам
+  if (validPoints.length > 0) {
+    leafletMap.fitBounds(validPoints, { padding: [40, 40], maxZoom: 15 });
+  }
+
+  // Пересчёт размеров после показа
+  setTimeout(() => leafletMap.invalidateSize(), 200);
+}
+
+// ============ ПЕРЕКЛЮЧАТЕЛЬ ВИДА ============
+document.getElementById('viewList').onclick = () => {
+  currentDisplay = 'list';
+  document.getElementById('viewList').classList.add('active');
+  document.getElementById('viewMap').classList.remove('active');
+  document.getElementById('listings').classList.remove('hidden');
+  document.getElementById('mapContainer').classList.add('hidden');
+};
+document.getElementById('viewMap').onclick = () => {
+  currentDisplay = 'map';
+  document.getElementById('viewMap').classList.add('active');
+  document.getElementById('viewList').classList.remove('active');
+  document.getElementById('listings').classList.add('hidden');
+  document.getElementById('mapContainer').classList.remove('hidden');
+  refreshView();
+};
+
 // ============ ПОЛНЫЙ ПРОСМОТР ============
 async function openDetail(id) {
   try {
@@ -583,9 +618,7 @@ async function openDetail(id) {
     document.body.style.overflow = 'hidden';
     document.getElementById('detailModal').scrollTop = 0;
     attachGalleryListeners();
-  } catch (err) {
-    console.error(err);
-  }
+  } catch (err) { console.error(err); }
 }
 window.openDetail = openDetail;
 
@@ -696,7 +729,6 @@ function updateHint(elId, hintId, value, min, max) {
 
 function updateAllHints() {
   const get = id => { const el = document.getElementById(id); return el ? el.value : ''; };
-
   updateHint('f_title', 'h_title', get('f_title'), MINS.title);
   updateHint('f_address', 'h_address', get('f_address'), MINS.address);
   updateHint('f_description', 'h_description', get('f_description'), MINS.description);
@@ -854,13 +886,14 @@ async function saveListing() {
   const userId = getUserId();
   if (!userId) { status.textContent = t.only_telegram; status.style.color = 'red'; return; }
 
+  const address = document.getElementById('f_address').value.trim();
   const data = {
     user_id: userId,
     title: document.getElementById('f_title').value.trim(),
     price: parseNumber(document.getElementById('f_price').value),
     rooms: parseInt(document.getElementById('f_rooms').value) || 0,
     area: parseInt(document.getElementById('f_area').value) || 0,
-    address: document.getElementById('f_address').value.trim(),
+    address,
     description: document.getElementById('f_description').value.trim(),
     telegram: document.getElementById('f_telegram').value.trim(),
     student_friendly: document.getElementById('f_student').checked,
@@ -869,6 +902,13 @@ async function saveListing() {
 
   const errors = validateForm(data);
   if (errors.length > 0) { status.innerHTML = errors.join('<br>'); status.style.color = 'red'; return; }
+
+  // Геокодинг адреса (если ещё нет координат)
+  if (!editingId) {
+    status.textContent = t.geocoding;
+    const coords = await geocodeAddress(address);
+    if (coords) { data.lat = coords.lat; data.lng = coords.lng; }
+  }
 
   try {
     let res;
@@ -965,6 +1005,7 @@ document.getElementById('tabAll').onclick = () => {
   document.getElementById('tabAll').classList.add('active');
   document.getElementById('tabMine').classList.remove('active');
   document.getElementById('filtersBlock').style.display = 'grid';
+  document.getElementById('viewToggle').classList.remove('hidden');
   loadListings();
 };
 document.getElementById('tabMine').onclick = () => {
@@ -972,6 +1013,10 @@ document.getElementById('tabMine').onclick = () => {
   document.getElementById('tabMine').classList.add('active');
   document.getElementById('tabAll').classList.remove('active');
   document.getElementById('filtersBlock').style.display = 'none';
+  document.getElementById('viewToggle').classList.add('hidden');
+  document.getElementById('mapContainer').classList.add('hidden');
+  document.getElementById('listings').classList.remove('hidden');
+  currentDisplay = 'list';
   loadMyListings();
 };
 
