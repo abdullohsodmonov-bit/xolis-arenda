@@ -65,11 +65,11 @@
 
       <div class="search-box">
         <div class="search-row">
-          <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="11" cy="11" r="7"/>
-            <path d="M20 20l-3.5-3.5"/>
+          <svg class="ai-sparkle" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3l1.8 5.4L19.2 10l-5.4 1.8L12 17.2l-1.8-5.4L4.8 10l5.4-1.6L12 3z"/>
+            <path d="M19 2l.4 1.3L20.7 3.7l-1.3.4L19 5.4l-.4-1.3L17.3 3.7l1.3-.4L19 2z"/>
           </svg>
-          <input type="text" id="searchText" data-i18n-ph="search_ph" placeholder="Район, адрес или ключевое слово">
+          <input type="text" id="searchText" placeholder="Что вы ищете? Просто напишите...">
           <button id="filterBtn" class="search-submit" aria-label="Найти">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="11" cy="11" r="7"/>
@@ -110,6 +110,16 @@
 
   <div id="mapContainer" class="map-container hidden">
     <div id="map"></div>
+    <div id="mapCard" class="map-card hidden">
+      <button class="map-card-close" onclick="closeMapCard()">×</button>
+      <div class="map-card-photo" id="mapCardPhoto"></div>
+      <div class="map-card-info">
+        <h4 id="mapCardTitle"></h4>
+        <p class="map-card-price" id="mapCardPrice"></p>
+        <p class="map-card-details" id="mapCardDetails"></p>
+        <button class="map-card-open" id="mapCardOpen">Подробнее →</button>
+      </div>
+    </div>
   </div>
 
   <footer class="site-footer">
