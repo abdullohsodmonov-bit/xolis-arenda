@@ -444,3 +444,101 @@ button:active { transform: scale(0.98); }
   #listings { grid-template-columns: repeat(4, 1fr); }
   .hero-title { font-size: 56px; }
 }
+/* ===== AI-звёздочка в поиске ===== */
+.ai-sparkle {
+  flex-shrink: 0;
+  color: #222;
+  animation: sparkleSpin 3s ease-in-out infinite;
+}
+@keyframes sparkleSpin {
+  0%, 100% { opacity: 1; transform: rotate(0deg); }
+  50% { opacity: 0.7; transform: rotate(15deg); }
+}
+
+/* ===== Карточка на карте ===== */
+.map-card {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  right: 16px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+  z-index: 500;
+  overflow: hidden;
+  animation: slideUp 0.25s ease;
+}
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.map-card-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.55);
+  color: #ffffff;
+  border: none;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.map-card-photo {
+  width: 100%;
+  height: 140px;
+  background-size: cover;
+  background-position: center;
+  background-color: #eeeeee;
+}
+.map-card-info {
+  padding: 12px 14px 14px 14px;
+}
+.map-card-info h4 {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: #222222;
+  line-height: 1.3;
+}
+.map-card-price {
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  color: #ff385c !important;
+  margin-bottom: 4px !important;
+}
+.map-card-details {
+  font-size: 12px !important;
+  color: #717171 !important;
+  margin-bottom: 10px !important;
+}
+.map-card-open {
+  width: 100%;
+  padding: 10px;
+  background: #ff385c;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* На десктопе карточка — снизу слева, компактнее */
+@media (min-width: 768px) {
+  .map-card {
+    left: 16px;
+    right: auto;
+    width: 300px;
+    bottom: 16px;
+  }
+  .map-card-photo { height: 160px; }
+}
