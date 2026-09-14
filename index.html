@@ -7,6 +7,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <link rel="stylesheet" href="style.css">
 </head>
@@ -33,7 +35,6 @@
     </div>
   </header>
 
-  <!-- Выпадающее меню -->
   <div id="menuDropdown" class="menu-dropdown hidden">
     <button class="menu-item" onclick="openBudgetCalc()">
       <span class="menu-icon">🧮</span>
@@ -98,11 +99,19 @@
     <button class="tab-btn" id="tabMine" data-i18n="tab_mine">👤 Мои</button>
   </div>
 
+  <div class="view-toggle" id="viewToggle">
+    <button class="view-btn active" id="viewList" data-i18n="view_list">📋 Список</button>
+    <button class="view-btn" id="viewMap" data-i18n="view_map">🗺️ Карта</button>
+  </div>
+
   <button id="addBtn" class="add-btn" data-i18n="add_listing">➕ Добавить объявление</button>
 
   <div id="listings">Загрузка...</div>
 
-  <!-- Подвал -->
+  <div id="mapContainer" class="map-container hidden">
+    <div id="map"></div>
+  </div>
+
   <footer class="site-footer">
     <div class="footer-grid">
       <div class="footer-col">
@@ -127,20 +136,16 @@
     <div class="footer-bottom" data-i18n="footer_bottom">© 2026 XolisArenda · Сделано в Узбекистане</div>
   </footer>
 
-  <!-- Калькулятор бюджета -->
   <div id="budgetModal" class="modal hidden">
     <div class="modal-content budget-content">
       <h2 data-i18n="budget_title">Калькулятор бюджета</h2>
       <p class="budget-desc" data-i18n="budget_desc">Введите ваш месячный доход — мы покажем жильё, которое вам по карману.</p>
-
       <label data-i18n="budget_income">Ваш доход в месяц (сум)</label>
       <input type="text" inputmode="numeric" id="budgetIncome" placeholder="2 000 000">
-
       <label class="checkbox-label">
         <input type="checkbox" id="budgetStrict" checked>
         <span data-i18n="budget_strict">Не больше 30% от дохода (рекомендуется)</span>
       </label>
-
       <div class="modal-buttons">
         <button id="budgetApply" data-i18n="budget_apply">Показать</button>
         <button class="cancel" id="budgetCancel" data-i18n="cancel">Отмена</button>
@@ -149,7 +154,6 @@
     </div>
   </div>
 
-  <!-- Универсальное инфо-окно -->
   <div id="infoModal" class="modal hidden">
     <div class="modal-content">
       <h2 id="infoTitle">Информация</h2>
