@@ -19,12 +19,43 @@
       </svg>
       <span class="brand-name">Xolis<span class="brand-accent">Arenda</span></span>
     </div>
-    <select id="langSelect" class="lang-select">
-      <option value="ru">RU</option>
-      <option value="uz">UZ</option>
-      <option value="en">EN</option>
-    </select>
+    <div class="top-actions">
+      <select id="langSelect" class="lang-select">
+        <option value="ru">RU</option>
+        <option value="uz">UZ</option>
+        <option value="en">EN</option>
+      </select>
+      <button class="menu-btn" id="menuBtn" aria-label="Меню">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2.4" stroke-linecap="round">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+    </div>
   </header>
+
+  <!-- Выпадающее меню -->
+  <div id="menuDropdown" class="menu-dropdown hidden">
+    <button class="menu-item" onclick="openBudgetCalc()">
+      <span class="menu-icon">🧮</span>
+      <span data-i18n="menu_budget">Калькулятор бюджета</span>
+    </button>
+    <button class="menu-item" onclick="openInfo('about')">
+      <span class="menu-icon">ℹ️</span>
+      <span data-i18n="menu_about">О проекте</span>
+    </button>
+    <button class="menu-item" onclick="openInfo('rules')">
+      <span class="menu-icon">📋</span>
+      <span data-i18n="menu_rules">Правила публикации</span>
+    </button>
+    <button class="menu-item" onclick="openInfo('faq')">
+      <span class="menu-icon">❓</span>
+      <span data-i18n="menu_faq">FAQ</span>
+    </button>
+    <button class="menu-item" onclick="openInfo('contacts')">
+      <span class="menu-icon">✉️</span>
+      <span data-i18n="menu_contacts">Контакты</span>
+    </button>
+  </div>
 
   <div class="hero">
     <div class="hero-inner">
@@ -70,6 +101,64 @@
   <button id="addBtn" class="add-btn" data-i18n="add_listing">➕ Добавить объявление</button>
 
   <div id="listings">Загрузка...</div>
+
+  <!-- Подвал -->
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4 class="footer-title">Xolis<span class="footer-accent">Arenda</span></h4>
+        <a href="#" onclick="openInfo('about'); return false;" data-i18n="footer_about">О проекте</a>
+        <a href="#" onclick="openInfo('rules'); return false;" data-i18n="footer_rules">Правила публикации</a>
+        <a href="#" onclick="openInfo('privacy'); return false;" data-i18n="footer_privacy">Конфиденциальность</a>
+      </div>
+      <div class="footer-col">
+        <h4 class="footer-title" data-i18n="footer_help_title">Помощь</h4>
+        <a href="#" onclick="openInfo('faq'); return false;" data-i18n="footer_faq">FAQ</a>
+        <a href="#" onclick="openInfo('safety'); return false;" data-i18n="footer_safety">Безопасность</a>
+        <a href="#" onclick="openInfo('report'); return false;" data-i18n="footer_report">Пожаловаться</a>
+      </div>
+      <div class="footer-col">
+        <h4 class="footer-title" data-i18n="footer_contacts_title">Связь</h4>
+        <a href="https://t.me/" target="_blank" data-i18n="footer_telegram">Telegram</a>
+        <a href="https://instagram.com/" target="_blank" data-i18n="footer_instagram">Instagram</a>
+        <a href="mailto:info@xolisarenda.uz" data-i18n="footer_email">Email</a>
+      </div>
+    </div>
+    <div class="footer-bottom" data-i18n="footer_bottom">© 2026 XolisArenda · Сделано в Узбекистане</div>
+  </footer>
+
+  <!-- Калькулятор бюджета -->
+  <div id="budgetModal" class="modal hidden">
+    <div class="modal-content budget-content">
+      <h2 data-i18n="budget_title">Калькулятор бюджета</h2>
+      <p class="budget-desc" data-i18n="budget_desc">Введите ваш месячный доход — мы покажем жильё, которое вам по карману.</p>
+
+      <label data-i18n="budget_income">Ваш доход в месяц (сум)</label>
+      <input type="text" inputmode="numeric" id="budgetIncome" placeholder="2 000 000">
+
+      <label class="checkbox-label">
+        <input type="checkbox" id="budgetStrict" checked>
+        <span data-i18n="budget_strict">Не больше 30% от дохода (рекомендуется)</span>
+      </label>
+
+      <div class="modal-buttons">
+        <button id="budgetApply" data-i18n="budget_apply">Показать</button>
+        <button class="cancel" id="budgetCancel" data-i18n="cancel">Отмена</button>
+      </div>
+      <p id="budgetStatus"></p>
+    </div>
+  </div>
+
+  <!-- Универсальное инфо-окно -->
+  <div id="infoModal" class="modal hidden">
+    <div class="modal-content">
+      <h2 id="infoTitle">Информация</h2>
+      <div id="infoBody"></div>
+      <div class="modal-buttons">
+        <button id="infoClose" data-i18n="close">Закрыть</button>
+      </div>
+    </div>
+  </div>
 
   <div id="detailModal" class="detail-modal hidden">
     <div class="detail-header">
