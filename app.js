@@ -50,7 +50,7 @@ const TRANSLATIONS = {
     f_description: "Описание", f_description_ph: "Светлая квартира, есть всё для жизни",
     f_telegram: "Telegram арендодателя", f_telegram_ph: "@username",
     f_student: "Можно студентам",
-    save: "Сохранить", cancel: "Отмена",
+    save: "Сохранить", cancel: "Отмена", close: "Закрыть",
     saving: "Сохраняем...", saved: "Сохранено! ✅", updated: "Обновлено! ✅",
     error_saving: "Ошибка сохранения",
     write_telegram: "Написать в Telegram",
@@ -76,7 +76,35 @@ const TRANSLATIONS = {
     edit: "✏️ Изменить", delete: "🗑️ Удалить",
     confirm_delete: "Удалить объявление?",
     deleted: "Удалено", error_delete: "Ошибка удаления",
-    error_upload: "Ошибка загрузки фото"
+    error_upload: "Ошибка загрузки фото",
+    // Меню
+    menu_budget: "Калькулятор бюджета",
+    menu_about: "О проекте",
+    menu_rules: "Правила публикации",
+    menu_faq: "FAQ",
+    menu_contacts: "Контакты",
+    // Бюджет
+    budget_title: "Калькулятор бюджета",
+    budget_desc: "Введите ваш месячный доход — мы покажем жильё, которое вам по карману.",
+    budget_income: "Ваш доход в месяц (сум)",
+    budget_strict: "Не больше 30% от дохода (рекомендуется)",
+    budget_apply: "Показать",
+    budget_empty: "Введите доход",
+    budget_found: "Найдено объявлений: ",
+    budget_none: "По вашему бюджету пока ничего нет",
+    // Подвал
+    footer_about: "О проекте",
+    footer_rules: "Правила публикации",
+    footer_privacy: "Конфиденциальность",
+    footer_help_title: "Помощь",
+    footer_faq: "FAQ",
+    footer_safety: "Безопасность",
+    footer_report: "Пожаловаться",
+    footer_contacts_title: "Связь",
+    footer_telegram: "Telegram",
+    footer_instagram: "Instagram",
+    footer_email: "Email",
+    footer_bottom: "© 2026 XolisArenda · Сделано в Узбекистане"
   },
   uz: {
     subtitle: "Toshkentda uy qidirish",
@@ -100,7 +128,7 @@ const TRANSLATIONS = {
     f_description: "Tavsif", f_description_ph: "Yorug' kvartira",
     f_telegram: "Ijara beruvchining Telegram", f_telegram_ph: "@username",
     f_student: "Talabalarga mumkin",
-    save: "Saqlash", cancel: "Bekor qilish",
+    save: "Saqlash", cancel: "Bekor qilish", close: "Yopish",
     saving: "Saqlanmoqda...", saved: "Saqlandi! ✅", updated: "Yangilandi! ✅",
     error_saving: "Saqlashda xatolik",
     write_telegram: "Telegramga yozish",
@@ -126,7 +154,32 @@ const TRANSLATIONS = {
     edit: "✏️ Tahrirlash", delete: "🗑️ O'chirish",
     confirm_delete: "E'lonni o'chirishni xohlaysizmi?",
     deleted: "O'chirildi", error_delete: "O'chirishda xatolik",
-    error_upload: "Rasm yuklashda xatolik"
+    error_upload: "Rasm yuklashda xatolik",
+    menu_budget: "Budjet kalkulyatori",
+    menu_about: "Loyiha haqida",
+    menu_rules: "E'lon qoidalari",
+    menu_faq: "FAQ",
+    menu_contacts: "Aloqa",
+    budget_title: "Budjet kalkulyatori",
+    budget_desc: "Oylik daromadingizni kiriting — biz sizga mos uylarni ko'rsatamiz.",
+    budget_income: "Oylik daromad (so'm)",
+    budget_strict: "Daromadning 30% dan ko'p emas",
+    budget_apply: "Ko'rsatish",
+    budget_empty: "Daromadni kiriting",
+    budget_found: "Topilgan e'lonlar: ",
+    budget_none: "Budjetingizga mos hech narsa topilmadi",
+    footer_about: "Loyiha haqida",
+    footer_rules: "E'lon qoidalari",
+    footer_privacy: "Maxfiylik",
+    footer_help_title: "Yordam",
+    footer_faq: "FAQ",
+    footer_safety: "Xavfsizlik",
+    footer_report: "Shikoyat qilish",
+    footer_contacts_title: "Aloqa",
+    footer_telegram: "Telegram",
+    footer_instagram: "Instagram",
+    footer_email: "Email",
+    footer_bottom: "© 2026 XolisArenda · O'zbekistonda yaratilgan"
   },
   en: {
     subtitle: "Apartment search in Tashkent",
@@ -150,7 +203,7 @@ const TRANSLATIONS = {
     f_description: "Description", f_description_ph: "Bright apartment",
     f_telegram: "Landlord's Telegram", f_telegram_ph: "@username",
     f_student: "Students allowed",
-    save: "Save", cancel: "Cancel",
+    save: "Save", cancel: "Cancel", close: "Close",
     saving: "Saving...", saved: "Saved! ✅", updated: "Updated! ✅",
     error_saving: "Save error",
     write_telegram: "Message on Telegram",
@@ -176,14 +229,39 @@ const TRANSLATIONS = {
     edit: "✏️ Edit", delete: "🗑️ Delete",
     confirm_delete: "Delete listing?",
     deleted: "Deleted", error_delete: "Delete error",
-    error_upload: "Photo upload error"
+    error_upload: "Photo upload error",
+    menu_budget: "Budget calculator",
+    menu_about: "About",
+    menu_rules: "Posting rules",
+    menu_faq: "FAQ",
+    menu_contacts: "Contacts",
+    budget_title: "Budget calculator",
+    budget_desc: "Enter your monthly income — we'll show what you can afford.",
+    budget_income: "Monthly income (sum)",
+    budget_strict: "Not more than 30% of income",
+    budget_apply: "Show",
+    budget_empty: "Enter income",
+    budget_found: "Listings found: ",
+    budget_none: "Nothing found for your budget",
+    footer_about: "About",
+    footer_rules: "Posting rules",
+    footer_privacy: "Privacy",
+    footer_help_title: "Help",
+    footer_faq: "FAQ",
+    footer_safety: "Safety",
+    footer_report: "Report a problem",
+    footer_contacts_title: "Contacts",
+    footer_telegram: "Telegram",
+    footer_instagram: "Instagram",
+    footer_email: "Email",
+    footer_bottom: "© 2026 XolisArenda · Made in Uzbekistan"
   }
 };
 
 let t = TRANSLATIONS.ru;
 let lang = 'ru';
 let translatedCards = {};
-let currentFilters = { min: 0, max: 0, rooms: '', text: '' };
+let currentFilters = { min: 0, max: 0, rooms: '', text: '', maxBudget: 0 };
 let currentView = 'all';
 let editingId = null;
 let formPhotos = [];
@@ -224,6 +302,104 @@ function applyTranslations() {
   refreshView();
 }
 
+// ============ МЕНЮ ============
+function toggleMenu() {
+  document.getElementById('menuDropdown').classList.toggle('hidden');
+}
+document.getElementById('menuBtn').addEventListener('click', (e) => {
+  e.stopPropagation();
+  toggleMenu();
+});
+document.addEventListener('click', (e) => {
+  const menu = document.getElementById('menuDropdown');
+  if (menu && !menu.classList.contains('hidden') && !menu.contains(e.target)) {
+    menu.classList.add('hidden');
+  }
+});
+
+// ============ ИНФО-МОДАЛКА ============
+const INFO_CONTENT = {
+  ru: {
+    about: `<h3>О проекте XolisArenda</h3><p>XolisArenda — это бесплатная платформа для поиска аренды жилья в Узбекистане. Мы помогаем студентам и приезжим найти жильё без маклеров и лишних комиссий.</p><p>Наша цель — сделать рынок аренды прозрачнее, безопаснее и удобнее для всех.</p>`,
+    rules: `<h3>Правила публикации</h3><ul><li>Публиковать можно только реальные объявления о сдаче жилья.</li><li>Заголовок должен быть не короче 10 символов.</li><li>Описание — минимум 30 символов, без спама.</li><li>Цена — не ниже 30 000 сум.</li><li>Один пользователь может иметь не более 2 активных объявлений.</li><li>Фейковые и мошеннические объявления удаляются без предупреждения.</li></ul>`,
+    faq: `<h3>Часто задаваемые вопросы</h3><p><b>Сколько стоит публикация?</b><br>Сейчас — бесплатно.</p><p><b>Кто проверяет объявления?</b><br>Пользователи могут нажать «Это риелтор» или «Не актуально». После 10 жалоб объявление скрывается автоматически.</p><p><b>Как связаться с арендодателем?</b><br>Нажмите «Написать в Telegram» в карточке объявления.</p>`,
+    privacy: `<h3>Конфиденциальность</h3><p>Мы не собираем личные данные. Используем только ваш Telegram ID для привязки объявлений. Никакие данные не передаются третьим лицам.</p>`,
+    safety: `<h3>Безопасность</h3><ul><li>Никогда не отправляйте предоплату до просмотра квартиры.</li><li>Встречайтесь с арендодателем лично.</li><li>Подписывайте договор аренды в письменной форме.</li><li>При подозрении на мошенничество — нажмите «Это риелтор».</li></ul>`,
+    report: `<h3>Пожаловаться на проблему</h3><p>Если вы столкнулись с мошенничеством или нашли фейковое объявление:</p><ul><li>Нажмите «Это риелтор» или «Не актуально» в карточке.</li><li>Напишите нам в Telegram: <b>@ваш_username</b>.</li></ul>`,
+    contacts: `<h3>Контакты</h3><p><b>Telegram:</b> @ваш_username</p><p><b>Email:</b> info@xolisarenda.uz</p><p><b>Instagram:</b> @xolisarenda</p>`
+  },
+  uz: {
+    about: `<h3>XolisArenda loyihasi haqida</h3><p>XolisArenda — O'zbekistonda ijara uylarni topish uchun bepul platforma. Talabalar va mehmonlarga maklersiz uy topishga yordam beradi.</p>`,
+    rules: `<h3>E'lon qoidalari</h3><ul><li>Faqat real e'lonlar joylashtiriladi.</li><li>Sarlavha kamida 10 belgi.</li><li>Tavsif kamida 30 belgi.</li><li>Narx kamida 30 000 so'm.</li><li>Bir foydalanuvchi 2 tadan ko'p e'lon qo'sha olmaydi.</li></ul>`,
+    faq: `<h3>Ko'p beriladigan savollar</h3><p><b>Joylashtirish qancha turadi?</b><br>Hozircha bepul.</p><p><b>E'lonlarni kim tekshiradi?</b><br>Foydalanuvchilar shikoyat qilishi mumkin. 10 shikoyatdan keyin e'lon avtomatik yashiriladi.</p>`,
+    privacy: `<h3>Maxfiylik</h3><p>Shaxsiy ma'lumotlarni yig'maymiz. Faqat Telegram ID ishlatiladi.</p>`,
+    safety: `<h3>Xavfsizlik</h3><ul><li>Ko'rishdan oldin oldindan to'lov qilmang.</li><li>Uy egasi bilan shaxsan uchrashing.</li><li>Ijara shartnomasini yozma ravishda imzolang.</li></ul>`,
+    report: `<h3>Shikoyat qilish</h3><p>Muammoga duch kelsangiz — Telegram orqali yozing: <b>@ваш_username</b>.</p>`,
+    contacts: `<h3>Aloqa</h3><p><b>Telegram:</b> @ваш_username</p><p><b>Email:</b> info@xolisarenda.uz</p>`
+  },
+  en: {
+    about: `<h3>About XolisArenda</h3><p>XolisArenda is a free platform for finding rental housing in Uzbekistan. We help students and visitors find housing without brokers.</p>`,
+    rules: `<h3>Posting rules</h3><ul><li>Only real rental listings.</li><li>Title minimum 10 characters.</li><li>Description minimum 30 characters.</li><li>Price minimum 30,000 sum.</li><li>Maximum 2 active listings per user.</li></ul>`,
+    faq: `<h3>FAQ</h3><p><b>How much does posting cost?</b><br>Free for now.</p><p><b>Who checks listings?</b><br>Users can report. After 10 reports, listing is auto-hidden.</p>`,
+    privacy: `<h3>Privacy</h3><p>We don't collect personal data. Only Telegram ID is used.</p>`,
+    safety: `<h3>Safety</h3><ul><li>Never pay in advance.</li><li>Meet the landlord in person.</li><li>Sign a written lease.</li></ul>`,
+    report: `<h3>Report a problem</h3><p>Contact us on Telegram: <b>@ваш_username</b>.</p>`,
+    contacts: `<h3>Contacts</h3><p><b>Telegram:</b> @ваш_username</p><p><b>Email:</b> info@xolisarenda.uz</p>`
+  }
+};
+
+function openInfo(key) {
+  const titles = {
+    about: t.menu_about, rules: t.menu_rules, faq: t.menu_faq,
+    privacy: t.footer_privacy, safety: t.footer_safety, report: t.footer_report,
+    contacts: t.menu_contacts
+  };
+  document.getElementById('infoTitle').textContent = titles[key] || 'Info';
+  document.getElementById('infoBody').innerHTML = INFO_CONTENT[lang][key] || '';
+  document.getElementById('infoModal').classList.remove('hidden');
+  document.getElementById('menuDropdown').classList.add('hidden');
+}
+window.openInfo = openInfo;
+
+document.getElementById('infoClose').onclick = () => {
+  document.getElementById('infoModal').classList.add('hidden');
+};
+
+// ============ КАЛЬКУЛЯТОР БЮДЖЕТА ============
+function openBudgetCalc() {
+  document.getElementById('menuDropdown').classList.add('hidden');
+  document.getElementById('budgetModal').classList.remove('hidden');
+  document.getElementById('budgetStatus').textContent = '';
+}
+window.openBudgetCalc = openBudgetCalc;
+
+document.getElementById('budgetCancel').onclick = () => {
+  document.getElementById('budgetModal').classList.add('hidden');
+};
+
+document.getElementById('budgetApply').onclick = () => {
+  const income = parseNumber(document.getElementById('budgetIncome').value);
+  const status = document.getElementById('budgetStatus');
+
+  if (income < 30000) {
+    status.textContent = t.budget_empty;
+    status.style.color = '#d32f2f';
+    return;
+  }
+
+  const strict = document.getElementById('budgetStrict').checked;
+  const maxBudget = strict ? Math.round(income * 0.3) : income;
+
+  document.getElementById('budgetModal').classList.add('hidden');
+  currentFilters = { min: 0, max: 0, rooms: '', text: '', maxBudget };
+  document.getElementById('minPrice').value = '';
+  document.getElementById('maxPrice').value = formatNumber(maxBudget);
+  document.getElementById('rooms').value = '';
+  document.getElementById('searchText').value = '';
+  loadListings(currentFilters);
+};
+attachNumberFormatting('budgetIncome');
+
 // ============ ЗАГРУЗКА ============
 async function refreshView() {
   if (currentView === 'mine') return loadMyListings();
@@ -238,6 +414,7 @@ async function loadListings(filters) {
     let url = `${SUPABASE_URL}/rest/v1/listings?select=*&is_hidden=eq.false&not_actual_count=lt.10&order=created_at.desc`;
     if (currentFilters.min > 0) url += `&price=gte.${currentFilters.min}`;
     if (currentFilters.max > 0) url += `&price=lte.${currentFilters.max}`;
+    if (currentFilters.maxBudget > 0) url += `&price=lte.${currentFilters.maxBudget}`;
     if (currentFilters.rooms) url += `&rooms=eq.${currentFilters.rooms}`;
     if (currentFilters.text) {
       const q = encodeURIComponent(`*${currentFilters.text}*`);
@@ -246,7 +423,7 @@ async function loadListings(filters) {
     const res = await fetch(url, { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } });
     if (!res.ok) throw new Error();
     const listings = await res.json();
-    if (listings.length === 0 && (currentFilters.min || currentFilters.max || currentFilters.rooms || currentFilters.text)) {
+    if (listings.length === 0 && (currentFilters.min || currentFilters.max || currentFilters.rooms || currentFilters.text || currentFilters.maxBudget)) {
       container.innerHTML = `<p class="empty">${t.not_found}</p>`;
       return;
     }
@@ -756,7 +933,8 @@ function applyFilters() {
     min: parseNumber(document.getElementById('minPrice').value),
     max: parseNumber(document.getElementById('maxPrice').value),
     rooms: document.getElementById('rooms').value,
-    text: document.getElementById('searchText').value.trim()
+    text: document.getElementById('searchText').value.trim(),
+    maxBudget: 0
   };
   loadListings(currentFilters);
 }
@@ -765,7 +943,7 @@ function resetFilters() {
   document.getElementById('maxPrice').value = '';
   document.getElementById('rooms').value = '';
   document.getElementById('searchText').value = '';
-  currentFilters = { min: 0, max: 0, rooms: '', text: '' };
+  currentFilters = { min: 0, max: 0, rooms: '', text: '', maxBudget: 0 };
   loadListings(currentFilters);
 }
 
@@ -800,7 +978,6 @@ document.getElementById('tabMine').onclick = () => {
   loadMyListings();
 };
 
-// Ввод текста в поиске — Enter запускает поиск
 document.getElementById('searchText').addEventListener('keydown', (e) => {
   if (e.key === 'Enter') { e.preventDefault(); applyFilters(); }
 });
