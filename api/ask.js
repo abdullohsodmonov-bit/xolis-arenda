@@ -11,45 +11,47 @@ export default async function handler(req, res) {
   const apiKey = process.env.GROQ_API_KEY;
   if (!apiKey) return res.status(500).json({ error: 'GROQ_API_KEY not set' });
 
-  const context = `Название: ${listing.title || ''}
+  const context = `Квартира: ${listing.title || ''}
 Адрес: ${listing.address || ''}
-Цена: ${listing.price || 0} сум/месяц
+Цена: ${listing.price || 0} сум/мес
 Комнат: ${listing.rooms || 0}
 Площадь: ${listing.area || 0} м²
 Описание: ${listing.description || ''}
-Студентам можно: ${listing.student_friendly ? 'да' : 'нет'}`;
+Студентам: ${listing.student_friendly ? 'да' : 'нет'}`;
 
   const messages = [
-    { role: 'system', content: `Ты — дружелюбный AI-ассистент HeyXolis по аренде жилья в Узбекистане. Помогаешь арендатору понять, подходит ли ему конкретная квартира.
-
-Отвечай коротко (2-4 предложения), по делу, на языке вопроса.
-Если информации в объявлении нет — честно скажи об этом.
-Не придумывай детали, которых нет в описании.
+    { role: 'system', content: `Ты — дружелюбный AI-ассистент HeyXolis по аренде жилья в Узбекистане. Отвечай коротко (2–4 предложения) на языке вопроса. Если информации нет — честно скажи.
 
 Данные объявления:
 ${context}` },
-    ...(Array.isArray(history) ? history.slice(-6) : []),
+    ...(Array.isArray(history) ? history.slice(-4) : []),
     { role: 'user', content: question }
   ];
 
-  try {
-    const groqRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-      method: 'POST',
-      headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
-        messages,
-        temperature: 0.5,
-        max_tokens: 300
-      })
-    });
+  const models = ['llama-3.1-8b-instant', 'llama-3.3-70b-versatile', 'gemma2-9b-it'];
 
-    if (!groqRes.ok) return res.status(500).json({ error: 'AI error' });
-    const data = await groqRes.json();
-    const answer = data.choices?.[0]?.message?.content || '';
-    return res.status(200).json({ answer });
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json({ error: 'Server error' });
+  for (const model of models) {
+    try {
+      const groqRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ model, messages, temperature: 0.6, max_tokens: 250 })
+      });
+
+      if (!groqRes.ok) {
+        const errBody = await groqRes.text();
+        console.error(`Model ${model} failed:`, groqRes.status, errBody);
+        continue;
+      }
+
+      const data = await groqRes.json();
+      const answer = data.choices?.[0]?.message?.content;
+      if (answer) return res.status(200).json({ answer, model });
+    } catch (err) {
+      console.error(`Model ${model} error:`, err);
+      continue;
+    }
   }
+
+  return res.status(500).json({ error: 'All models failed' });
 }
