@@ -178,12 +178,53 @@
     </div>
   </div>
 
-  <div id="detailModal" class="detail-modal hidden">
+   <div id="detailModal" class="detail-modal hidden">
     <div class="detail-header">
       <button class="detail-back" onclick="closeDetail()">←</button>
-      <span class="detail-header-title" data-i18n="detail_title">Объявление</span>
+      <span class="detail-header-title" id="detailHeaderTitle">Объявление</span>
     </div>
     <div id="detailContent"></div>
+    <div id="detailSidebar" class="detail-sidebar hidden"></div>
+  </div>
+
+  <div id="heyXolisModal" class="heyxolis-modal hidden">
+    <div class="heyxolis-panel">
+      <div class="heyxolis-header">
+        <div class="heyxolis-brand">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0e7490" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3l1.8 5.4L19.2 10l-5.4 1.8L12 17.2l-1.8-5.4L4.8 10l5.4-1.6L12 3z"/>
+            <path d="M19 2l.4 1.3L20.7 3.7l-1.3.4L19 5.4l-.4-1.3L17.3 3.7l1.3-.4L19 2z"/>
+          </svg>
+          <span><b>HeyXolis</b> — AI-ассистент</span>
+        </div>
+        <button class="heyxolis-close" onclick="closeHeyXolis()">×</button>
+      </div>
+
+      <div class="heyxolis-intro">
+        <h3>Я помогу вам узнать больше об этой квартире.</h3>
+        <p>Спросите что угодно — я отвечу на основе данных объявления.</p>
+      </div>
+
+      <div class="heyxolis-messages" id="heyXolisMessages"></div>
+
+      <div class="heyxolis-chips" id="heyXolisChips">
+        <button class="heyxolis-chip" onclick="askHeyXolis('Справедлива ли цена за эту квартиру?')">✨ Справедлива ли цена?</button>
+        <button class="heyxolis-chip" onclick="askHeyXolis('Подходит ли эта квартира для студента?')">✨ Подходит ли студенту?</button>
+        <button class="heyxolis-chip" onclick="askHeyXolis('Что есть в квартире из удобств?')">✨ Что есть из удобств?</button>
+        <button class="heyxolis-chip" onclick="askHeyXolis('Какой район и что рядом?')">✨ Что рядом?</button>
+      </div>
+
+      <div class="heyxolis-input-row">
+        <input type="text" id="heyXolisInput" placeholder="Спросите что угодно об этой квартире..." onkeydown="if(event.key==='Enter'){event.preventDefault();askHeyXolis();}">
+        <button class="heyxolis-send" onclick="askHeyXolis()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14M13 6l6 6-6 6"/>
+          </svg>
+        </button>
+      </div>
+
+      <p class="heyxolis-disclaimer">AI может ошибаться. Проверяйте важную информацию лично.</p>
+    </div>
   </div>
 
   <div id="addModal" class="modal hidden">
