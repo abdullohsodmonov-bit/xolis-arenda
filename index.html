@@ -15,8 +15,6 @@
 <body>
 
   <div class="hero-full">
-    <div class="hero-full-overlay"></div>
-
     <header class="top-bar top-bar-hero">
       <div class="brand brand-white">
         <svg class="brand-icon" width="30" height="30" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" fill="none">
@@ -31,40 +29,8 @@
           <option value="uz">UZ</option>
           <option value="en">EN</option>
         </select>
-        <button type="button" class="menu-btn menu-btn-hero" id="menuBtn" onclick="toggleMenu()" onpointerdown="event.stopPropagation()" aria-label="Меню">
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" style="pointer-events:none;">
-    <path d="M4 6h16M4 12h16M4 18h16"/>
-  </svg>
-</button>
       </div>
     </header>
-
-    <div id="menuDropdown" class="menu-dropdown hidden">
-      <button class="menu-item" onclick="openBudgetCalc()">
-        <span class="menu-icon">🧮</span>
-        <span data-i18n="menu_budget">Калькулятор бюджета</span>
-      </button>
-      <button class="menu-item" onclick="openInfo('about')">
-        <span class="menu-icon">ℹ️</span>
-        <span data-i18n="menu_about">О проекте</span>
-      </button>
-      <button class="menu-item" onclick="openInfo('rules')">
-        <span class="menu-icon">📋</span>
-        <span data-i18n="menu_rules">Правила публикации</span>
-      </button>
-      <button class="menu-item" onclick="openInfo('faq')">
-        <span class="menu-icon">❓</span>
-        <span data-i18n="menu_faq">FAQ</span>
-      </button>
-      <button class="menu-item" onclick="openInfo('contacts')">
-        <span class="menu-icon">✉️</span>
-        <span data-i18n="menu_contacts">Контакты</span>
-      </button>
-      <button class="menu-item" onclick="toggleTheme()">
-        <span class="menu-icon" id="themeIcon">🌙</span>
-        <span id="themeLabel">Тёмная тема</span>
-      </button>
-    </div>
 
     <div class="hero-full-inner">
       <h1 class="hero-full-title" data-i18n="hero_title">Жильё в Ташкенте</h1>
@@ -189,6 +155,7 @@
         <a href="#" onclick="openInfo('safety'); return false;" data-i18n="footer_safety">Безопасность</a>
         <a href="#" onclick="openInfo('report'); return false;" data-i18n="footer_report">Пожаловаться</a>
         <a href="#" onclick="openInfo('faq'); return false;" data-i18n="footer_faq">FAQ</a>
+        <a href="#" onclick="toggleTheme(); return false;"><span id="themeIcon">🌙</span> <span id="themeLabel">Тёмная тема</span></a>
       </div>
       <div class="footer-col">
         <h4 class="footer-title" data-i18n="footer_contacts_title">Связь</h4>
