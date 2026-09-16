@@ -14,7 +14,6 @@
 </head>
 <body>
 
-  <!-- HERO со всем внутри -->
   <div class="hero-full">
     <div class="hero-full-overlay"></div>
 
@@ -112,7 +111,6 @@
     </div>
   </div>
 
-  <!-- Секция: что нужно -->
   <section class="section-services">
     <h2 class="section-title" data-i18n="services_title">Всё для аренды жилья</h2>
     <p class="section-subtitle" data-i18n="services_subtitle">От поиска до заселения — в одном месте</p>
@@ -140,7 +138,6 @@
     </div>
   </section>
 
-  <!-- Вкладки + каталог -->
   <section class="section-listings" id="listingsSection">
     <div class="tabs">
       <button class="tab-btn active" id="tabAll" data-i18n="tab_all">🏠 Все объявления</button>
@@ -171,7 +168,6 @@
     </div>
   </section>
 
-  <!-- Подвал -->
   <footer class="site-footer">
     <div class="footer-grid">
       <div class="footer-col">
@@ -239,6 +235,38 @@
     </div>
     <div id="detailContent"></div>
     <div id="detailSidebar" class="detail-sidebar hidden"></div>
+
+    <footer class="detail-footer">
+      <div class="detail-footer-grid">
+        <div class="detail-footer-col">
+          <h4 class="detail-footer-title">Xolis<span class="footer-accent">Arenda</span></h4>
+          <a href="#" onclick="closeDetail(); openInfo('about'); return false;" data-i18n="footer_about">О проекте</a>
+          <a href="#" onclick="closeDetail(); openInfo('rules'); return false;" data-i18n="footer_rules">Правила публикации</a>
+          <a href="#" onclick="closeDetail(); openInfo('privacy'); return false;" data-i18n="footer_privacy">Конфиденциальность</a>
+          <a href="#" onclick="closeDetail(); openInfo('contacts'); return false;" data-i18n="footer_contacts_title">Контакты</a>
+        </div>
+        <div class="detail-footer-col">
+          <h4 class="detail-footer-title" data-i18n="footer_services">Сервисы</h4>
+          <a href="#" onclick="closeDetail(); openBudgetCalc(); return false;" data-i18n="menu_budget">Калькулятор бюджета</a>
+          <a href="#" onclick="closeDetail(); scrollToListings(); return false;" data-i18n="footer_all_listings">Все объявления</a>
+          <a href="#" onclick="closeDetail(); openAddForm(); return false;" data-i18n="footer_post">Разместить объявление</a>
+          <a href="#" onclick="closeDetail(); openInfo('faq'); return false;" data-i18n="menu_faq">FAQ</a>
+        </div>
+        <div class="detail-footer-col">
+          <h4 class="detail-footer-title" data-i18n="footer_help">Помощь</h4>
+          <a href="#" onclick="closeDetail(); openInfo('safety'); return false;" data-i18n="footer_safety">Безопасность</a>
+          <a href="#" onclick="closeDetail(); openInfo('report'); return false;" data-i18n="footer_report">Пожаловаться</a>
+          <a href="#" onclick="closeDetail(); openInfo('faq'); return false;" data-i18n="footer_faq">FAQ</a>
+        </div>
+        <div class="detail-footer-col">
+          <h4 class="detail-footer-title" data-i18n="footer_contacts_title">Связь</h4>
+          <a href="https://t.me/xolisarenda_support" target="_blank">Telegram</a>
+          <a href="https://instagram.com/xolisarenda" target="_blank">Instagram</a>
+          <a href="mailto:info@xolisarenda.uz">Email</a>
+        </div>
+      </div>
+      <div class="detail-footer-bottom" data-i18n="footer_bottom">© 2026 XolisArenda · Сделано в Узбекистане</div>
+    </footer>
   </div>
 
   <button id="floatingAI" class="floating-ai hidden" onclick="openHeyXolis()" aria-label="AI Assistant">
