@@ -996,3 +996,21 @@ button:active { transform: scale(0.98); }
   .detail-footer { padding: 60px 40px 32px 40px; }
   .detail-footer-grid { grid-template-columns: repeat(4, 1fr); gap: 48px; }
 }
+/* ===== ФИКС: рабочая кнопка меню в hero ===== */
+.top-bar-hero {
+  position: relative !important;
+  z-index: 1000 !important;
+}
+.menu-btn-hero,
+.lang-select-hero {
+  position: relative !important;
+  z-index: 1001 !important;
+  pointer-events: auto !important;
+}
+.menu-dropdown {
+  z-index: 100000 !important;
+  position: absolute !important;
+  top: auto !important;
+  right: 20px !important;
+  margin-top: 60px !important;
+}
