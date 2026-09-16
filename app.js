@@ -512,16 +512,38 @@ async function geocodeAddress(address) {
 }
 
 // ============ МЕНЮ ============
-document.getElementById('menuBtn').addEventListener('click', (e) => {
-  e.stopPropagation();
-  document.getElementById('menuDropdown').classList.toggle('hidden');
-});
+function toggleMenu() {
+  const menu = document.getElementById('menuDropdown');
+  if (!menu) return;
+  menu.classList.toggle('hidden');
+}
+window.toggleMenu = toggleMenu;
+
+function setupMenu() {
+  const menuBtn = document.getElementById('menuBtn');
+  if (menuBtn && !menuBtn.dataset.bound) {
+    menuBtn.dataset.bound = '1';
+    menuBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      toggleMenu();
+    });
+  }
+}
+
 document.addEventListener('click', (e) => {
   const menu = document.getElementById('menuDropdown');
   if (menu && !menu.classList.contains('hidden') && !menu.contains(e.target)) {
     menu.classList.add('hidden');
   }
 });
+
+// Вызвать после загрузки DOM
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', setupMenu);
+} else {
+  setupMenu();
+}
 
 // ============ ИНФО ============
 const INFO_CONTENT = {
