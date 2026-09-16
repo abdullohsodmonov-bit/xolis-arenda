@@ -1014,3 +1014,29 @@ button:active { transform: scale(0.98); }
   right: 20px !important;
   margin-top: 60px !important;
 }
+/* ===== ФИКС: рабочая кнопка меню ===== */
+.top-bar-hero {
+  position: relative !important;
+  z-index: 9999 !important;
+  pointer-events: auto !important;
+}
+.menu-btn-hero,
+.menu-btn-hero * {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  position: relative !important;
+  z-index: 10000 !important;
+}
+.menu-btn-hero svg {
+  pointer-events: none !important;
+}
+.menu-dropdown {
+  position: fixed !important;
+  top: 80px !important;
+  right: 16px !important;
+  z-index: 999999 !important;
+  margin-top: 0 !important;
+}
+.menu-dropdown:not(.hidden) {
+  display: block !important;
+}
