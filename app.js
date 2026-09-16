@@ -97,6 +97,10 @@ const TRANSLATIONS = {
     footer_help_title: "Помощь", footer_faq: "FAQ", footer_safety: "Безопасность", footer_report: "Пожаловаться",
     footer_contacts_title: "Связь", footer_telegram: "Telegram", footer_instagram: "Instagram", footer_email: "Email",
     footer_bottom: "© 2026 XolisArenda · Сделано в Узбекистане",
+    footer_services: "Сервисы",
+    footer_all_listings: "Все объявления",
+    footer_post: "Разместить объявление",
+    footer_help: "Помощь",
     details_btn: "Подробнее →",
     per_month: "в месяц",
     location: "Расположение",
@@ -117,12 +121,25 @@ const TRANSLATIONS = {
     negotiable: "по договорённости",
     yandex_nav: "Открыть в Яндекс.Навигаторе",
     thinking: "Думаю...",
+    free_badge: "бесплатно",
+    cta_rent: "Аренда",
+    cta_post: "Разместить",
+    cta_help: "Помощь",
+    services_title: "Всё для аренды жилья",
+    services_subtitle: "От поиска до заселения — в одном месте",
+    svc_budget: "Калькулятор бюджета",
+    svc_budget_d: "Узнайте, что вам по карману",
+    svc_rules: "Правила",
+    svc_rules_d: "Как правильно сдавать и снимать",
+    svc_safety: "Безопасность",
+    svc_safety_d: "Как не попасть к мошенникам",
+    svc_support: "Поддержка",
+    svc_support_d: "Свяжитесь с нами в Telegram",
     typewriter: [
       "Что вы ищете? Просто напишите...",
       "2-комнатная в Юнусабаде до 3 млн",
       "Комната для студента в Чиланзаре",
-      "Жильё рядом с метро" 
-      free_badge: "бесплатно"
+      "Жильё рядом с метро"
     ]
   },
   uz: {
@@ -189,6 +206,10 @@ const TRANSLATIONS = {
     footer_help_title: "Yordam", footer_faq: "FAQ", footer_safety: "Xavfsizlik", footer_report: "Shikoyat",
     footer_contacts_title: "Aloqa", footer_telegram: "Telegram", footer_instagram: "Instagram", footer_email: "Email",
     footer_bottom: "© 2026 XolisArenda · O'zbekistonda yaratilgan",
+    footer_services: "Xizmatlar",
+    footer_all_listings: "Barcha e'lonlar",
+    footer_post: "E'lon joylashtirish",
+    footer_help: "Yordam",
     details_btn: "Batafsil →",
     per_month: "oyiga",
     location: "Joylashuv",
@@ -209,12 +230,25 @@ const TRANSLATIONS = {
     negotiable: "kelishuv bo'yicha",
     yandex_nav: "Yandex Navigator-da ochish",
     thinking: "O'ylayapman...",
+    free_badge: "bepul",
+    cta_rent: "Ijara",
+    cta_post: "Joylash",
+    cta_help: "Yordam",
+    services_title: "Ijara uchun hamma narsa",
+    services_subtitle: "Qidiruvdan joylashishgacha — bir joyda",
+    svc_budget: "Budjet kalkulyatori",
+    svc_budget_d: "Nimaga qodirligingizni bilib oling",
+    svc_rules: "Qoidalar",
+    svc_rules_d: "Qanday to'g'ri ijaraga berish",
+    svc_safety: "Xavfsizlik",
+    svc_safety_d: "Firibgarlarga tushmaslik",
+    svc_support: "Yordam",
+    svc_support_d: "Telegram orqali bog'lanish",
     typewriter: [
       "Nima qidirmoqdasiz? Yozing...",
       "Yunusobodda 2 xonali 3 mln gacha",
       "Chilonzorda talabaga xona",
       "Metro yonida uy"
-      free_badge: "bepul"
     ]
   },
   en: {
@@ -280,6 +314,10 @@ const TRANSLATIONS = {
     footer_help_title: "Help", footer_faq: "FAQ", footer_safety: "Safety", footer_report: "Report",
     footer_contacts_title: "Contacts", footer_telegram: "Telegram", footer_instagram: "Instagram", footer_email: "Email",
     footer_bottom: "© 2026 XolisArenda · Made in Uzbekistan",
+    footer_services: "Services",
+    footer_all_listings: "All listings",
+    footer_post: "Post a listing",
+    footer_help: "Help",
     details_btn: "Details →",
     per_month: "per month",
     location: "Location",
@@ -300,12 +338,25 @@ const TRANSLATIONS = {
     negotiable: "negotiable",
     yandex_nav: "Open in Yandex Navigator",
     thinking: "Thinking...",
+    free_badge: "free",
+    cta_rent: "Rent",
+    cta_post: "Post",
+    cta_help: "Help",
+    services_title: "Everything for renting",
+    services_subtitle: "From search to move-in — in one place",
+    svc_budget: "Budget calculator",
+    svc_budget_d: "See what you can afford",
+    svc_rules: "Rules",
+    svc_rules_d: "How to rent properly",
+    svc_safety: "Safety",
+    svc_safety_d: "Avoid scammers",
+    svc_support: "Support",
+    svc_support_d: "Contact us on Telegram",
     typewriter: [
       "What are you looking for? Just type...",
       "2-room in Yunusabad under 3M",
       "Room for student in Chilanzar",
       "Housing near metro"
-      free_badge: "free"
     ]
   }
 };
@@ -1360,6 +1411,7 @@ function openAddForm() {
   renderPhotoPreviews();
   document.getElementById('addModal').classList.remove('hidden');
 }
+window.openAddForm = openAddForm;
 
 async function openEditForm(id) {
   try {
@@ -1517,6 +1569,13 @@ function resetFilters() {
   loadListings(currentFilters);
 }
 
+// ============ СКРОЛЛ К КАТАЛОГУ ============
+function scrollToListings() {
+  const el = document.getElementById('listingsSection');
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+window.scrollToListings = scrollToListings;
+
 // ============ СОБЫТИЯ ============
 document.getElementById('addBtn').onclick = async () => {
   const ok = await checkUserLimit();
@@ -1585,10 +1644,5 @@ if (tg && tg.onEvent) {
     }
   });
 }
-// ============ Дополнительные функции для главной ============
-function scrollToListings() {
-  const el = document.getElementById('listingsSection');
-  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-window.scrollToListings = scrollToListings;
+
 loadLang(detectLang());
