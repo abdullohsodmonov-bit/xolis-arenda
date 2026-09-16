@@ -98,6 +98,24 @@ const TRANSLATIONS = {
     footer_contacts_title: "Связь", footer_telegram: "Telegram", footer_instagram: "Instagram", footer_email: "Email",
     footer_bottom: "© 2026 XolisArenda · Сделано в Узбекистане",
     details_btn: "Подробнее →",
+    per_month: "в месяц",
+    location: "Расположение",
+    description_title: "Описание",
+    about_housing: "О жилье",
+    ask_ai: "Спросите AI об этой квартире",
+    ai_price_fair: "Справедлива ли цена?",
+    ai_student: "Подходит ли студенту?",
+    ai_amenities: "Что из удобств?",
+    ai_open: "Открыть HeyXolis",
+    verified: "Проверенное объявление",
+    similar: "Похожие в этом районе",
+    contact_owner: "Связаться с владельцем",
+    about_price: "О цене",
+    monthly: "В месяц",
+    per_m2: "За м²",
+    deposit: "Залог",
+    negotiable: "по договорённости",
+    yandex_nav: "Открыть в Яндекс.Навигаторе",
     typewriter: [
       "Что вы ищете? Просто напишите...",
       "2-комнатная в Юнусабаде до 3 млн",
@@ -170,6 +188,24 @@ const TRANSLATIONS = {
     footer_contacts_title: "Aloqa", footer_telegram: "Telegram", footer_instagram: "Instagram", footer_email: "Email",
     footer_bottom: "© 2026 XolisArenda · O'zbekistonda yaratilgan",
     details_btn: "Batafsil →",
+    per_month: "oyiga",
+    location: "Joylashuv",
+    description_title: "Tavsif",
+    about_housing: "Uy haqida",
+    ask_ai: "AI'dan so'rang",
+    ai_price_fair: "Narx adolatlimi?",
+    ai_student: "Talabaga mosmi?",
+    ai_amenities: "Qulayliklar?",
+    ai_open: "HeyXolis'ni ochish",
+    verified: "Tekshirilgan e'lon",
+    similar: "Shu tumandagi o'xshashlar",
+    contact_owner: "Egasi bilan bog'lanish",
+    about_price: "Narx haqida",
+    monthly: "Oylik",
+    per_m2: "m² uchun",
+    deposit: "Garov",
+    negotiable: "kelishuv bo'yicha",
+    yandex_nav: "Yandex Navigator-da ochish",
     typewriter: [
       "Nima qidirmoqdasiz? Yozing...",
       "Yunusobodda 2 xonali 3 mln gacha",
@@ -241,6 +277,24 @@ const TRANSLATIONS = {
     footer_contacts_title: "Contacts", footer_telegram: "Telegram", footer_instagram: "Instagram", footer_email: "Email",
     footer_bottom: "© 2026 XolisArenda · Made in Uzbekistan",
     details_btn: "Details →",
+    per_month: "per month",
+    location: "Location",
+    description_title: "Description",
+    about_housing: "About",
+    ask_ai: "Ask AI about this apartment",
+    ai_price_fair: "Is price fair?",
+    ai_student: "Good for student?",
+    ai_amenities: "Amenities?",
+    ai_open: "Open HeyXolis",
+    verified: "Verified listing",
+    similar: "Similar in this area",
+    contact_owner: "Contact owner",
+    about_price: "About price",
+    monthly: "Monthly",
+    per_m2: "Per m²",
+    deposit: "Deposit",
+    negotiable: "negotiable",
+    yandex_nav: "Open in Yandex Navigator",
     typewriter: [
       "What are you looking for? Just type...",
       "2-room in Yunusabad under 3M",
@@ -263,29 +317,28 @@ let mapMarkers = [];
 let allListingsCache = [];
 let typewriterTimer = null;
 let typewriterRunning = false;
+let currentDetailItem = null;
+let heyXolisHistory = [];
 
 // ============ ТЕМА ============
 function applyTheme(theme) {
   document.documentElement.setAttribute('data-theme', theme);
   localStorage.setItem('theme', theme);
-
   const icon = document.getElementById('themeIcon');
   const label = document.getElementById('themeLabel');
   if (icon && label) {
     if (theme === 'dark') {
       icon.textContent = '☀️';
-      label.textContent = t.menu_theme_light || 'Светлая тема';
+      label.textContent = (t && t.menu_theme_light) || 'Светлая тема';
     } else {
       icon.textContent = '🌙';
-      label.textContent = t.menu_theme_dark || 'Тёмная тема';
+      label.textContent = (t && t.menu_theme_dark) || 'Тёмная тема';
     }
   }
 }
-
 function toggleTheme() {
   const current = document.documentElement.getAttribute('data-theme') || 'light';
-  const next = current === 'dark' ? 'light' : 'dark';
-  applyTheme(next);
+  applyTheme(current === 'dark' ? 'light' : 'dark');
   const menu = document.getElementById('menuDropdown');
   if (menu) menu.classList.add('hidden');
 }
@@ -297,9 +350,7 @@ function detectTheme() {
   const tgTheme = tg?.colorScheme;
   if (tgTheme === 'dark') return 'dark';
   if (tgTheme === 'light') return 'light';
-  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    return 'dark';
-  }
+  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) return 'dark';
   return 'light';
 }
 
@@ -322,7 +373,6 @@ function loadLang(code) {
   translatedCards = {};
   localStorage.setItem('lang', code);
   applyTranslations();
-  // Обновить текст кнопки темы
   const current = document.documentElement.getAttribute('data-theme') || 'light';
   const icon = document.getElementById('themeIcon');
   const label = document.getElementById('themeLabel');
@@ -360,26 +410,15 @@ function startTypewriter() {
   if (typewriterRunning) return;
   typewriterRunning = true;
   input.dataset.userTyped = '0';
-
   const phrases = t.typewriter || TRANSLATIONS.ru.typewriter;
-  let phraseIdx = 0;
-  let charIdx = 0;
-  let deleting = false;
-
+  let phraseIdx = 0, charIdx = 0, deleting = false;
   function tick() {
-    if (input.dataset.userTyped === '1') {
-      typewriterRunning = false;
-      return;
-    }
+    if (input.dataset.userTyped === '1') { typewriterRunning = false; return; }
     const current = phrases[phraseIdx];
     if (!deleting) {
       charIdx++;
       input.placeholder = current.slice(0, charIdx);
-      if (charIdx >= current.length) {
-        deleting = true;
-        typewriterTimer = setTimeout(tick, 2200);
-        return;
-      }
+      if (charIdx >= current.length) { deleting = true; typewriterTimer = setTimeout(tick, 2200); return; }
       typewriterTimer = setTimeout(tick, 55);
     } else {
       charIdx--;
@@ -395,7 +434,6 @@ function startTypewriter() {
   }
   typewriterTimer = setTimeout(tick, 800);
 }
-
 function stopTypewriter() {
   if (typewriterTimer) clearTimeout(typewriterTimer);
   typewriterTimer = null;
@@ -654,42 +692,32 @@ function attachGalleryListeners() {
 function renderMap(listings) {
   const mapEl = document.getElementById('map');
   if (!mapEl) return;
-
   if (!leafletMap) {
     leafletMap = L.map('map', { zoomControl: true }).setView([41.311, 69.279], 12);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      attribution: '© OpenStreetMap'
+      maxZoom: 19, attribution: '© OpenStreetMap'
     }).addTo(leafletMap);
   }
-
   mapMarkers.forEach(m => leafletMap.removeLayer(m));
   mapMarkers = [];
-
   const validPoints = [];
   listings.forEach(item => {
     if (!item.lat || !item.lng) return;
     validPoints.push([item.lat, item.lng]);
-
     const priceLabel = `${Number(item.price).toLocaleString('ru-RU').replace(/,/g, ' ')}`;
     const icon = L.divIcon({
       className: '',
       html: `<div class="price-marker">${priceLabel}</div>`,
-      iconSize: [90, 30],
-      iconAnchor: [45, 15]
+      iconSize: [90, 30], iconAnchor: [45, 15]
     });
-
     const marker = L.marker([item.lat, item.lng], { icon })
       .addTo(leafletMap)
       .on('click', () => showMapCard(item));
-
     mapMarkers.push(marker);
   });
-
   if (validPoints.length > 0) {
     leafletMap.fitBounds(validPoints, { padding: [40, 40], maxZoom: 15 });
   }
-
   setTimeout(() => leafletMap.invalidateSize(), 200);
 }
 
@@ -709,16 +737,13 @@ function showMapCard(item) {
     photo.style.backgroundImage = '';
     photo.style.display = 'none';
   }
-
   title.textContent = item.title;
   price.textContent = `${Number(item.price).toLocaleString('ru-RU').replace(/,/g, ' ')} ${t.sum}`;
   details.textContent = `${item.rooms} ${t.rooms_short} · ${item.area} м² · ${item.address || ''}`;
   openBtn.textContent = t.details_btn;
   openBtn.onclick = () => { closeMapCard(); openDetail(item.id); };
-
   card.classList.remove('hidden');
 }
-
 function closeMapCard() {
   document.getElementById('mapCard').classList.add('hidden');
 }
@@ -746,7 +771,6 @@ document.getElementById('viewMap').onclick = () => {
 async function aiSearch(query) {
   const container = document.getElementById('listings');
   container.innerHTML = `<p class="empty">${t.ai_thinking}</p>`;
-
   try {
     const res = await fetch('/api/ai', {
       method: 'POST',
@@ -756,21 +780,16 @@ async function aiSearch(query) {
     if (!res.ok) throw new Error('AI error');
     const data = await res.json();
     const f = data.filters || {};
-
     currentFilters = {
-      min: f.minPrice || 0,
-      max: f.maxPrice || 0,
+      min: f.minPrice || 0, max: f.maxPrice || 0,
       rooms: f.rooms ? String(f.rooms) : '',
-      text: f.keywords || '',
-      maxBudget: 0,
+      text: f.keywords || '', maxBudget: 0,
       district: f.district || '',
       studentFriendly: f.studentFriendly === true
     };
-
     document.getElementById('minPrice').value = f.minPrice ? formatNumber(f.minPrice) : '';
     document.getElementById('maxPrice').value = f.maxPrice ? formatNumber(f.maxPrice) : '';
     document.getElementById('rooms').value = f.rooms ? String(f.rooms) : '';
-
     container.innerHTML = `<p class="empty">${t.ai_found} <b>«${query}»</b></p>`;
     setTimeout(() => loadListings(currentFilters), 400);
   } catch (err) {
@@ -789,6 +808,9 @@ async function openDetail(id) {
     const [item] = await res.json();
     if (!item) return;
 
+    currentDetailItem = item;
+    heyXolisHistory = [];
+
     const photos = Array.isArray(item.photos) ? item.photos : [];
     const isMine = item.user_id === getUserId();
     const tr = translatedCards[item.id];
@@ -796,6 +818,9 @@ async function openDetail(id) {
     const address = tr ? tr.address : item.address;
     const description = tr ? tr.description : item.description;
     const isTranslated = !!tr;
+
+    const headerTitle = document.getElementById('detailHeaderTitle');
+    if (headerTitle) headerTitle.textContent = title.length > 30 ? title.slice(0, 30) + '…' : title;
 
     const galleryHtml = photos.length ? `
       <div class="detail-gallery">
@@ -806,39 +831,205 @@ async function openDetail(id) {
       </div>
     ` : '';
 
+    const desc = (description || '').toLowerCase();
+    const tags = [];
+    if (item.student_friendly) tags.push('🎓 ' + (lang === 'ru' ? 'Студентам можно' : lang === 'uz' ? 'Talabalarga mumkin' : 'Students allowed'));
+    if (desc.includes('интернет') || desc.includes('wi-fi') || desc.includes('wifi')) tags.push('📶 Интернет');
+    if (desc.includes('кондиционер')) tags.push('❄️ Кондиционер');
+    if (desc.includes('стиральн')) tags.push('🧺 Стиральная машина');
+    if (desc.includes('холодильник')) tags.push('🧊 Холодильник');
+    if (desc.includes('телевизор') || desc.includes('тв ')) tags.push('📺 Телевизор');
+    if (desc.includes('мебел')) tags.push('🪑 С мебелью');
+    if (desc.includes('балкон')) tags.push('🌿 Балкон');
+    if (desc.includes('кухн')) tags.push('🍳 Кухня');
+    if (desc.includes('ремонт')) tags.push('🛠️ Ремонт');
+    if (desc.includes('метро')) tags.push('🚇 ' + (lang === 'ru' ? 'Рядом с метро' : 'Metro yonida'));
+    if (tags.length > 6) tags.length = 6;
+
+    const pricePerM2 = item.area ? Math.round(item.price / item.area) : 0;
+
+    let similarHtml = '';
+    try {
+      const simRes = await fetch(`${SUPABASE_URL}/rest/v1/listings?select=id,title,price,rooms,area,address,photos&is_hidden=eq.false&id=neq.${id}&order=created_at.desc&limit=20`, {
+        headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+      });
+      const simAll = await simRes.json();
+      const myAddr = (item.address || '').toLowerCase().split(' ').filter(w => w.length > 3);
+      const similar = simAll.filter(s => {
+        const sa = (s.address || '').toLowerCase();
+        return myAddr.some(w => sa.includes(w));
+      }).slice(0, 4);
+
+      if (similar.length) {
+        similarHtml = `
+          <h2 class="detail-section-title">${t.similar}</h2>
+          <div class="detail-similar">
+            ${similar.map(s => {
+              const sp = Array.isArray(s.photos) ? s.photos : [];
+              return `
+                <div class="detail-similar-card" onclick="closeDetail(); setTimeout(()=>openDetail(${s.id}), 300)">
+                  <div class="detail-similar-photo" style="${sp[0] ? `background-image:url('${sp[0]}')` : ''}"></div>
+                  <div class="detail-similar-info">
+                    <h5>${s.title}</h5>
+                    <div class="price">${Number(s.price).toLocaleString('ru-RU').replace(/,/g, ' ')} ${t.sum}</div>
+                    <div class="meta">${s.rooms} ${t.rooms_short} · ${s.area} м²</div>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        `;
+      }
+    } catch (err) { console.error('Similar error:', err); }
+
+    let mapHtml = '', navHtml = '';
+    if (item.lat && item.lng) {
+      mapHtml = `
+        <h2 class="detail-section-title">${t.location}</h2>
+        <div id="detailMiniMap" class="detail-map"></div>
+      `;
+      const yNav = `yandexnavi://build_route_on_map?lat_to=${item.lat}&lon_to=${item.lng}`;
+      navHtml = `
+        <a class="detail-map-nav" href="${yNav}" target="_blank" rel="noopener" style="margin-top:8px;">
+          🚗 ${t.yandex_nav}
+        </a>
+      `;
+    }
+
+    const actionsHtml = isMine ? `
+      <div class="owner-row">
+        <button class="owner-btn edit-btn" onclick="closeDetail(); openEditForm(${item.id})">${t.edit}</button>
+        <button class="owner-btn delete-btn" onclick="closeDetail(); deleteListing(${item.id})">${t.delete}</button>
+      </div>
+    ` : `
+      <div class="report-row">
+        <button class="report-btn translate-btn" onclick="translateDetail(${item.id})">
+          🌐 ${isTranslated ? t.show_original : t.translate}
+        </button>
+        <button class="report-btn" onclick="reportListing(${item.id}, 'broker')">🚨 ${t.report_broker}</button>
+        <button class="report-btn" onclick="reportListing(${item.id}, 'not_actual')">❌ ${t.report_not_actual}</button>
+      </div>
+    `;
+
     document.getElementById('detailContent').innerHTML = `
       ${galleryHtml}
       <div class="detail-body">
-        <h1>${title}</h1>
-        <p class="detail-price">💰 ${Number(item.price).toLocaleString('ru-RU').replace(/,/g, ' ')} ${t.sum}</p>
-        <p>🚪 ${item.rooms} ${t.rooms_short} | 📐 ${item.area} м²</p>
-        <p>📍 ${address || ''}</p>
-        <p class="detail-desc">${description || ''}</p>
-        ${item.student_friendly ? `<span class="badge">${t.students_ok}</span>` : ''}
+        <h1 class="detail-hero-title">${title}</h1>
 
-        ${item.telegram ? `<a class="contact-btn detail-contact" href="https://t.me/${item.telegram.replace('@','')}" target="_blank">${t.write_telegram}</a>` : ''}
+        <div class="detail-loc-row">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+          <span>${address || ''}</span>
+        </div>
 
-        ${isMine ? `
-          <div class="owner-row">
-            <button class="owner-btn edit-btn" onclick="closeDetail(); openEditForm(${item.id})">${t.edit}</button>
-            <button class="owner-btn delete-btn" onclick="closeDetail(); deleteListing(${item.id})">${t.delete}</button>
+        <div class="detail-price-hero">
+          <span class="detail-price-big">${Number(item.price).toLocaleString('ru-RU').replace(/,/g, ' ')} ${t.sum}</span>
+          <span class="detail-price-caption">${t.per_month}</span>
+        </div>
+
+        <div class="detail-stats-row">
+          <div class="detail-stat">
+            <div class="detail-stat-value">${item.rooms}</div>
+            <div class="detail-stat-label">${lang === 'ru' ? 'комнаты' : lang === 'uz' ? 'xona' : 'rooms'}</div>
           </div>
-        ` : `
-          <div class="report-row">
-            <button class="report-btn translate-btn" onclick="translateDetail(${item.id})">
-              🌐 ${isTranslated ? t.show_original : t.translate}
-            </button>
-            <button class="report-btn" onclick="reportListing(${item.id}, 'broker')">🚨 ${t.report_broker}</button>
-            <button class="report-btn" onclick="reportListing(${item.id}, 'not_actual')">❌ ${t.report_not_actual}</button>
+          <div class="detail-stat">
+            <div class="detail-stat-value">${item.area}</div>
+            <div class="detail-stat-label">м²</div>
           </div>
-        `}
+          <div class="detail-stat">
+            <div class="detail-stat-value">${pricePerM2.toLocaleString('ru-RU').replace(/,/g, ' ')}</div>
+            <div class="detail-stat-label">${t.per_m2}</div>
+          </div>
+        </div>
+
+        <div class="detail-verified">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          <span>${t.verified}</span>
+        </div>
+
+        ${tags.length ? `<div class="detail-tags">${tags.map(tg => `<span class="detail-tag">${tg}</span>`).join('')}</div>` : ''}
+
+        ${description ? `
+          <h2 class="detail-section-title">${t.description_title}</h2>
+          <p class="detail-desc-text">${description}</p>
+        ` : ''}
+
+        <h2 class="detail-section-title">${t.about_housing}</h2>
+        <div class="detail-grid">
+          <div class="detail-grid-row"><span>${lang === 'ru' ? 'Комнаты' : lang === 'uz' ? 'Xonalar' : 'Rooms'}</span><span>${item.rooms}</span></div>
+          <div class="detail-grid-row"><span>${lang === 'ru' ? 'Площадь' : lang === 'uz' ? 'Maydon' : 'Area'}</span><span>${item.area} м²</span></div>
+          <div class="detail-grid-row"><span>${t.per_m2}</span><span>${pricePerM2.toLocaleString('ru-RU').replace(/,/g, ' ')} ${t.sum}</span></div>
+          <div class="detail-grid-row"><span>${lang === 'ru' ? 'Студентам' : lang === 'uz' ? 'Talabalarga' : 'Students'}</span><span>${item.student_friendly ? '✓' : '—'}</span></div>
+        </div>
+
+        ${mapHtml}
+        ${navHtml}
+
+        <h2 class="detail-section-title">${t.ask_ai}</h2>
+        <div class="detail-ai-chips">
+          <button class="ai-chip" onclick="openHeyXolisWith('${t.ai_price_fair.replace(/'/g, "")}')">✨ ${t.ai_price_fair}</button>
+          <button class="ai-chip" onclick="openHeyXolisWith('${t.ai_student.replace(/'/g, "")}')">✨ ${t.ai_student}</button>
+          <button class="ai-chip" onclick="openHeyXolisWith('${t.ai_amenities.replace(/'/g, "")}')">✨ ${t.ai_amenities}</button>
+        </div>
+        <button class="open-heyxolis-btn" onclick="openHeyXolis()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0f172a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3l1.8 5.4L19.2 10l-5.4 1.8L12 17.2l-1.8-5.4L4.8 10l5.4-1.6L12 3z"/>
+            <path d="M19 2l.4 1.3L20.7 3.7l-1.3.4L19 5.4l-.4-1.3L17.3 3.7l1.3-.4L19 2z"/>
+          </svg>
+          ${t.ai_open}
+        </button>
+
+        ${similarHtml}
+        ${actionsHtml}
+      </div>
+
+      <div class="detail-sticky-contact">
+        <div class="detail-sticky-price">
+          ${Number(item.price).toLocaleString('ru-RU').replace(/,/g, ' ')} ${t.sum}
+          <small>${t.per_month}</small>
+        </div>
+        ${item.telegram ? `<a class="detail-sticky-btn" href="https://t.me/${item.telegram.replace('@','')}" target="_blank">${t.write_telegram}</a>` : ''}
       </div>
     `;
+
+    const sidebar = document.getElementById('detailSidebar');
+    if (sidebar) {
+      sidebar.classList.remove('hidden');
+      sidebar.innerHTML = `
+        <div class="sidebar-card">
+          <h4>${t.contact_owner}</h4>
+          ${item.telegram ? `<a class="sidebar-contact-btn" href="https://t.me/${item.telegram.replace('@','')}" target="_blank">✉️ ${t.write_telegram}</a>` : ''}
+        </div>
+        <div class="sidebar-card">
+          <h4>${t.about_price}</h4>
+          <div class="detail-grid">
+            <div class="detail-grid-row"><span>${t.monthly}</span><span><b>${Number(item.price).toLocaleString('ru-RU').replace(/,/g, ' ')}</b></span></div>
+            <div class="detail-grid-row"><span>${t.per_m2}</span><span>${pricePerM2.toLocaleString('ru-RU').replace(/,/g, ' ')}</span></div>
+            <div class="detail-grid-row"><span>${t.deposit}</span><span>${t.negotiable}</span></div>
+          </div>
+        </div>
+      `;
+    }
 
     document.getElementById('detailModal').classList.remove('hidden');
     document.body.style.overflow = 'hidden';
     document.getElementById('detailModal').scrollTop = 0;
     attachGalleryListeners();
+
+    if (item.lat && item.lng) {
+      setTimeout(() => {
+        const dm = document.getElementById('detailMiniMap');
+        if (!dm) return;
+        const mini = L.map('detailMiniMap', { zoomControl: false, attributionControl: false }).setView([item.lat, item.lng], 15);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(mini);
+        L.marker([item.lat, item.lng]).addTo(mini);
+        setTimeout(() => mini.invalidateSize(), 200);
+      }, 100);
+    }
   } catch (err) { console.error(err); }
 }
 window.openDetail = openDetail;
@@ -846,6 +1037,8 @@ window.openDetail = openDetail;
 function closeDetail() {
   document.getElementById('detailModal').classList.add('hidden');
   document.body.style.overflow = '';
+  const sidebar = document.getElementById('detailSidebar');
+  if (sidebar) sidebar.classList.add('hidden');
 }
 window.closeDetail = closeDetail;
 
@@ -854,6 +1047,81 @@ async function translateDetail(id) {
   openDetail(id);
 }
 window.translateDetail = translateDetail;
+
+// ============ HeyXolis ============
+function openHeyXolis() {
+  document.getElementById('heyXolisModal').classList.remove('hidden');
+  document.getElementById('heyXolisMessages').innerHTML = '';
+  heyXolisHistory = [];
+  setTimeout(() => document.getElementById('heyXolisInput').focus(), 200);
+}
+window.openHeyXolis = openHeyXolis;
+
+function openHeyXolisWith(q) {
+  openHeyXolis();
+  document.getElementById('heyXolisInput').value = q;
+  askHeyXolis();
+}
+window.openHeyXolisWith = openHeyXolisWith;
+
+function closeHeyXolis() {
+  document.getElementById('heyXolisModal').classList.add('hidden');
+}
+window.closeHeyXolis = closeHeyXolis;
+
+async function askHeyXolis(presetQuestion) {
+  const input = document.getElementById('heyXolisInput');
+  const q = presetQuestion || input.value.trim();
+  if (!q || !currentDetailItem) return;
+
+  const msgs = document.getElementById('heyXolisMessages');
+  const userMsg = document.createElement('div');
+  userMsg.className = 'heyxolis-msg user';
+  userMsg.textContent = q;
+  msgs.appendChild(userMsg);
+  input.value = '';
+
+  const thinkMsg = document.createElement('div');
+  thinkMsg.className = 'heyxolis-msg thinking';
+  thinkMsg.textContent = '🤖 ' + (lang === 'ru' ? 'Думаю...' : lang === 'uz' ? "O'ylayapman..." : 'Thinking...');
+  msgs.appendChild(thinkMsg);
+  msgs.scrollTop = msgs.scrollHeight;
+
+  try {
+    const res = await fetch('/api/ask', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        listing: {
+          title: currentDetailItem.title,
+          address: currentDetailItem.address,
+          price: currentDetailItem.price,
+          rooms: currentDetailItem.rooms,
+          area: currentDetailItem.area,
+          description: currentDetailItem.description,
+          student_friendly: currentDetailItem.student_friendly
+        },
+        question: q,
+        history: heyXolisHistory
+      })
+    });
+    if (!res.ok) throw new Error();
+    const data = await res.json();
+
+    thinkMsg.remove();
+    const aiMsg = document.createElement('div');
+    aiMsg.className = 'heyxolis-msg ai';
+    aiMsg.textContent = data.answer || '...';
+    msgs.appendChild(aiMsg);
+    msgs.scrollTop = msgs.scrollHeight;
+
+    heyXolisHistory.push({ role: 'user', content: q });
+    heyXolisHistory.push({ role: 'assistant', content: data.answer || '' });
+  } catch (err) {
+    thinkMsg.textContent = '❌ ' + (lang === 'ru' ? 'Ошибка. Попробуйте позже.' : lang === 'uz' ? 'Xatolik.' : 'Error. Try later.');
+  }
+}
+window.askHeyXolis = askHeyXolis;
 
 // ============ ПЕРЕВОД ============
 async function toggleTranslate(listingId) {
@@ -1188,7 +1456,6 @@ function clearForm() {
 function applyFilters() {
   const userText = document.getElementById('searchText').value.trim();
   if (userText.length > 3) { aiSearch(userText); return; }
-
   currentFilters = {
     min: parseNumber(document.getElementById('minPrice').value),
     max: parseNumber(document.getElementById('maxPrice').value),
@@ -1267,10 +1534,9 @@ attachNumberFormatting('f_price');
   if (el) el.addEventListener('input', updateAllHints);
 });
 
-// Применяем тему сразу (до первого рендера)
+// Применяем тему
 applyTheme(detectTheme());
 
-// Слушаем смену темы в Telegram
 if (tg && tg.onEvent) {
   tg.onEvent('themeChanged', () => {
     if (!localStorage.getItem('theme')) {
