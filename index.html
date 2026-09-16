@@ -31,11 +31,11 @@
           <option value="uz">UZ</option>
           <option value="en">EN</option>
         </select>
-        <button class="menu-btn menu-btn-hero" id="menuBtn" type="button" onclick="toggleMenu()" aria-label="Меню" style="position:relative;z-index:999999;cursor:pointer;pointer-events:auto;">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round">
-            <path d="M4 6h16M4 12h16M4 18h16"/>
-          </svg>
-        </button>
+        <button type="button" class="menu-btn menu-btn-hero" id="menuBtn" onclick="toggleMenu()" onpointerdown="event.stopPropagation()" aria-label="Меню">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" style="pointer-events:none;">
+    <path d="M4 6h16M4 12h16M4 18h16"/>
+  </svg>
+</button>
       </div>
     </header>
 
