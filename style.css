@@ -1143,3 +1143,71 @@ button:active { transform: scale(0.98); }
   .heyxolis-input-row { padding: 8px 8px 8px 20px; }
   .heyxolis-input-row input { font-size: 16px; }
 }
+/* ============================================ */
+/*  ФИНАЛ: HeyXolis как боковая панель справа   */
+/* ============================================ */
+
+.heyxolis-modal.heyxolis-modal {
+  position: fixed !important;
+  top: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  left: auto !important;
+  width: 100% !important;
+  max-width: 440px !important;
+  background: transparent !important;
+  display: flex !important;
+  align-items: stretch !important;
+  justify-content: flex-end !important;
+  z-index: 3000 !important;
+  padding: 0 !important;
+  pointer-events: none !important;
+}
+
+.heyxolis-panel {
+  pointer-events: auto !important;
+  width: 100% !important;
+  max-width: 440px !important;
+  height: 100vh !important;
+  max-height: 100vh !important;
+  border-radius: 0 !important;
+  border-left: 1px solid var(--border-color) !important;
+  box-shadow: -12px 0 40px rgba(0,0,0,0.22) !important;
+  padding: 20px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  animation: slideInRight 0.3s ease !important;
+}
+
+.heyxolis-panel::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 4px !important;
+  background: linear-gradient(90deg, #06b6d4, #10b981, #facc15, #f97316) !important;
+}
+
+.heyxolis-messages {
+  flex: 1 !important;
+  max-height: none !important;
+  overflow-y: auto !important;
+  min-height: 0 !important;
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+@media (max-width: 520px) {
+  .heyxolis-modal.heyxolis-modal {
+    max-width: 100% !important;
+  }
+  .heyxolis-panel {
+    max-width: 100% !important;
+    border-left: none !important;
+  }
+}
