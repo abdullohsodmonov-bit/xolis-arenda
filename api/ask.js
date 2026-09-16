@@ -20,38 +20,50 @@ export default async function handler(req, res) {
 Студентам: ${listing.student_friendly ? 'да' : 'нет'}`;
 
   const messages = [
-    { role: 'system', content: `Ты — дружелюбный AI-ассистент HeyXolis по аренде жилья в Узбекистане. Отвечай коротко (2–4 предложения) на языке вопроса. Если информации нет — честно скажи.
+    { role: 'system', content: `Ты — AI-ассистент HeyXolis по аренде в Узбекистане. Отвечай коротко (2–4 предложения) на языке вопроса.
 
-Данные объявления:
+Данные:
 ${context}` },
     ...(Array.isArray(history) ? history.slice(-4) : []),
     { role: 'user', content: question }
   ];
 
-  const models = ['llama-3.1-8b-instant', 'llama-3.3-70b-versatile', 'gemma2-9b-it'];
+  // Используем самую доступную модель
+  const model = 'llama-3.1-8b-instant';
 
-  for (const model of models) {
-    try {
-      const groqRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-        method: 'POST',
-        headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ model, messages, temperature: 0.6, max_tokens: 250 })
+  try {
+    const groqRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        model,
+        messages,
+        temperature: 0.6,
+        max_tokens: 250
+      })
+    });
+
+    const responseText = await groqRes.text();
+
+    if (!groqRes.ok) {
+      // Возвращаем НАСТОЯЩУЮ ошибку Groq
+      console.error('Groq error:', groqRes.status, responseText);
+      return res.status(500).json({
+        error: `Groq ${groqRes.status}`,
+        details: responseText
       });
-
-      if (!groqRes.ok) {
-        const errBody = await groqRes.text();
-        console.error(`Model ${model} failed:`, groqRes.status, errBody);
-        continue;
-      }
-
-      const data = await groqRes.json();
-      const answer = data.choices?.[0]?.message?.content;
-      if (answer) return res.status(200).json({ answer, model });
-    } catch (err) {
-      console.error(`Model ${model} error:`, err);
-      continue;
     }
-  }
 
-  return res.status(500).json({ error: 'All models failed' });
+    const data = JSON.parse(responseText);
+    const answer = data.choices?.[0]?.message?.content;
+    if (!answer) return res.status(500).json({ error: 'Empty answer', raw: responseText });
+
+    return res.status(200).json({ answer, model });
+  } catch (err) {
+    console.error('Server error:', err);
+    return res.status(500).json({ error: err.message });
+  }
 }
