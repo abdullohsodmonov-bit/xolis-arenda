@@ -121,7 +121,8 @@ const TRANSLATIONS = {
       "Что вы ищете? Просто напишите...",
       "2-комнатная в Юнусабаде до 3 млн",
       "Комната для студента в Чиланзаре",
-      "Жильё рядом с метро"
+      "Жильё рядом с метро" 
+      free_badge: "бесплатно"
     ]
   },
   uz: {
@@ -213,6 +214,7 @@ const TRANSLATIONS = {
       "Yunusobodda 2 xonali 3 mln gacha",
       "Chilonzorda talabaga xona",
       "Metro yonida uy"
+      free_badge: "bepul"
     ]
   },
   en: {
@@ -303,6 +305,7 @@ const TRANSLATIONS = {
       "2-room in Yunusabad under 3M",
       "Room for student in Chilanzar",
       "Housing near metro"
+      free_badge: "free"
     ]
   }
 };
