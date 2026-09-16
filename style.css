@@ -1365,3 +1365,48 @@ button:active { transform: scale(0.98); }
 .floating-ai.hidden.hidden {
   display: none !important;
 }
+/* ===== ФИКС: поднять кнопку AI и уменьшить чат ===== */
+.floating-ai {
+  bottom: 110px !important;
+  right: 16px !important;
+  width: 56px !important;
+  height: 56px !important;
+}
+
+@media (min-width: 768px) {
+  .floating-ai {
+    bottom: 32px !important;
+    right: 32px !important;
+    width: 64px !important;
+    height: 64px !important;
+  }
+}
+
+/* Чат — не на весь экран */
+.heyxolis-modal {
+  max-width: 420px !important;
+  align-items: flex-end !important;
+}
+.heyxolis-panel {
+  height: auto !important;
+  max-height: 78vh !important;
+  min-height: 400px !important;
+  border-radius: 24px 0 0 0 !important;
+}
+
+@media (max-width: 520px) {
+  .heyxolis-panel {
+    max-height: 75vh !important;
+    border-radius: 24px 24px 0 0 !important;
+  }
+}
+
+/* Скрытие по .hidden — жёсткий фикс */
+.heyxolis-modal.hidden,
+.heyxolis-modal.hidden.hidden {
+  display: none !important;
+}
+.floating-ai.hidden,
+.floating-ai.hidden.hidden {
+  display: none !important;
+}
