@@ -178,7 +178,7 @@
     </div>
   </div>
 
-   <div id="detailModal" class="detail-modal hidden">
+  <div id="detailModal" class="detail-modal hidden">
     <div class="detail-header">
       <button class="detail-back" onclick="closeDetail()">←</button>
       <span class="detail-header-title" id="detailHeaderTitle">Объявление</span>
@@ -187,6 +187,15 @@
     <div id="detailSidebar" class="detail-sidebar hidden"></div>
   </div>
 
+  <!-- Плавающая AI-кнопка -->
+  <button id="floatingAI" class="floating-ai hidden" onclick="openHeyXolis()" aria-label="AI Assistant">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0f172a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3l1.8 5.4L19.2 10l-5.4 1.8L12 17.2l-1.8-5.4L4.8 10l5.4-1.6L12 3z"/>
+      <path d="M19 2l.4 1.3L20.7 3.7l-1.3.4L19 5.4l-.4-1.3L17.3 3.7l1.3-.4L19 2z"/>
+    </svg>
+  </button>
+
+  <!-- HeyXolis чат -->
   <div id="heyXolisModal" class="heyxolis-modal hidden">
     <div class="heyxolis-panel">
       <div class="heyxolis-header">
