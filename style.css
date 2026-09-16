@@ -1354,3 +1354,14 @@ button:active { transform: scale(0.98); }
     right: 20px !important;
   }
 }
+/* ============================================ */
+/*  ФИКС: скрытие по .hidden работает всегда    */
+/* ============================================ */
+.heyxolis-modal.hidden,
+.heyxolis-modal.hidden.hidden {
+  display: none !important;
+}
+.floating-ai.hidden,
+.floating-ai.hidden.hidden {
+  display: none !important;
+}
