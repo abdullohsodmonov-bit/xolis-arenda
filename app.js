@@ -1023,7 +1023,6 @@ async function openDetail(id) {
     document.getElementById('detailModal').scrollTop = 0;
     attachGalleryListeners();
 
-    // Показать плавающую AI-кнопку
     const floatBtn = document.getElementById('floatingAI');
     if (floatBtn) floatBtn.classList.remove('hidden');
 
@@ -1122,10 +1121,7 @@ async function askHeyXolis(presetQuestion) {
     }
 
     const data = await res.json();
-    if (data.error) {
-      console.error('AI returned error:', data.error);
-      throw new Error(data.error);
-    }
+    if (data.error) throw new Error(data.error);
 
     thinkMsg.remove();
     const aiMsg = document.createElement('div');
@@ -1138,7 +1134,7 @@ async function askHeyXolis(presetQuestion) {
     heyXolisHistory.push({ role: 'assistant', content: data.answer || '' });
   } catch (err) {
     console.error('HeyXolis error:', err);
-    thinkMsg.textContent = '❌ ' + (lang === 'ru' ? `Ошибка: ${err.message}. Попробуйте позже.` : lang === 'uz' ? `Xatolik: ${err.message}` : `Error: ${err.message}`);
+    thinkMsg.textContent = '❌ ' + (lang === 'ru' ? `Ошибка: ${err.message}. Попробуйте позже.` : `Error: ${err.message}`);
   }
 }
 window.askHeyXolis = askHeyXolis;
@@ -1423,28 +1419,51 @@ async function saveListing() {
     if (editingId) {
       res = await fetch(`${SUPABASE_URL}/rest/v1/listings?id=eq.${editingId}`, {
         method: 'PATCH',
-        headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+        headers: {
+          'apikey': SUPABASE_KEY,
+          'Authorization': `Bearer ${SUPABASE_KEY}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=representation'
+        },
         body: JSON.stringify(data)
       });
     } else {
       res = await fetch(`${SUPABASE_URL}/rest/v1/listings`, {
         method: 'POST',
-        headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+        headers: {
+          'apikey': SUPABASE_KEY,
+          'Authorization': `Bearer ${SUPABASE_KEY}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=representation'
+        },
         body: JSON.stringify(data)
       });
     }
-    if (!res.ok) throw new Error();
+
+    if (!res.ok) {
+      const errText = await res.text();
+      console.error('Save error:', res.status, errText);
+      throw new Error(`HTTP ${res.status}: ${errText}`);
+    }
+
+    const result = await res.json();
+    console.log('Saved:', result);
+
     status.textContent = editingId ? t.updated : t.saved;
     status.style.color = 'green';
+
     setTimeout(() => {
       document.getElementById('addModal').classList.add('hidden');
+      editingId = null;
+      formPhotos = [];
       clearForm();
       status.textContent = '';
-      refreshView();
+      if (currentView === 'mine') loadMyListings();
+      else loadListings();
     }, 800);
   } catch (err) {
-    console.error(err);
-    status.textContent = t.error_saving;
+    console.error('saveListing error:', err);
+    status.textContent = '❌ ' + err.message;
     status.style.color = 'red';
   }
 }
