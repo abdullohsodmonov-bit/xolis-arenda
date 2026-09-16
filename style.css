@@ -1076,3 +1076,70 @@ button:active { transform: scale(0.98); }
   border: 1px solid var(--border-color);
 }
 .sidebar-contact-btn.call:hover { background: var(--surface-hover); }
+/* ===== Плавающая AI-кнопка ===== */
+.floating-ai {
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #06b6d4 0%, #10b981 60%, #facc15 100%);
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(6, 182, 212, 0.4), 0 4px 12px rgba(0,0,0,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  z-index: 1900;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  animation: pulseAI 2.5s ease-in-out infinite;
+}
+.floating-ai:hover {
+  transform: scale(1.08);
+  box-shadow: 0 12px 32px rgba(6, 182, 212, 0.5);
+}
+@keyframes pulseAI {
+  0%, 100% { box-shadow: 0 8px 24px rgba(6, 182, 212, 0.4), 0 4px 12px rgba(0,0,0,0.15); }
+  50% { box-shadow: 0 8px 32px rgba(16, 185, 129, 0.6), 0 4px 12px rgba(0,0,0,0.15); }
+}
+
+/* ===== Увеличенный чат HeyXolis ===== */
+.heyxolis-panel {
+  max-width: 620px;
+  max-height: 94vh;
+}
+.heyxolis-messages {
+  max-height: 50vh;
+  min-height: 120px;
+}
+.heyxolis-intro h3 {
+  font-size: 24px;
+}
+
+@media (min-width: 900px) {
+  .floating-ai {
+    bottom: 32px;
+    right: 32px;
+    width: 68px;
+    height: 68px;
+  }
+  .floating-ai svg { width: 30px; height: 30px; }
+
+  .heyxolis-modal {
+    align-items: center;
+    padding: 20px;
+  }
+  .heyxolis-panel {
+    border-radius: 24px;
+    max-width: 680px;
+    max-height: 88vh;
+    padding: 28px 28px 22px 28px;
+  }
+  .heyxolis-intro h3 { font-size: 28px; }
+  .heyxolis-messages { max-height: 55vh; }
+  .heyxolis-msg { font-size: 15px; max-width: 75%; }
+  .heyxolis-input-row { padding: 8px 8px 8px 20px; }
+  .heyxolis-input-row input { font-size: 16px; }
+}
