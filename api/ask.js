@@ -28,8 +28,8 @@ ${context}` },
     { role: 'user', content: question }
   ];
 
-  // Используем самую доступную модель
-  const model = 'llama-3.1-8b-instant';
+  // Актуальная модель Groq (старые Llama отключены 16.08.2026)
+  const model = 'openai/gpt-oss-20b';
 
   try {
     const groqRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
@@ -49,7 +49,6 @@ ${context}` },
     const responseText = await groqRes.text();
 
     if (!groqRes.ok) {
-      // Возвращаем НАСТОЯЩУЮ ошибку Groq
       console.error('Groq error:', groqRes.status, responseText);
       return res.status(500).json({
         error: `Groq ${groqRes.status}`,
