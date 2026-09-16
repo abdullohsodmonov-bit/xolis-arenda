@@ -396,8 +396,6 @@ function applyTheme(theme) {
 function toggleTheme() {
   const current = document.documentElement.getAttribute('data-theme') || 'light';
   applyTheme(current === 'dark' ? 'light' : 'dark');
-  const menu = document.getElementById('menuDropdown');
-  if (menu) menu.classList.add('hidden');
 }
 window.toggleTheme = toggleTheme;
 
@@ -511,40 +509,6 @@ async function geocodeAddress(address) {
   } catch (err) { console.error('Geocode error:', err); return null; }
 }
 
-// ============ МЕНЮ ============
-function toggleMenu() {
-  const menu = document.getElementById('menuDropdown');
-  if (!menu) return;
-  menu.classList.toggle('hidden');
-}
-window.toggleMenu = toggleMenu;
-
-function setupMenu() {
-  const menuBtn = document.getElementById('menuBtn');
-  if (menuBtn && !menuBtn.dataset.bound) {
-    menuBtn.dataset.bound = '1';
-    menuBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      toggleMenu();
-    });
-  }
-}
-
-document.addEventListener('click', (e) => {
-  const menu = document.getElementById('menuDropdown');
-  if (menu && !menu.classList.contains('hidden') && !menu.contains(e.target)) {
-    menu.classList.add('hidden');
-  }
-});
-
-// Вызвать после загрузки DOM
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', setupMenu);
-} else {
-  setupMenu();
-}
-
 // ============ ИНФО ============
 const INFO_CONTENT = {
   ru: {
@@ -585,7 +549,6 @@ function openInfo(key) {
   document.getElementById('infoTitle').textContent = titles[key] || 'Info';
   document.getElementById('infoBody').innerHTML = INFO_CONTENT[lang][key] || '';
   document.getElementById('infoModal').classList.remove('hidden');
-  document.getElementById('menuDropdown').classList.add('hidden');
 }
 window.openInfo = openInfo;
 
@@ -595,7 +558,6 @@ document.getElementById('infoClose').onclick = () => {
 
 // ============ БЮДЖЕТ ============
 function openBudgetCalc() {
-  document.getElementById('menuDropdown').classList.add('hidden');
   document.getElementById('budgetModal').classList.remove('hidden');
   document.getElementById('budgetStatus').textContent = '';
 }
