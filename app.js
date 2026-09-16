@@ -1582,5 +1582,10 @@ if (tg && tg.onEvent) {
     }
   });
 }
-
+// ============ Дополнительные функции для главной ============
+function scrollToListings() {
+  const el = document.getElementById('listingsSection');
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+window.scrollToListings = scrollToListings;
 loadLang(detectLang());
