@@ -116,6 +116,7 @@ const TRANSLATIONS = {
     deposit: "Залог",
     negotiable: "по договорённости",
     yandex_nav: "Открыть в Яндекс.Навигаторе",
+    thinking: "Думаю...",
     typewriter: [
       "Что вы ищете? Просто напишите...",
       "2-комнатная в Юнусабаде до 3 млн",
@@ -136,8 +137,8 @@ const TRANSLATIONS = {
     no_my_listings: "Sizda hali e'lonlar yo'q",
     error_loading: "Yuklashda xatolik.", not_found: "Hech narsa topilmadi",
     ai_thinking: "🤖 AI o'ylayapti...",
-    ai_found: "✨ AI sizning so'rovingiz bo'yicha topdi:",
-    ai_error: "AI so'rovni tushunmadi. Boshqacha yozing.",
+    ai_found: "✨ AI topdi:",
+    ai_error: "AI so'rovni tushunmadi.",
     new_listing: "Yangi e'lon", edit_listing: "E'lonni tahrirlash",
     f_photos: "Rasmlar", add_photo: "📷 Rasm qo'shish",
     uploading: "Rasm yuklanmoqda...", geocoding: "Koordinatalar aniqlanmoqda...",
@@ -145,7 +146,7 @@ const TRANSLATIONS = {
     f_price: "Narx (so'm)", f_rooms: "Xonalar soni", f_area: "Maydon (m²)",
     f_address: "Manzil", f_address_ph: "Yunusobod, 4-mavze",
     f_description: "Tavsif", f_description_ph: "Yorug' kvartira",
-    f_telegram: "Ijara beruvchining Telegram", f_telegram_ph: "@username",
+    f_telegram: "Telegram", f_telegram_ph: "@username",
     f_student: "Talabalarga mumkin",
     save: "Saqlash", cancel: "Bekor qilish", close: "Yopish",
     saving: "Saqlanmoqda...", saved: "Saqlandi! ✅", updated: "Yangilandi! ✅",
@@ -155,9 +156,9 @@ const TRANSLATIONS = {
     sum: "so'm", rooms_short: "xona",
     report_broker: "Bu makler", report_not_actual: "Aktual emas",
     only_telegram: "Faqat Telegram orqali.",
-    thanks_report: "Rahmat! Shikoyat yuborildi.",
+    thanks_report: "Rahmat!",
     already_reported: "Siz allaqachon shikoyat qilgansiz.",
-    error_report: "Shikoyat yuborishda xatolik.",
+    error_report: "Xatolik.",
     limit_reached: "Sizda allaqachon 2 ta faol e'lon bor.",
     err_title_short: "Sarlavha kamida 10 ta belgi.",
     err_price_small: "Narx kamida 30 000 so'm.",
@@ -172,19 +173,19 @@ const TRANSLATIONS = {
     translate_error: "Tarjima qilish imkonsiz.",
     edit: "✏️ Tahrirlash", delete: "🗑️ O'chirish",
     confirm_delete: "E'lonni o'chirishni xohlaysizmi?",
-    deleted: "O'chirildi", error_delete: "O'chirishda xatolik",
+    deleted: "O'chirildi", error_delete: "Xatolik",
     error_upload: "Rasm yuklashda xatolik",
     menu_budget: "Budjet kalkulyatori", menu_about: "Loyiha haqida",
     menu_rules: "E'lon qoidalari", menu_faq: "FAQ", menu_contacts: "Aloqa",
     menu_theme_dark: "Tungi rejim",
     menu_theme_light: "Kunduzgi rejim",
     budget_title: "Budjet kalkulyatori",
-    budget_desc: "Oylik daromadingizni kiriting — biz sizga mos uylarni ko'rsatamiz.",
+    budget_desc: "Oylik daromadingizni kiriting.",
     budget_income: "Oylik daromad (so'm)",
     budget_strict: "Daromadning 30% dan ko'p emas",
     budget_apply: "Ko'rsatish", budget_empty: "Daromadni kiriting",
     footer_about: "Loyiha haqida", footer_rules: "E'lon qoidalari", footer_privacy: "Maxfiylik",
-    footer_help_title: "Yordam", footer_faq: "FAQ", footer_safety: "Xavfsizlik", footer_report: "Shikoyat qilish",
+    footer_help_title: "Yordam", footer_faq: "FAQ", footer_safety: "Xavfsizlik", footer_report: "Shikoyat",
     footer_contacts_title: "Aloqa", footer_telegram: "Telegram", footer_instagram: "Instagram", footer_email: "Email",
     footer_bottom: "© 2026 XolisArenda · O'zbekistonda yaratilgan",
     details_btn: "Batafsil →",
@@ -206,6 +207,7 @@ const TRANSLATIONS = {
     deposit: "Garov",
     negotiable: "kelishuv bo'yicha",
     yandex_nav: "Yandex Navigator-da ochish",
+    thinking: "O'ylayapman...",
     typewriter: [
       "Nima qidirmoqdasiz? Yozing...",
       "Yunusobodda 2 xonali 3 mln gacha",
@@ -226,16 +228,16 @@ const TRANSLATIONS = {
     no_my_listings: "You have no listings yet",
     error_loading: "Loading error.", not_found: "Nothing found",
     ai_thinking: "🤖 AI is thinking...",
-    ai_found: "✨ AI found by your query:",
-    ai_error: "AI couldn't understand. Try differently.",
+    ai_found: "✨ AI found:",
+    ai_error: "AI couldn't understand.",
     new_listing: "New listing", edit_listing: "Edit listing",
     f_photos: "Photos", add_photo: "📷 Add photo",
-    uploading: "Uploading photo...", geocoding: "Getting coordinates...",
+    uploading: "Uploading...", geocoding: "Getting coordinates...",
     f_title: "Title", f_title_ph: "Example: Apartment in Yunusabad",
     f_price: "Price (sum)", f_rooms: "Rooms", f_area: "Area (m²)",
     f_address: "Address", f_address_ph: "Yunusabad, 4th block",
     f_description: "Description", f_description_ph: "Bright apartment",
-    f_telegram: "Landlord's Telegram", f_telegram_ph: "@username",
+    f_telegram: "Telegram", f_telegram_ph: "@username",
     f_student: "Students allowed",
     save: "Save", cancel: "Cancel", close: "Close",
     saving: "Saving...", saved: "Saved! ✅", updated: "Updated! ✅",
@@ -245,9 +247,9 @@ const TRANSLATIONS = {
     sum: "sum", rooms_short: "rooms",
     report_broker: "This is a broker", report_not_actual: "Not actual",
     only_telegram: "Telegram only.",
-    thanks_report: "Thanks! Report sent.",
+    thanks_report: "Thanks!",
     already_reported: "You already reported.",
-    error_report: "Report sending error.",
+    error_report: "Error.",
     limit_reached: "You already have 2 active listings.",
     err_title_short: "Title minimum 10 characters.",
     err_price_small: "Price minimum 30,000 sum.",
@@ -256,7 +258,7 @@ const TRANSLATIONS = {
     err_address: "Address minimum 5 characters.",
     err_description: "Description minimum 30 characters.",
     err_telegram: "Telegram must start with @ or +.",
-    chars_min: "chars minimum", max_value: "Maximum", ok: "Ok",
+    chars_min: "chars min", max_value: "Max", ok: "Ok",
     translate: "Translate", show_original: "Original",
     translate_error: "Translation failed.",
     edit: "✏️ Edit", delete: "🗑️ Delete",
@@ -268,12 +270,12 @@ const TRANSLATIONS = {
     menu_theme_dark: "Dark theme",
     menu_theme_light: "Light theme",
     budget_title: "Budget calculator",
-    budget_desc: "Enter your monthly income — we'll show what you can afford.",
+    budget_desc: "Enter your monthly income.",
     budget_income: "Monthly income (sum)",
     budget_strict: "Not more than 30% of income",
     budget_apply: "Show", budget_empty: "Enter income",
     footer_about: "About", footer_rules: "Posting rules", footer_privacy: "Privacy",
-    footer_help_title: "Help", footer_faq: "FAQ", footer_safety: "Safety", footer_report: "Report a problem",
+    footer_help_title: "Help", footer_faq: "FAQ", footer_safety: "Safety", footer_report: "Report",
     footer_contacts_title: "Contacts", footer_telegram: "Telegram", footer_instagram: "Instagram", footer_email: "Email",
     footer_bottom: "© 2026 XolisArenda · Made in Uzbekistan",
     details_btn: "Details →",
@@ -295,6 +297,7 @@ const TRANSLATIONS = {
     deposit: "Deposit",
     negotiable: "negotiable",
     yandex_nav: "Open in Yandex Navigator",
+    thinking: "Thinking...",
     typewriter: [
       "What are you looking for? Just type...",
       "2-room in Yunusabad under 3M",
@@ -470,26 +473,26 @@ document.addEventListener('click', (e) => {
 const INFO_CONTENT = {
   ru: {
     about: `<h3>О проекте XolisArenda</h3><p>XolisArenda — это бесплатная платформа для поиска аренды жилья в Узбекистане. Мы помогаем студентам и приезжим найти жильё без маклеров и лишних комиссий.</p><p>Наша цель — сделать рынок аренды прозрачнее, безопаснее и удобнее для всех.</p>`,
-    rules: `<h3>Правила публикации</h3><ul><li>Публиковать можно только реальные объявления о сдаче жилья.</li><li>Заголовок — минимум 10 символов.</li><li>Описание — минимум 30 символов.</li><li>Цена — не ниже 30 000 сум.</li><li>Максимум 2 активных объявления.</li><li>Фейковые объявления удаляются.</li></ul>`,
+    rules: `<h3>Правила публикации</h3><ul><li>Публиковать можно только реальные объявления о сдаче жилья.</li><li>Заголовок — минимум 10 символов.</li><li>Описание — минимум 30 символов.</li><li>Цена — не ниже 30 000 сум.</li><li>Максимум 2 активных объявления.</li></ul>`,
     faq: `<h3>FAQ</h3><p><b>Сколько стоит публикация?</b><br>Сейчас — бесплатно.</p><p><b>Кто проверяет объявления?</b><br>Пользователи могут жаловаться. После 10 жалоб — автоскрытие.</p>`,
-    privacy: `<h3>Конфиденциальность</h3><p>Мы используем только ваш Telegram ID. Никакие данные не передаются третьим лицам.</p>`,
+    privacy: `<h3>Конфиденциальность</h3><p>Мы используем только ваш Telegram ID.</p>`,
     safety: `<h3>Безопасность</h3><ul><li>Никогда не отправляйте предоплату до просмотра.</li><li>Встречайтесь лично.</li><li>Подписывайте договор аренды.</li></ul>`,
-    report: `<h3>Пожаловаться</h3><p>Нажмите «Это риелтор» в карточке или напишите: <b>@xolisarenda_support</b>.</p>`,
+    report: `<h3>Пожаловаться</h3><p>Напишите: <b>@xolisarenda_support</b>.</p>`,
     contacts: `<h3>Контакты</h3><p><b>Telegram:</b> @xolisarenda_support</p><p><b>Email:</b> info@xolisarenda.uz</p><p><b>Instagram:</b> @xolisarenda</p>`
   },
   uz: {
-    about: `<h3>XolisArenda loyihasi haqida</h3><p>XolisArenda — O'zbekistonda ijara uylarni topish uchun bepul platforma.</p>`,
-    rules: `<h3>E'lon qoidalari</h3><ul><li>Faqat real e'lonlar.</li><li>Sarlavha kamida 10 belgi.</li><li>Tavsif kamida 30 belgi.</li><li>Narx kamida 30 000 so'm.</li><li>Maksimum 2 e'lon.</li></ul>`,
-    faq: `<h3>FAQ</h3><p><b>Qancha turadi?</b><br>Hozircha bepul.</p>`,
-    privacy: `<h3>Maxfiylik</h3><p>Faqat Telegram ID ishlatiladi.</p>`,
+    about: `<h3>XolisArenda haqida</h3><p>Bepul platforma O'zbekistonda ijara uylarni topish uchun.</p>`,
+    rules: `<h3>Qoidalar</h3><ul><li>Faqat real e'lonlar.</li><li>Sarlavha kamida 10 belgi.</li><li>Tavsif kamida 30 belgi.</li><li>Narx kamida 30 000 so'm.</li></ul>`,
+    faq: `<h3>FAQ</h3><p>Hozircha bepul.</p>`,
+    privacy: `<h3>Maxfiylik</h3><p>Faqat Telegram ID.</p>`,
     safety: `<h3>Xavfsizlik</h3><ul><li>Oldindan to'lov qilmang.</li><li>Shaxsan uchrashing.</li><li>Shartnoma imzolang.</li></ul>`,
     report: `<h3>Shikoyat</h3><p>Yozing: <b>@xolisarenda_support</b>.</p>`,
     contacts: `<h3>Aloqa</h3><p><b>Telegram:</b> @xolisarenda_support</p><p><b>Email:</b> info@xolisarenda.uz</p>`
   },
   en: {
-    about: `<h3>About XolisArenda</h3><p>XolisArenda is a free platform for finding rental housing in Uzbekistan.</p>`,
-    rules: `<h3>Posting rules</h3><ul><li>Only real listings.</li><li>Title min 10 chars.</li><li>Description min 30 chars.</li><li>Price min 30,000 sum.</li><li>Max 2 listings.</li></ul>`,
-    faq: `<h3>FAQ</h3><p><b>Cost?</b><br>Free for now.</p>`,
+    about: `<h3>About</h3><p>Free platform for rental housing in Uzbekistan.</p>`,
+    rules: `<h3>Rules</h3><ul><li>Only real listings.</li><li>Title min 10 chars.</li><li>Description min 30 chars.</li><li>Price min 30,000 sum.</li></ul>`,
+    faq: `<h3>FAQ</h3><p>Free for now.</p>`,
     privacy: `<h3>Privacy</h3><p>Only Telegram ID is used.</p>`,
     safety: `<h3>Safety</h3><ul><li>Never pay in advance.</li><li>Meet in person.</li><li>Sign a lease.</li></ul>`,
     report: `<h3>Report</h3><p>Contact: <b>@xolisarenda_support</b>.</p>`,
@@ -1020,6 +1023,10 @@ async function openDetail(id) {
     document.getElementById('detailModal').scrollTop = 0;
     attachGalleryListeners();
 
+    // Показать плавающую AI-кнопку
+    const floatBtn = document.getElementById('floatingAI');
+    if (floatBtn) floatBtn.classList.remove('hidden');
+
     if (item.lat && item.lng) {
       setTimeout(() => {
         const dm = document.getElementById('detailMiniMap');
@@ -1039,6 +1046,8 @@ function closeDetail() {
   document.body.style.overflow = '';
   const sidebar = document.getElementById('detailSidebar');
   if (sidebar) sidebar.classList.add('hidden');
+  const floatBtn = document.getElementById('floatingAI');
+  if (floatBtn) floatBtn.classList.add('hidden');
 }
 window.closeDetail = closeDetail;
 
@@ -1083,7 +1092,7 @@ async function askHeyXolis(presetQuestion) {
 
   const thinkMsg = document.createElement('div');
   thinkMsg.className = 'heyxolis-msg thinking';
-  thinkMsg.textContent = '🤖 ' + (lang === 'ru' ? 'Думаю...' : lang === 'uz' ? "O'ylayapman..." : 'Thinking...');
+  thinkMsg.textContent = '🤖 ' + (t.thinking || 'Думаю...');
   msgs.appendChild(thinkMsg);
   msgs.scrollTop = msgs.scrollHeight;
 
@@ -1105,8 +1114,18 @@ async function askHeyXolis(presetQuestion) {
         history: heyXolisHistory
       })
     });
-    if (!res.ok) throw new Error();
+
+    if (!res.ok) {
+      const errText = await res.text();
+      console.error('AI error status:', res.status, 'body:', errText);
+      throw new Error('HTTP ' + res.status);
+    }
+
     const data = await res.json();
+    if (data.error) {
+      console.error('AI returned error:', data.error);
+      throw new Error(data.error);
+    }
 
     thinkMsg.remove();
     const aiMsg = document.createElement('div');
@@ -1118,7 +1137,8 @@ async function askHeyXolis(presetQuestion) {
     heyXolisHistory.push({ role: 'user', content: q });
     heyXolisHistory.push({ role: 'assistant', content: data.answer || '' });
   } catch (err) {
-    thinkMsg.textContent = '❌ ' + (lang === 'ru' ? 'Ошибка. Попробуйте позже.' : lang === 'uz' ? 'Xatolik.' : 'Error. Try later.');
+    console.error('HeyXolis error:', err);
+    thinkMsg.textContent = '❌ ' + (lang === 'ru' ? `Ошибка: ${err.message}. Попробуйте позже.` : lang === 'uz' ? `Xatolik: ${err.message}` : `Error: ${err.message}`);
   }
 }
 window.askHeyXolis = askHeyXolis;
@@ -1534,7 +1554,6 @@ attachNumberFormatting('f_price');
   if (el) el.addEventListener('input', updateAllHints);
 });
 
-// Применяем тему
 applyTheme(detectTheme());
 
 if (tg && tg.onEvent) {
