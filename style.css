@@ -1,11 +1,6 @@
-/* ============================================ */
-/*  ТЕМЫ                                        */
-/* ============================================ */
-
 :root, [data-theme="light"] {
   --brand-red: #ff385c;
   --brand-red-dark: #e00b41;
-  --brand-teal: #06b6d4;
   --surface-base: #ffffff;
   --surface-raised: #f7f7f7;
   --surface-hover: #ebebeb;
@@ -82,7 +77,6 @@ p { font-size: 14px; color: var(--text-secondary); }
   backdrop-filter: blur(8px);
 }
 .lang-select-hero option { color: #222; }
-
 .hero-full-title {
   color: #ffffff;
   font-size: 34px;
@@ -144,23 +138,11 @@ p { font-size: 14px; color: var(--text-secondary); }
 }
 .hero-cta-or { color: rgba(255,255,255,0.7); font-size: 13px; font-weight: 500; }
 
-/* ===== СЕКЦИЯ СЕРВИСОВ ===== */
+/* ===== СЕРВИСЫ ===== */
 .section-services { padding: 60px 20px 40px 20px; text-align: center; }
-.section-title {
-  font-size: 28px;
-  font-weight: 800;
-  letter-spacing: -0.6px;
-  margin-bottom: 8px;
-  color: var(--text-primary);
-}
+.section-title { font-size: 28px; font-weight: 800; letter-spacing: -0.6px; margin-bottom: 8px; color: var(--text-primary); }
 .section-subtitle { font-size: 15px; color: var(--text-secondary); margin-bottom: 36px; }
-.services-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 14px;
-  max-width: 1100px;
-  margin: 0 auto;
-}
+.services-grid { display: grid; grid-template-columns: 1fr; gap: 14px; max-width: 1100px; margin: 0 auto; }
 .service-card {
   background: var(--surface-base);
   border: 1px solid var(--border-color);
@@ -170,19 +152,14 @@ p { font-size: 14px; color: var(--text-secondary); }
   cursor: pointer;
   transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
 }
-.service-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 32px rgba(0,0,0,0.08);
-  border-color: #06b6d4;
-}
+.service-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,0.08); border-color: #06b6d4; }
 .service-icon { font-size: 32px; margin-bottom: 12px; display: block; }
 .service-card h3 { font-size: 16px; margin-bottom: 4px; color: var(--text-primary); }
 .service-card p { font-size: 13px; color: var(--text-secondary); margin: 0; }
 
-/* ===== СЕКЦИЯ ОБЪЯВЛЕНИЙ ===== */
+/* ===== ОБЪЯВЛЕНИЯ ===== */
 .section-listings { padding: 20px 20px 60px 20px; max-width: 1200px; margin: 0 auto; }
 
-/* ===== КНОПКИ ===== */
 button {
   padding: 14px 20px;
   background: var(--brand-red);
@@ -198,7 +175,6 @@ button {
 button:hover { background: var(--brand-red-dark); }
 
 .add-btn { width: 100%; margin-bottom: 20px; font-weight: 700; }
-
 .tabs { display: flex; gap: 8px; margin-bottom: 12px; }
 .tab-btn {
   flex: 1; padding: 12px; background: var(--surface-raised);
@@ -206,11 +182,7 @@ button:hover { background: var(--brand-red-dark); }
   border-radius: 12px; cursor: pointer;
   font-size: 14px; font-weight: 500;
 }
-.tab-btn.active {
-  background: var(--text-primary); color: var(--surface-base);
-  border-color: var(--text-primary);
-}
-
+.tab-btn.active { background: var(--text-primary); color: var(--surface-base); border-color: var(--text-primary); }
 .view-toggle {
   display: flex; gap: 6px; margin-bottom: 16px;
   background: var(--surface-raised); padding: 4px; border-radius: 12px;
@@ -395,7 +367,7 @@ button:hover { background: var(--brand-red-dark); }
 .translate-btn { background: #e3f2fd; color: #1565c0; border-color: #90caf9; }
 [data-theme="dark"] .translate-btn { background: rgba(21, 101, 192, 0.15); color: #64b5f6; }
 
-/* ===== СТРЕЛКИ ГАЛЕРЕЙ — ТОЛЬКО ПРИ HOVER ===== */
+/* ===== СТРЕЛКИ ГАЛЕРЕЙ — ПОЯВЛЯЮТСЯ ПРИ HOVER ===== */
 .gallery-arrow {
   position: absolute;
   top: 50%;
@@ -415,16 +387,15 @@ button:hover { background: var(--brand-red-dark); }
   align-items: center;
   justify-content: center;
   box-shadow: 0 2px 8px rgba(0,0,0,0.25);
-  transition: transform 0.15s, background 0.15s, opacity 0.25s;
+  transition: background 0.15s, opacity 0.25s;
   font-family: -apple-system, sans-serif;
   opacity: 0;
   pointer-events: none;
 }
-.gallery-arrow:hover { background: #ffffff; transform: scale(1.08); }
+.gallery-arrow:hover { background: #ffffff; }
 .gallery-arrow-prev { left: 10px; }
 .gallery-arrow-next { right: 10px; }
 
-/* Появление при hover на галерею */
 .card-gallery:hover .gallery-arrow,
 .detail-gallery:hover .gallery-arrow,
 .detail-gallery-grid:hover .gallery-arrow {
@@ -432,12 +403,99 @@ button:hover { background: var(--brand-red-dark); }
   pointer-events: auto;
 }
 
-/* На мобильном стрелки скрыты — там свайп */
 @media (max-width: 768px) {
   .gallery-arrow { display: none !important; }
 }
 
-/* ===== ФОТО-КНОПКИ ===== */
+/* Кнопка избранного на карточке */
+.card-fav-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.95);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  z-index: 4;
+  transition: transform 0.15s;
+}
+.card-fav-btn:hover { transform: scale(1.1); }
+.card-fav-btn svg { width: 20px; height: 20px; }
+
+/* ===== ГАЛЕРЕЯ В ОБЪЯВЛЕНИИ ===== */
+.detail-gallery {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: var(--surface-raised);
+}
+.detail-gallery .gallery-scroll img { height: 300px; }
+
+.detail-gallery-grid {
+  display: none;
+  gap: 4px;
+  width: 100%;
+  height: 440px;
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+}
+.detail-gallery-grid .dg-main {
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+  height: 100%;
+}
+.detail-gallery-grid .dg-main img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s;
+}
+.detail-gallery-grid .dg-main:hover img { transform: scale(1.03); }
+
+.detail-gallery-grid .dg-side {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 4px;
+  height: 100%;
+}
+.detail-gallery-grid .dg-thumb {
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+}
+.detail-gallery-grid .dg-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s;
+}
+.detail-gallery-grid .dg-thumb:hover img { transform: scale(1.05); }
+.detail-gallery-grid .dg-more {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: -0.5px;
+}
+
 .detail-gallery-actions {
   position: absolute;
   top: 14px;
@@ -463,27 +521,28 @@ button:hover { background: var(--brand-red-dark); }
 .detail-gallery-btn:hover { transform: scale(1.08); }
 .detail-gallery-btn svg { width: 22px; height: 22px; }
 
-/* Кнопка "в избранное" на карточке в каталоге */
-.card-fav-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.95);
-  border: none;
-  cursor: pointer;
-  padding: 0;
+/* Нет фото — заглушка */
+.detail-no-photo {
+  height: 300px;
+  background: var(--surface-raised);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-  z-index: 4;
-  transition: transform 0.15s;
+  gap: 12px;
+  color: var(--text-secondary);
 }
-.card-fav-btn:hover { transform: scale(1.1); }
-.card-fav-btn svg { width: 20px; height: 20px; }
+.detail-no-photo p { font-size: 14px; margin: 0; color: var(--text-secondary); }
+
+/* ДЕСКТОП — показываем сетку, скрываем свайп */
+@media (min-width: 900px) {
+  .detail-gallery { display: none !important; }
+  .detail-gallery-grid { display: grid !important; }
+  .detail-gallery-grid.single-photo { grid-template-columns: 1fr; }
+  .detail-gallery-grid.two-photos { grid-template-columns: 1fr 1fr; }
+  .detail-gallery-grid:not(.single-photo):not(.two-photos) { grid-template-columns: 1.6fr 1fr; }
+  .detail-no-photo { height: 440px; border-radius: 16px; }
+}
 
 /* ===== МОДАЛЬНЫЕ ===== */
 .modal {
@@ -599,10 +658,7 @@ button:hover { background: var(--brand-red-dark); }
 .detail-header-title { font-size: 16px; font-weight: 600; color: var(--text-primary); }
 .detail-body { padding: 20px 16px 100px 16px; }
 
-.detail-hero-title {
-  font-size: 26px; font-weight: 800; letter-spacing: -0.6px;
-  line-height: 1.2; color: var(--text-primary); margin-bottom: 12px;
-}
+.detail-hero-title { font-size: 26px; font-weight: 800; letter-spacing: -0.6px; line-height: 1.2; color: var(--text-primary); margin-bottom: 12px; }
 .detail-loc-row { display: flex; align-items: center; gap: 6px; font-size: 14px; color: var(--text-secondary); margin-bottom: 8px; }
 .detail-price-hero { display: flex; align-items: baseline; gap: 10px; margin: 16px 0 20px 0; flex-wrap: wrap; }
 .detail-price-big {
@@ -691,100 +747,7 @@ button:hover { background: var(--brand-red-dark); }
   font-size: 15px; font-weight: 700; text-align: center;
 }
 
-/* ============================================ */
-/*  ГАЛЕРЕЯ В ОБЪЯВЛЕНИИ — СЕТКА КАК IMMOSCOUT */
-/* ============================================ */
-
-/* Мобильная версия — свайп-скролл (по умолчанию) */
-.detail-gallery {
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-  background: var(--surface-raised);
-}
-.detail-gallery .gallery-scroll img { height: 300px; }
-
-/* Сетка — только на десктопе */
-.detail-gallery-grid {
-  display: none;
-  gap: 4px;
-  width: 100%;
-  height: 440px;
-  border-radius: 16px;
-  overflow: hidden;
-  position: relative;
-}
-.detail-gallery-grid .dg-main {
-  position: relative;
-  cursor: pointer;
-  overflow: hidden;
-  height: 100%;
-}
-.detail-gallery-grid .dg-main img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  transition: transform 0.3s;
-}
-.detail-gallery-grid .dg-main:hover img { transform: scale(1.03); }
-
-.detail-gallery-grid .dg-side {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  gap: 4px;
-  height: 100%;
-}
-.detail-gallery-grid .dg-thumb {
-  position: relative;
-  cursor: pointer;
-  overflow: hidden;
-}
-.detail-gallery-grid .dg-thumb img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  transition: transform 0.3s;
-}
-.detail-gallery-grid .dg-thumb:hover img { transform: scale(1.05); }
-.detail-gallery-grid .dg-more {
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.55);
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 22px;
-  font-weight: 700;
-  font-family: 'Inter', sans-serif;
-  letter-spacing: -0.5px;
-}
-
-.detail-gallery-actions {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  display: flex;
-  gap: 8px;
-  z-index: 4;
-}
-
-/* Показываем сетку на десктопе, скрываем свайп */
-@media (min-width: 900px) {
-  .detail-gallery { display: none !important; }
-  .detail-gallery-grid {
-    display: grid !important;
-    grid-template-columns: 1.6fr 1fr;
-  }
-}
-
-/* ============================================ */
-/*  ПОЛНОЭКРАННЫЙ ПРОСМОТР ФОТО                 */
-/* ============================================ */
-
+/* ===== ФОТО-ПРОСМОТР ===== */
 .photo-viewer {
   position: fixed;
   inset: 0;
@@ -804,8 +767,6 @@ button:hover { background: var(--brand-red-dark); }
   border-radius: 8px;
   pointer-events: none;
 }
-
-/* Кнопка закрытия */
 .photo-viewer-close {
   position: absolute;
   top: 16px;
@@ -828,8 +789,6 @@ button:hover { background: var(--brand-red-dark); }
   font-family: -apple-system, sans-serif;
 }
 .photo-viewer-close:hover { background: rgba(255,255,255,0.3); }
-
-/* Стрелки — БЕЗ transform translateY, центрируем через top+margin-top */
 .photo-viewer-prev,
 .photo-viewer-next {
   position: absolute;
@@ -856,7 +815,6 @@ button:hover { background: var(--brand-red-dark); }
 .photo-viewer-next:hover { background: rgba(255,255,255,0.3); }
 .photo-viewer-prev { left: 16px; }
 .photo-viewer-next { right: 16px; }
-
 .photo-viewer-counter {
   position: absolute;
   bottom: 24px;
@@ -893,10 +851,7 @@ button:hover { background: var(--brand-red-dark); }
   .detail-gallery-btn svg { width: 18px; height: 18px; }
 }
 
-/* ============================================ */
-/*  HEYXOLIS                                    */
-/* ============================================ */
-
+/* ===== HEYXOLIS ===== */
 .heyxolis-modal {
   position: fixed !important;
   top: 0 !important; right: 0 !important; bottom: 0 !important;
@@ -1059,15 +1014,9 @@ button:hover { background: var(--brand-red-dark); }
   max-width: 1100px; margin: 0 auto;
 }
 
-/* ============================================ */
-/*  ДЕСКТОП                                     */
-/* ============================================ */
-
+/* ===== ДЕСКТОП ===== */
 @media (min-width: 768px) {
-  .hero-full {
-    min-height: 680px;
-    padding: 32px 48px 60px 48px;
-  }
+  .hero-full { min-height: 680px; padding: 32px 48px 60px 48px; }
   .hero-full-inner { max-width: 780px; }
   .hero-full-title { font-size: 56px; margin-bottom: 12px; letter-spacing: -1.5px; }
   .hero-full-subtitle { font-size: 20px; margin-bottom: 36px; }
@@ -1077,31 +1026,20 @@ button:hover { background: var(--brand-red-dark); }
   .search-submit { width: 52px; height: 52px; }
   .search-filters { grid-template-columns: 1fr 1fr 1fr auto; padding: 16px 20px 18px 20px; }
   .hero-cta { padding: 14px 26px; font-size: 15px; }
-
   .section-services { padding: 80px 48px 60px 48px; }
   .section-title { font-size: 40px; }
   .section-subtitle { font-size: 17px; }
   .services-grid { grid-template-columns: repeat(4, 1fr); gap: 20px; }
-
   .section-listings { padding: 40px 48px 80px 48px; }
-
   .footer-grid { grid-template-columns: repeat(4, 1fr); gap: 48px; }
   .site-footer { padding: 60px 48px 32px 48px; }
-
   .tabs { max-width: 500px; margin: 0 auto 12px auto; }
   .view-toggle { max-width: 300px; margin: 0 auto 20px auto; }
   .add-btn { max-width: 400px; margin: 0 auto 32px auto; display: block; }
-
-  #listings {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 24px;
-  }
+  #listings { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; }
   .card { margin-bottom: 0; }
   .gallery-scroll img { height: 200px; }
-
   .map-container { height: 600px; border-radius: 20px; }
-
   .detail-modal { display: grid; grid-template-columns: 1fr 380px; }
   .detail-header { grid-column: 1 / -1; }
   .detail-body { max-width: none; padding: 32px 40px 60px 40px; margin: 0; }
@@ -1122,25 +1060,12 @@ button:hover { background: var(--brand-red-dark); }
   .detail-sticky-contact { display: none; }
   .detail-body { padding-bottom: 60px; }
   .report-row, .owner-row { max-width: 500px; }
-
   .modal-content { max-width: 500px; }
-
-  .floating-ai {
-    bottom: 32px !important;
-    right: 32px !important;
-    width: 64px !important;
-    height: 64px !important;
-  }
+  .floating-ai { bottom: 32px !important; right: 32px !important; width: 64px !important; height: 64px !important; }
   .floating-ai svg { width: 28px; height: 28px; }
-
-  .heyxolis-panel {
-    border-radius: 24px 0 0 24px !important;
-    max-height: 85vh !important;
-    min-height: 480px !important;
-  }
+  .heyxolis-panel { border-radius: 24px 0 0 24px !important; max-height: 85vh !important; min-height: 480px !important; }
   .heyxolis-intro h3 { font-size: 26px; }
   .heyxolis-msg { font-size: 15px; }
-
   .detail-footer { padding: 60px 40px 32px 40px; }
   .detail-footer-grid { grid-template-columns: repeat(4, 1fr); gap: 48px; }
 }
@@ -1162,6 +1087,6 @@ button:hover { background: var(--brand-red-dark); }
   .service-icon { font-size: 26px; }
   .service-card h3 { font-size: 14px; }
   .service-card p { font-size: 12px; }
-  .section-listings { padding: 16px 16px 40px 40px; padding-right: 16px; }
+  .section-listings { padding: 16px 16px 40px 16px; }
   .site-footer { padding: 32px 16px 20px 16px; }
 }
