@@ -583,6 +583,143 @@ document.getElementById('budgetApply').onclick = () => {
 };
 attachNumberFormatting('budgetIncome');
 
+// ============ ПРОСМОТР ФОТО ============
+let photoViewerImages = [];
+let photoViewerIndex = 0;
+
+function openPhotoViewer(images, index) {
+  photoViewerImages = Array.isArray(images) ? images.slice() : [];
+  photoViewerIndex = index || 0;
+  if (!photoViewerImages.length) return;
+  updatePhotoViewer();
+  document.getElementById('photoViewer').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+window.openPhotoViewer = openPhotoViewer;
+
+function updatePhotoViewer() {
+  const img = document.getElementById('photoViewerImg');
+  const counter = document.getElementById('photoViewerCounter');
+  if (!photoViewerImages.length) return;
+  img.src = photoViewerImages[photoViewerIndex];
+  counter.textContent = `${photoViewerIndex + 1} / ${photoViewerImages.length}`;
+}
+
+function closePhotoViewer() {
+  document.getElementById('photoViewer').classList.add('hidden');
+  document.getElementById('photoViewerImg').src = '';
+  document.body.style.overflow = '';
+}
+window.closePhotoViewer = closePhotoViewer;
+
+function photoViewerPrev() {
+  if (!photoViewerImages.length) return;
+  photoViewerIndex = (photoViewerIndex - 1 + photoViewerImages.length) % photoViewerImages.length;
+  updatePhotoViewer();
+}
+window.photoViewerPrev = photoViewerPrev;
+
+function photoViewerNext() {
+  if (!photoViewerImages.length) return;
+  photoViewerIndex = (photoViewerIndex + 1) % photoViewerImages.length;
+  updatePhotoViewer();
+}
+window.photoViewerNext = photoViewerNext;
+
+// Клавиатура для фото-просмотра
+document.addEventListener('keydown', (e) => {
+  const viewer = document.getElementById('photoViewer');
+  if (!viewer || viewer.classList.contains('hidden')) return;
+  if (e.key === 'Escape') closePhotoViewer();
+  if (e.key === 'ArrowLeft') photoViewerPrev();
+  if (e.key === 'ArrowRight') photoViewerNext();
+});
+
+// Свайп для фото-просмотра
+let photoTouchStartX = 0;
+document.addEventListener('touchstart', (e) => {
+  const viewer = document.getElementById('photoViewer');
+  if (!viewer || viewer.classList.contains('hidden')) return;
+  photoTouchStartX = e.touches[0].clientX;
+}, { passive: true });
+document.addEventListener('touchend', (e) => {
+  const viewer = document.getElementById('photoViewer');
+  if (!viewer || viewer.classList.contains('hidden')) return;
+  const diff = e.changedTouches[0].clientX - photoTouchStartX;
+  if (Math.abs(diff) > 50) {
+    if (diff > 0) photoViewerPrev();
+    else photoViewerNext();
+  }
+}, { passive: true });
+
+// ============ СТРЕЛКИ ГАЛЕРЕИ ============
+function galleryScroll(btn, dir) {
+  const gallery = btn.closest('.card-gallery, .detail-gallery');
+  if (!gallery) return;
+  const scroll = gallery.querySelector('.gallery-scroll');
+  if (!scroll) return;
+  scroll.scrollBy({ left: dir * scroll.clientWidth, behavior: 'smooth' });
+}
+window.galleryScroll = galleryScroll;
+
+// ============ ИЗБРАННОЕ ============
+function isFavorite(id) {
+  try {
+    const favs = JSON.parse(localStorage.getItem('favorites') || '[]');
+    return favs.includes(id);
+  } catch { return false; }
+}
+function toggleFavorite(id, ev) {
+  if (ev) ev.stopPropagation();
+  try {
+    let favs = JSON.parse(localStorage.getItem('favorites') || '[]');
+    const idx = favs.indexOf(id);
+    if (idx >= 0) favs.splice(idx, 1);
+    else favs.push(id);
+    localStorage.setItem('favorites', JSON.stringify(favs));
+    updateFavButtons(id);
+  } catch (err) { console.error(err); }
+}
+window.toggleFavorite = toggleFavorite;
+
+function updateFavButtons(id) {
+  const isFav = isFavorite(id);
+  document.querySelectorAll(`[data-fav-id="${id}"]`).forEach(btn => {
+    btn.classList.toggle('favorited', isFav);
+    const path = btn.querySelector('path');
+    if (path) {
+      path.setAttribute('fill', isFav ? '#ff385c' : 'none');
+      path.setAttribute('stroke', isFav ? '#ff385c' : '#222');
+    }
+  });
+}
+
+// ============ ПОДЕЛИТЬСЯ ============
+async function shareListing(id, ev) {
+  if (ev) ev.stopPropagation();
+  const item = allListingsCache.find(x => x.id === id) || currentDetailItem;
+  const shareText = item
+    ? `${item.title} — ${Number(item.price).toLocaleString('ru-RU').replace(/,/g, ' ')} ${t.sum}`
+    : 'Xolis Arenda';
+  const shareUrl = 'https://xolis-arenda.vercel.app';
+
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: 'Xolis Arenda',
+        text: shareText,
+        url: shareUrl
+      });
+      return;
+    } catch (err) { /* пользователь отменил */ }
+  }
+
+  // Fallback — Telegram share
+  const url = `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`;
+  window.open(url, '_blank');
+}
+window.shareListing = shareListing;
+
 // ============ ЗАГРУЗКА ============
 async function refreshView() {
   if (currentView === 'mine') return loadMyListings();
@@ -674,13 +811,23 @@ function renderListings(listings, isMine) {
     const description = tr ? tr.description : item.description;
     const isTranslated = !!tr;
     const photos = Array.isArray(item.photos) ? item.photos : [];
+    const fav = isFavorite(item.id);
+
+    const photosJson = JSON.stringify(photos).replace(/"/g, '&quot;');
 
     const galleryHtml = photos.length ? `
       <div class="card-gallery">
         <div class="gallery-scroll">
-          ${photos.map(u => `<img src="${u}" loading="lazy" alt="">`).join('')}
+          ${photos.map((u, i) => `<img src="${u}" loading="lazy" alt="" onclick="event.stopPropagation(); openPhotoViewer(${photosJson}, ${i})">`).join('')}
         </div>
-        ${photos.length > 1 ? `<div class="gallery-dots">${photos.map((_, i) => `<span class="dot${i===0?' active':''}"></span>`).join('')}</div>` : ''}
+        ${photos.length > 1 ? `
+          <button class="gallery-arrow gallery-arrow-prev" onclick="event.stopPropagation(); galleryScroll(this, -1)" aria-label="Назад">‹</button>
+          <button class="gallery-arrow gallery-arrow-next" onclick="event.stopPropagation(); galleryScroll(this, 1)" aria-label="Вперёд">›</button>
+          <div class="gallery-dots">${photos.map((_, i) => `<span class="dot${i===0?' active':''}"></span>`).join('')}</div>
+        ` : ''}
+        <button class="detail-gallery-btn" data-fav-id="${item.id}" style="position:absolute;top:10px;right:10px;z-index:4;" onclick="event.stopPropagation(); toggleFavorite(${item.id}, event)" aria-label="В избранное">
+          <svg viewBox="0 0 24 24" fill="${fav ? '#ff385c' : 'none'}" stroke="${fav ? '#ff385c' : '#222'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
       </div>
     ` : '';
 
@@ -859,16 +1006,31 @@ async function openDetail(id) {
     const address = tr ? tr.address : item.address;
     const description = tr ? tr.description : item.description;
     const isTranslated = !!tr;
+    const fav = isFavorite(item.id);
 
     const headerTitle = document.getElementById('detailHeaderTitle');
     if (headerTitle) headerTitle.textContent = title.length > 30 ? title.slice(0, 30) + '…' : title;
 
+    const photosJson = JSON.stringify(photos).replace(/"/g, '&quot;');
+
     const galleryHtml = photos.length ? `
       <div class="detail-gallery">
         <div class="gallery-scroll">
-          ${photos.map(u => `<img src="${u}" alt="">`).join('')}
+          ${photos.map((u, i) => `<img src="${u}" alt="" onclick="openPhotoViewer(${photosJson}, ${i})">`).join('')}
         </div>
-        ${photos.length > 1 ? `<div class="gallery-dots">${photos.map((_, i) => `<span class="dot${i===0?' active':''}"></span>`).join('')}</div>` : ''}
+        ${photos.length > 1 ? `
+          <button class="gallery-arrow gallery-arrow-prev" onclick="galleryScroll(this, -1)" aria-label="Назад">‹</button>
+          <button class="gallery-arrow gallery-arrow-next" onclick="galleryScroll(this, 1)" aria-label="Вперёд">›</button>
+          <div class="gallery-dots">${photos.map((_, i) => `<span class="dot${i===0?' active':''}"></span>`).join('')}</div>
+        ` : ''}
+        <div class="detail-gallery-actions">
+          <button class="detail-gallery-btn" data-fav-id="${item.id}" onclick="toggleFavorite(${item.id}, event)" aria-label="В избранное">
+            <svg viewBox="0 0 24 24" fill="${fav ? '#ff385c' : 'none'}" stroke="${fav ? '#ff385c' : '#222'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </button>
+          <button class="detail-gallery-btn" onclick="shareListing(${item.id}, event)" aria-label="Поделиться">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+          </button>
+        </div>
       </div>
     ` : '';
 
@@ -1484,9 +1646,6 @@ async function saveListing() {
       console.error('Save error:', res.status, errText);
       throw new Error(`HTTP ${res.status}: ${errText}`);
     }
-
-    const result = await res.json();
-    console.log('Saved:', result);
 
     status.textContent = editingId ? t.updated : t.saved;
     status.style.color = 'green';
