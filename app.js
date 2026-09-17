@@ -41,6 +41,7 @@ const TRANSLATIONS = {
     loading: "Загрузка...", no_listings: "Объявлений пока нет",
     no_my_listings: "У вас пока нет объявлений",
     error_loading: "Ошибка загрузки.", not_found: "Ничего не найдено",
+    no_photos: "Фотографий нет",
     ai_thinking: "🤖 AI думает...",
     ai_found: "✨ AI нашёл по вашему запросу:",
     ai_error: "AI не смог понять запрос. Попробуйте иначе.",
@@ -154,6 +155,7 @@ const TRANSLATIONS = {
     loading: "Yuklanmoqda...", no_listings: "Hozircha e'lonlar yo'q",
     no_my_listings: "Sizda hali e'lonlar yo'q",
     error_loading: "Yuklashda xatolik.", not_found: "Hech narsa topilmadi",
+    no_photos: "Rasmlar yo'q",
     ai_thinking: "🤖 AI o'ylayapti...",
     ai_found: "✨ AI topdi:",
     ai_error: "AI so'rovni tushunmadi.",
@@ -263,6 +265,7 @@ const TRANSLATIONS = {
     loading: "Loading...", no_listings: "No listings yet",
     no_my_listings: "You have no listings yet",
     error_loading: "Loading error.", not_found: "Nothing found",
+    no_photos: "No photos",
     ai_thinking: "🤖 AI is thinking...",
     ai_found: "✨ AI found:",
     ai_error: "AI couldn't understand.",
@@ -703,15 +706,10 @@ async function shareListing(id, ev) {
 
   if (navigator.share) {
     try {
-      await navigator.share({
-        title: 'Xolis Arenda',
-        text: shareText,
-        url: shareUrl
-      });
+      await navigator.share({ title: 'Xolis Arenda', text: shareText, url: shareUrl });
       return;
     } catch (err) { }
   }
-
   const url = `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`;
   window.open(url, '_blank');
 }
@@ -1010,50 +1008,80 @@ async function openDetail(id) {
 
     const photosJson = JSON.stringify(photos).replace(/"/g, '&quot;');
 
+    // === ГАЛЕРЕЯ ===
     let gridHtml = '';
-    if (photos.length >= 5) {
+    let galleryHtml = '';
+
+    if (photos.length === 0) {
       gridHtml = `
-        <div class="detail-gallery-grid">
+        <div class="detail-no-photo">
+          <svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+            <circle cx="8.5" cy="8.5" r="1.5"/>
+            <polyline points="21 15 16 10 5 21"/>
+          </svg>
+          <p>${t.no_photos || 'Фотографий нет'}</p>
+        </div>
+      `;
+      galleryHtml = gridHtml;
+    } else if (photos.length === 1) {
+      gridHtml = `
+        <div class="detail-gallery-grid single-photo">
           <div class="dg-main" onclick="openPhotoViewer(${photosJson}, 0)">
             <img src="${photos[0]}" alt="">
           </div>
-          <div class="dg-side">
-            ${photos.slice(1, 4).map((u, i) => `
-              <div class="dg-thumb" onclick="openPhotoViewer(${photosJson}, ${i + 1})">
-                <img src="${u}" alt="">
-              </div>
-            `).join('')}
-            <div class="dg-thumb" onclick="openPhotoViewer(${photosJson}, 4)">
-              <img src="${photos[4]}" alt="">
-              ${photos.length > 5 ? `<div class="dg-more">+${photos.length - 5}</div>` : ''}
-            </div>
+        </div>
+      `;
+      galleryHtml = `
+        <div class="detail-gallery">
+          <div class="gallery-scroll">
+            <img src="${photos[0]}" alt="" onclick="openPhotoViewer(${photosJson}, 0)">
           </div>
         </div>
       `;
-    } else if (photos.length >= 2) {
+    } else if (photos.length === 2) {
       gridHtml = `
-        <div class="detail-gallery-grid" style="grid-template-columns:1fr 1fr;">
-          ${photos.slice(0, 4).map((u, i) => `
-            <div class="dg-thumb" onclick="openPhotoViewer(${photosJson}, ${i})" style="height:220px;">
+        <div class="detail-gallery-grid two-photos">
+          ${photos.map((u, i) => `
+            <div class="dg-main" onclick="openPhotoViewer(${photosJson}, ${i})">
               <img src="${u}" alt="">
             </div>
           `).join('')}
         </div>
       `;
-    }
-
-    const galleryHtml = photos.length ? `
-      <div class="detail-gallery">
-        <div class="gallery-scroll">
-          ${photos.map((u, i) => `<img src="${u}" alt="" onclick="openPhotoViewer(${photosJson}, ${i})">`).join('')}
-        </div>
-        ${photos.length > 1 ? `
-          <button class="gallery-arrow gallery-arrow-prev" onclick="galleryScroll(this, -1)" aria-label="Назад">‹</button>
-          <button class="gallery-arrow gallery-arrow-next" onclick="galleryScroll(this, 1)" aria-label="Вперёд">›</button>
+      galleryHtml = `
+        <div class="detail-gallery">
+          <div class="gallery-scroll">
+            ${photos.map((u, i) => `<img src="${u}" alt="" onclick="openPhotoViewer(${photosJson}, ${i})">`).join('')}
+          </div>
           <div class="gallery-dots">${photos.map((_, i) => `<span class="dot${i===0?' active':''}"></span>`).join('')}</div>
-        ` : ''}
-      </div>
-    ` : '';
+        </div>
+      `;
+    } else {
+      const sideThumbs = photos.slice(1, 5).map((u, i) => `
+        <div class="dg-thumb" onclick="openPhotoViewer(${photosJson}, ${i + 1})">
+          <img src="${u}" alt="">
+          ${i === 3 && photos.length > 5 ? `<div class="dg-more">+${photos.length - 5}</div>` : ''}
+        </div>
+      `).join('');
+
+      gridHtml = `
+        <div class="detail-gallery-grid">
+          <div class="dg-main" onclick="openPhotoViewer(${photosJson}, 0)">
+            <img src="${photos[0]}" alt="">
+          </div>
+          <div class="dg-side">${sideThumbs}</div>
+        </div>
+      `;
+      galleryHtml = `
+        <div class="detail-gallery">
+          <div class="gallery-scroll">
+            ${photos.map((u, i) => `<img src="${u}" alt="" onclick="openPhotoViewer(${photosJson}, ${i})">`).join('')}
+          </div>
+          <div class="gallery-dots">${photos.map((_, i) => `<span class="dot${i===0?' active':''}"></span>`).join('')}</div>
+        </div>
+      `;
+    }
 
     const galleryActionsHtml = photos.length ? `
       <div class="detail-gallery-actions">
