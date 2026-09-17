@@ -336,6 +336,15 @@
     </div>
   </div>
 
+  <!-- Просмотр фото на весь экран -->
+  <div id="photoViewer" class="photo-viewer hidden">
+    <button class="photo-viewer-close" onclick="closePhotoViewer()" aria-label="Закрыть">×</button>
+    <button class="photo-viewer-prev" onclick="photoViewerPrev()" aria-label="Назад">‹</button>
+    <button class="photo-viewer-next" onclick="photoViewerNext()" aria-label="Вперёд">›</button>
+    <div class="photo-viewer-counter" id="photoViewerCounter">1 / 1</div>
+    <img id="photoViewerImg" src="" alt="">
+  </div>
+
   <script src="app.js"></script>
 </body>
 </html>
