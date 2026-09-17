@@ -626,7 +626,6 @@ function photoViewerNext() {
 }
 window.photoViewerNext = photoViewerNext;
 
-// Клавиатура для фото-просмотра
 document.addEventListener('keydown', (e) => {
   const viewer = document.getElementById('photoViewer');
   if (!viewer || viewer.classList.contains('hidden')) return;
@@ -635,7 +634,6 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowRight') photoViewerNext();
 });
 
-// Свайп для фото-просмотра
 let photoTouchStartX = 0;
 document.addEventListener('touchstart', (e) => {
   const viewer = document.getElementById('photoViewer');
@@ -711,10 +709,9 @@ async function shareListing(id, ev) {
         url: shareUrl
       });
       return;
-    } catch (err) { /* пользователь отменил */ }
+    } catch (err) { }
   }
 
-  // Fallback — Telegram share
   const url = `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`;
   window.open(url, '_blank');
 }
@@ -825,7 +822,7 @@ function renderListings(listings, isMine) {
           <button class="gallery-arrow gallery-arrow-next" onclick="event.stopPropagation(); galleryScroll(this, 1)" aria-label="Вперёд">›</button>
           <div class="gallery-dots">${photos.map((_, i) => `<span class="dot${i===0?' active':''}"></span>`).join('')}</div>
         ` : ''}
-        <button class="detail-gallery-btn" data-fav-id="${item.id}" style="position:absolute;top:10px;right:10px;z-index:4;" onclick="event.stopPropagation(); toggleFavorite(${item.id}, event)" aria-label="В избранное">
+        <button class="card-fav-btn" data-fav-id="${item.id}" onclick="event.stopPropagation(); toggleFavorite(${item.id}, event)" aria-label="В избранное">
           <svg viewBox="0 0 24 24" fill="${fav ? '#ff385c' : 'none'}" stroke="${fav ? '#ff385c' : '#222'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
         </button>
       </div>
@@ -1013,6 +1010,38 @@ async function openDetail(id) {
 
     const photosJson = JSON.stringify(photos).replace(/"/g, '&quot;');
 
+    let gridHtml = '';
+    if (photos.length >= 5) {
+      gridHtml = `
+        <div class="detail-gallery-grid">
+          <div class="dg-main" onclick="openPhotoViewer(${photosJson}, 0)">
+            <img src="${photos[0]}" alt="">
+          </div>
+          <div class="dg-side">
+            ${photos.slice(1, 4).map((u, i) => `
+              <div class="dg-thumb" onclick="openPhotoViewer(${photosJson}, ${i + 1})">
+                <img src="${u}" alt="">
+              </div>
+            `).join('')}
+            <div class="dg-thumb" onclick="openPhotoViewer(${photosJson}, 4)">
+              <img src="${photos[4]}" alt="">
+              ${photos.length > 5 ? `<div class="dg-more">+${photos.length - 5}</div>` : ''}
+            </div>
+          </div>
+        </div>
+      `;
+    } else if (photos.length >= 2) {
+      gridHtml = `
+        <div class="detail-gallery-grid" style="grid-template-columns:1fr 1fr;">
+          ${photos.slice(0, 4).map((u, i) => `
+            <div class="dg-thumb" onclick="openPhotoViewer(${photosJson}, ${i})" style="height:220px;">
+              <img src="${u}" alt="">
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
     const galleryHtml = photos.length ? `
       <div class="detail-gallery">
         <div class="gallery-scroll">
@@ -1023,14 +1052,17 @@ async function openDetail(id) {
           <button class="gallery-arrow gallery-arrow-next" onclick="galleryScroll(this, 1)" aria-label="Вперёд">›</button>
           <div class="gallery-dots">${photos.map((_, i) => `<span class="dot${i===0?' active':''}"></span>`).join('')}</div>
         ` : ''}
-        <div class="detail-gallery-actions">
-          <button class="detail-gallery-btn" data-fav-id="${item.id}" onclick="toggleFavorite(${item.id}, event)" aria-label="В избранное">
-            <svg viewBox="0 0 24 24" fill="${fav ? '#ff385c' : 'none'}" stroke="${fav ? '#ff385c' : '#222'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-          </button>
-          <button class="detail-gallery-btn" onclick="shareListing(${item.id}, event)" aria-label="Поделиться">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
-          </button>
-        </div>
+      </div>
+    ` : '';
+
+    const galleryActionsHtml = photos.length ? `
+      <div class="detail-gallery-actions">
+        <button class="detail-gallery-btn" data-fav-id="${item.id}" onclick="toggleFavorite(${item.id}, event)" aria-label="В избранное">
+          <svg viewBox="0 0 24 24" fill="${fav ? '#ff385c' : 'none'}" stroke="${fav ? '#ff385c' : '#222'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+        <button class="detail-gallery-btn" onclick="shareListing(${item.id}, event)" aria-label="Поделиться">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+        </button>
       </div>
     ` : '';
 
@@ -1115,7 +1147,11 @@ async function openDetail(id) {
     `;
 
     document.getElementById('detailContent').innerHTML = `
-      ${galleryHtml}
+      <div style="position:relative;">
+        ${gridHtml}
+        ${galleryHtml}
+        ${galleryActionsHtml}
+      </div>
       <div class="detail-body">
         <h1 class="detail-hero-title">${title}</h1>
 
